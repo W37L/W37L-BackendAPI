@@ -6,12 +6,4 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-      <Folder Include="Agregates\Message\" />
-      <Folder Include="Agregates\Notification\" />
-      <Folder Include="Agregates\Statistics\" />
-      <Folder Include="Agregates\Topics\" />
-      <Folder Include="Agregates\User\" />
-    </ItemGroup>
-
 </Project>
