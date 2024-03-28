@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Tools\W3TL.Core.Tools.OperationResult\W3TL.Core.Tools.OperationResult.csproj" />
+    </ItemGroup>
+
 </Project>

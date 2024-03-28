@@ -21,7 +21,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="OperationResult\" />
+      <Folder Include="Common\OperationResult\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Core\Tools\W3TL.Core.Tools.OperationResult\W3TL.Core.Tools.OperationResult.csproj" />
+      <ProjectReference Include="..\..\src\Core\W3TL.Core.Domain\W3TL.Core.Domain.csproj" />
     </ItemGroup>
 
 </Project>
