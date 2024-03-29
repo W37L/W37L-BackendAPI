@@ -21,7 +21,7 @@ public class Error {
     /**
      * Gets the message associated with this error.
      */
-    private string Message => this.message;
+    public string Message => this.message;
 
     /**
      * Gets the next error in the chain, if any.
@@ -45,12 +45,14 @@ public class Error {
     public static Error InvalidUserNameFormat => new Error("The username format is invalid.");
     public static Error InvalidLength => new Error("The value length is invalid.");
     public static Error InvalidPrefix => new Error("The value does not start with the expected prefix.");
-
+    public static Error InvalidUrl => new Error("The URL format is invalid.");
+    public static Error NegativeValue => new Error("The value cannot be negative.");
+    public static Error TooLongString(int maxLength) => new Error($"The string cannot exceed {maxLength} characters.");
     public static Error TooShortName(int minLength) => new Error($"The name must be at least {minLength} characters long.");
     public static Error TooLongName(int maxLength) => new Error($"The name cannot exceed {maxLength} characters.");
     public static Error FromException(Exception exception) => new Error(exception.Message);
-
-
+    public static Error TooLongBio(int maxLength) => new Error($"The biography cannot exceed {maxLength} characters.");
+    public static Error TooLongLocation(int maxLength) => new Error($"The location cannot exceed {maxLength} characters.");
 
 
 

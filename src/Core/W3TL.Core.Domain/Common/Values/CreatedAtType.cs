@@ -37,6 +37,10 @@ public class CreatedAtType : ValueObject {
         return validation.Error;
     }
 
+    public static Result<CreatedAtType> Create() {
+        return new CreatedAtType(DateTimeOffset.Now.ToUnixTimeSeconds());
+    }
+
     /**
      * Attempts to create a CreatedAtType instance from a date string.
      * Validates the provided date string before converting it to a Unix timestamp and instantiation.

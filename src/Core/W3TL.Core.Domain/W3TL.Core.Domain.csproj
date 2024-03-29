@@ -10,4 +10,8 @@
       <ProjectReference Include="..\Tools\W3TL.Core.Tools.OperationResult\W3TL.Core.Tools.OperationResult.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Agregates\Post\Entity\" />
+    </ItemGroup>
+
 </Project>

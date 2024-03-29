@@ -8,7 +8,7 @@ namespace W3TL.Core.Domain.Common.Bases;
  *
  * @param TId The type of the identifier for the entity.
  */
-public abstract class Entity<TId> where TId : ValueObject {
+public abstract class Entity<TId> where TId : IdentityBase {
     /**
      * Initializes a new instance of the Entity class with the specified identifier.
      *
