@@ -3,7 +3,6 @@ using ViaEventAssociation.Core.Domain.Common.Values;
 using W3TL.Core.Domain.Agregates.Post;
 using W3TL.Core.Domain.Agregates.Post.Enum;
 using W3TL.Core.Domain.Agregates.Post.Values;
-using W3TL.Core.Domain.Agregates.User;
 using W3TL.Core.Domain.Agregates.User.Entity.Values;
 
 public class Comment : Content {
@@ -11,16 +10,16 @@ public class Comment : Content {
         : base(postId, createdAt, contentTweet, likes, creator, signature, postType, parentPost) { }
 
     public static Result<Comment> Create(
-        PostID postId,
-        CreatedAtType createdAt,
         TheString contentTweet,
-        Count likes,
         User creator,
         Signature signature,
         PostType postType,
         Content parentPost
     ) {
         try {
+            var postId = PostID.Generate().Value;
+            var createdAt = CreatedAtType.Create().Value;
+            var likes = Count.Zero;
             var comment = new Comment(postId, createdAt, contentTweet, likes, creator, signature, postType, parentPost);
             return comment;
         }

@@ -28,23 +28,6 @@ public class Profile : Entity<UserID> {
         }
     }
 
-    public static Result<Profile> Create(UserID userId, AvatarType avatar, BannerType banner, BioType bio, Count followers, Count following, LocationType location, WebsiteType website) {
-        try {
-            var profile = new Profile(userId) {
-                Avatar = avatar,
-                Banner = banner,
-                Bio = bio,
-                Followers = followers,
-                Following = following,
-                Location = location,
-                Website = website
-            };
-            return profile;
-        }
-        catch (Exception exception) {
-            return Error.FromException(exception);
-        }
-    }
 
     public Result UpdateAvatar(AvatarType avatar) {
         try {
@@ -115,5 +98,6 @@ public class Profile : Entity<UserID> {
             return Error.FromException(exception);
         }
     }
+
 
 }

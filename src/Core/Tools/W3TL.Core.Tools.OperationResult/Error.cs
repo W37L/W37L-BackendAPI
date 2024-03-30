@@ -47,6 +47,14 @@ public class Error {
     public static Error InvalidPrefix => new Error("The value does not start with the expected prefix.");
     public static Error InvalidUrl => new Error("The URL format is invalid.");
     public static Error NegativeValue => new Error("The value cannot be negative.");
+    public static Error UserBlocked => new Error("The user is blocked, and the operation cannot be performed.");
+    public static Error UserMuted => new Error("The user is muted, and the operation cannot be performed.");
+    public static Error UserAlreadyFollowed => new Error("The user is already followed, and the operation cannot be performed.");
+    public static Error CannotFollowSelf => new Error("A user cannot follow themselves.");
+    public static Error NullUser => new Error("The user cannot be null.");
+    public static Error UserNotFollowed => new Error("The user is not followed, and the operation cannot be performed.");
+
+
     public static Error TooLongString(int maxLength) => new Error($"The string cannot exceed {maxLength} characters.");
     public static Error TooShortName(int minLength) => new Error($"The name must be at least {minLength} characters long.");
     public static Error TooLongName(int maxLength) => new Error($"The name cannot exceed {maxLength} characters.");

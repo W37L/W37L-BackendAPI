@@ -11,32 +11,101 @@ public class Post : Content {
     public ContentType ContentType { get; private set; }
     List<Comment>? Comments { get; set; }
 
-    private Post(PostID postId, CreatedAtType createdAt, TheString contentTweet, Count likes, global::User creator, Signature signature, PostType postType, MediaUrl mediaUrl, ContentType contentType, List<Comment>? comments = null, Content? parentPost = null)
+    private Post(PostID postId, CreatedAtType createdAt, TheString contentTweet, Count likes, global::User creator, Signature signature, PostType postType, MediaUrl mediaUrl, ContentType contentType, Content? parentPost = null)
         : base(postId, createdAt, contentTweet, likes, creator, signature, postType, parentPost) {
         MediaUrl = mediaUrl;
         ContentType = contentType;
-        Comments = comments;
+        Comments = new List<Comment>();
     }
 
     public static Result<Post> Create(
-        PostID postId,
-        CreatedAtType createdAt,
         TheString contentTweet,
-        Count likes,
         global::User creator,
         Signature signature,
         PostType postType,
-        MediaUrl mediaUrl,
-        ContentType contentType,
-        List<Comment>? comments = null,
+        MediaUrl? mediaUrl = null,
+        ContentType? contentType = null,
         Content? parentPost = null
     ) {
         try {
-            var post = new Post(postId, createdAt, contentTweet, likes, creator, signature, postType, mediaUrl, contentType, comments, parentPost);
+            var postId = PostID.Generate().Value;
+            var createdAt = CreatedAtType.Create().Value;
+            var likes = Count.Zero;
+            var post = new Post(postId, createdAt, contentTweet, likes, creator, signature, postType, mediaUrl!, contentType!, parentPost!);
             return post;
         }
         catch (System.Exception ex) {
             return Error.FromException(ex);
+        }
+    }
+
+    public Result UpdateContentTweet(TheString contentTweet) {
+        try {
+            ContentTweet = contentTweet;
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
+
+    public Result AddComment(Comment comment) {
+        try {
+            Comments.Add(comment);
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
+
+    public Result RemoveComment(Comment comment) {
+        try {
+            Comments.Remove(comment);
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
+
+    public Result UpdateMediaUrl(MediaUrl mediaUrl) {
+        try {
+            MediaUrl = mediaUrl;
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
+
+    public Result UpdateContentType(ContentType contentType) {
+        try {
+            ContentType = contentType;
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
+
+    public Result UpdateComments(List<Comment> comments) {
+        try {
+            Comments = comments;
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
+
+    public Result UpdateLikes(Count likes) {
+        try {
+            Likes = likes;
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
         }
     }
 

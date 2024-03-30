@@ -18,7 +18,7 @@ public abstract class Entity<TId> where TId : IdentityBase {
         Id = id;
     }
 
-    public TId Id { get; private set; }
+    public TId Id { get; internal set; }
 
     public override bool Equals(object? obj) {
         if (!(obj is Entity<TId> other))
