@@ -4,8 +4,8 @@ using ViaEventAssociation.Core.Domain.Common.Bases;
 namespace W3TL.Core.Domain.Agregates.Post.Values;
 
 public class Signature : ValueObject {
-    private static readonly Regex _hexRegex = new("/^[a-fA-F0-9]{128}$/;");
-    private static readonly Regex _base64Regex = new("6fCA1f58Ada8fa3e219b87dEc0Cebd98C4B4ac314AD227377Ec6E581F060F46e1f0B58f7e4C23efD6fEa34eCdd6bDf6B74eB233a089AA0a67c412Cc8c7deAc0c");
+    private static readonly Regex _hexRegex = new("^[a-fA-F0-9]{128}$");
+    private static readonly Regex _base64Regex = new("^[A-Za-z0-9+/]{86}==$|^[A-Za-z0-9+/]{87}=$|^[A-Za-z0-9+/]{88}$\n");
 
     private Signature(string value) {
         Value = value;

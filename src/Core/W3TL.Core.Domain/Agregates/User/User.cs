@@ -50,6 +50,18 @@ public class User : AggregateRoot<UserID> {
     public List<Post> Posts { get; private set; }
 
     public static Result<User> Create(UserNameType userName, NameType firstName, LastNameType lastName, EmailType email, PubType pub) {
+        HashSet<Error> errors = new();
+
+        // Validate inputs for null and ensure they're valid results
+        if (userName == null) errors.Add(Error.BlankUserName);
+        if (firstName == null) errors.Add(Error.InvalidName);
+        if (lastName == null) errors.Add(Error.InvalidName);
+        if (email == null) errors.Add(Error.InvalidEmail);
+        if (pub == null) errors.Add(Error.InvalidPublicKeyFormat);
+
+        // If there are any errors, return them without creating a User
+        if (errors.Any()) return Error.CompileErrors(errors);
+
         try {
             var userId = UserID.Generate().Payload;
             var profile = Profile.Create(userId).Payload;
@@ -61,6 +73,7 @@ public class User : AggregateRoot<UserID> {
             return Error.FromException(exception);
         }
     }
+
 
     public Result UpdateUserName(UserNameType userName) {
         try {

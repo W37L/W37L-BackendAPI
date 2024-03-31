@@ -28,6 +28,13 @@ public class Post : Content {
         Content? parentPost = null
     ) {
         try {
+            HashSet<Error> errors = new();
+            if (contentTweet is null) errors.Add(Error.NullContentTweet);
+            if (creator is null) errors.Add(Error.NullCreator);
+            if (signature is null) errors.Add(Error.NullSignature);
+            if (postType == null) errors.Add(Error.NullPostType);
+            if (errors.Any()) return Error.CompileErrors(errors);
+
             var postId = PostID.Generate().Payload;
             var createdAt = CreatedAtType.Create().Payload;
             var likes = Count.Zero;

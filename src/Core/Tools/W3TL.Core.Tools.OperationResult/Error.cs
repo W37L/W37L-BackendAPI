@@ -54,6 +54,10 @@ public class Error {
     public static Error NullUser => new Error("The user cannot be null.");
     public static Error UserNotFollowed => new Error("The user is not followed, and the operation cannot be performed.");
     public static Error InvalidSignature => new("The signature is invalid. It must be a 128-character hexadecimal or 88-character base64 string.");
+    public static Error NullContentTweet => new("The tweet content cannot be null.");
+    public static Error NullCreator => new("The creator cannot be null.");
+    public static Error NullSignature => new("The signature cannot be null.");
+    public static Error NullPostType => new("The post type cannot be null.");
 
 
     public static Error TooLongString(int maxLength) => new Error($"The string cannot exceed {maxLength} characters.");
