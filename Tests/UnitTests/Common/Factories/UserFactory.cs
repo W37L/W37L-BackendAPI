@@ -7,62 +7,61 @@ using static UnitTests.Common.Factories.ValidFields;
 namespace UnitTests.Common.Factories;
 
 public class UserFactory {
-    private User _user { get; set; }
-
     private UserFactory() { }
+    private User _user { get; set; }
 
     public static UserFactory Init() {
         var factory = new UserFactory();
-        var userId = UserID.Generate().Value;
+        var userId = UserID.Generate().Payload;
         factory._user = new User(userId);
         return new UserFactory();
     }
 
     public static UserFactory InitWithDefaultValues() {
         var factory = new UserFactory();
-        var userName = UserNameType.Create(VALID_USERNAME).Value;
-        var firstName = NameType.Create(VALID_FIRST_NAME).Value;
-        var lastName = LastNameType.Create(VALID_LAST_NAME).Value;
-        var email = EmailType.Create(VALID_EMAIL).Value;
-        var pub = PubType.Create(VALID_PUB_KEY).Value;
+        var userName = UserNameType.Create(VALID_USERNAME).Payload;
+        var firstName = NameType.Create(VALID_FIRST_NAME).Payload;
+        var lastName = LastNameType.Create(VALID_LAST_NAME).Payload;
+        var email = EmailType.Create(VALID_EMAIL).Payload;
+        var pub = PubType.Create(VALID_PUB_KEY).Payload;
 
         var result = User.Create(userName, firstName, lastName, email, pub);
 
-        factory._user = result.Value;
+        factory._user = result.Payload;
         return factory;
-        }
+    }
 
     public User Build() {
         return _user;
     }
 
     public UserFactory WitValidId(string uid) {
-        _user.Id = UserID.Create(uid).Value;
+        _user.Id = UserID.Create(uid).Payload;
         return this;
     }
 
     public UserFactory WithValidUserName(string userName) {
-        _user.UserName = UserNameType.Create(userName).Value;
+        _user.UserName = UserNameType.Create(userName).Payload;
         return this;
     }
 
     public UserFactory WithValidFirstName(string firstName) {
-        _user.FirstName = NameType.Create(firstName).Value;
+        _user.FirstName = NameType.Create(firstName).Payload;
         return this;
     }
 
     public UserFactory WithValidLastName(string lastName) {
-        _user.LastName = LastNameType.Create(lastName).Value;
+        _user.LastName = LastNameType.Create(lastName).Payload;
         return this;
     }
 
     public UserFactory WithValidEmail(string email) {
-        _user.Email = EmailType.Create(email).Value;
+        _user.Email = EmailType.Create(email).Payload;
         return this;
     }
 
     public UserFactory WithValidPubKey(string pubKey) {
-        _user.Pub = PubType.Create(pubKey).Value;
+        _user.Pub = PubType.Create(pubKey).Payload;
         return this;
     }
 }

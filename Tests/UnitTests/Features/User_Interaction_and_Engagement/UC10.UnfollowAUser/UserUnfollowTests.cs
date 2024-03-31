@@ -1,28 +1,22 @@
 using UnitTests.Common.Factories;
-using Xunit;
 
 namespace UnitTests.Features.User_Interaction_and_Engagement;
 
 public class UserUnfollowTests {
+    private readonly global::User _followee = UserFactory.InitWithDefaultValues()
+        .WitValidId("UID-123456789012345678901234567890123456")
+        .WithValidUserName("username")
+        .WithValidEmail("email@example.com")
+        .Build();
 
-    private readonly global::User _follower;
-    private readonly global::User _followee;
-
-    public UserUnfollowTests() {
-        _follower = UserFactory.InitWithDefaultValues().Build();
-        _followee = UserFactory.InitWithDefaultValues()
-            .WitValidId("UID-123456789012345678901234567890123456")
-            .WithValidUserName("username")
-            .WithValidEmail("email@example.com")
-            .Build();
-    }
+    private readonly global::User _follower = UserFactory.InitWithDefaultValues().Build();
 
     private void ResetFollowState() {
         _follower.Following.Clear();
         _followee.Followers.Clear();
     }
 
-   // Success Scenario
+    // Success Scenario
 
     // ID:UC7.S1
     [Fact]
@@ -30,6 +24,8 @@ public class UserUnfollowTests {
         // Arrange - Ensure they are following each other
         ResetFollowState();
         _follower.Follow(_followee);
+        var initialValueFollower = _follower.Profile.Following.Value;
+        var initialValueFollowee = _followee.Profile.Followers.Value;
 
         // Act
         var result = _follower.Unfollow(_followee);
@@ -38,6 +34,8 @@ public class UserUnfollowTests {
         Assert.True(result.IsSuccess);
         Assert.DoesNotContain(_followee, _follower.Following);
         Assert.DoesNotContain(_follower, _followee.Followers);
+        Assert.Equal(initialValueFollower - 1, _follower.Profile.Following.Value);
+        Assert.Equal(initialValueFollowee - 1, _followee.Profile.Followers.Value);
     }
 
     // Failure Scenarios
@@ -47,6 +45,8 @@ public class UserUnfollowTests {
     public void Unfollow_NotFollowedUser_ShouldReturnUserNotFollowedError() {
         // Arrange - Reset state to ensure they are not following each other
         ResetFollowState();
+        var initialValueFollower = _follower.Profile.Following.Value;
+        var initialValueFollowee = _followee.Profile.Followers.Value;
 
         // Act
         var result = _follower.Unfollow(_followee);
@@ -54,6 +54,10 @@ public class UserUnfollowTests {
         // Assert
         Assert.False(result.IsSuccess);
         Assert.Equal(Error.UserNotFollowed, result.Error);
+        Assert.DoesNotContain(_followee, _follower.Following);
+        Assert.DoesNotContain(_follower, _followee.Followers);
+        Assert.Equal(initialValueFollower, _follower.Profile.Following.Value);
+        Assert.Equal(initialValueFollowee, _followee.Profile.Followers.Value);
     }
 
     // ID:UC7.F2
@@ -61,6 +65,8 @@ public class UserUnfollowTests {
     public void Unfollow_NullUser_ShouldReturnNullUserError() {
         // Arrange
         ResetFollowState();
+        var initialValueFollower = _follower.Profile.Following.Value;
+        var initialValueFollowee = _followee.Profile.Followers.Value;
 
         // Act
         var result = _follower.Unfollow(null);
@@ -68,6 +74,10 @@ public class UserUnfollowTests {
         // Assert
         Assert.False(result.IsSuccess);
         Assert.Equal(Error.NullUser, result.Error);
+        Assert.DoesNotContain(_followee, _follower.Following);
+        Assert.DoesNotContain(_follower, _followee.Followers);
+        Assert.Equal(initialValueFollower, _follower.Profile.Following.Value);
+        Assert.Equal(initialValueFollowee, _followee.Profile.Followers.Value);
     }
 
     // Considering "Error.FromException" is a catch-all for unexpected errors, it's tricky to simulate directly in a unit test

@@ -1,10 +1,8 @@
-
 using W3TL.Core.Domain.Agregates.User.Values;
 
 namespace UnitTests.Features.User.CreateAUser;
 
 public class UserCreationTestFailure_WrongEmail {
-
     // UC1.F17 - Test for failure when Email is blank
     [Theory]
     [InlineData("")]

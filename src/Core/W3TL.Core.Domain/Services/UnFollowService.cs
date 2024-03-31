@@ -9,10 +9,17 @@ public static class UnFollowService {
             return Result.Fail(Error.UserNotFollowed);
 
         try {
+            //Update the follower
             follower.Following.Remove(followee);
+            follower.Profile.Following.Decrement();
+
+            //Update the followee
             followee.Followers.Remove(follower);
+            followee.Profile.Followers.Decrement();
+
             return Result.Ok;
-        } catch (Exception exception) {
+        }
+        catch (Exception exception) {
             return Result.Fail(Error.FromException(exception));
         }
     }

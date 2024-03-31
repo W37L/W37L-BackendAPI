@@ -4,11 +4,12 @@ namespace W3TL.Core.Domain.Agregates.User.Entity.Values;
 
 public class LocationType : ValueObject {
     public static readonly int MAX_LENGTH = 100;
-    public string Value { get; }
 
     private LocationType(string value) {
         Value = value;
     }
+
+    public string Value { get; }
 
     public static Result<LocationType> Create(string value) {
         try {
@@ -27,9 +28,6 @@ public class LocationType : ValueObject {
 
         if (value is null)
             return Error.BlankString;
-
-        if (string.IsNullOrEmpty(value))
-            errors.Add(Error.BlankString);
 
         if (value.Length > MAX_LENGTH)
             errors.Add(Error.TooLongLocation(MAX_LENGTH));

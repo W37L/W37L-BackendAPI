@@ -3,7 +3,7 @@
  * It contains a utility method for chaining further actions based on the result.
  */
 public class Result {
-    public static readonly Result Ok = new Result(true, null);
+    public static readonly Result Ok = new(true, null!);
 
     /**
      * Constructs a Result.
@@ -77,8 +77,6 @@ public class Result {
  * @param <T> The type of the value associated with a successful outcome.
  */
 public class Result<T> : Result {
-    private T value;
-
     /**
      * Constructs a Result with the specified success state, value, and error.
      * @param isSuccess Indicates if the result represents a success.
@@ -86,10 +84,10 @@ public class Result<T> : Result {
      * @param error The error associated with a failure.
      */
     private Result(bool isSuccess, T value, Error error) : base(isSuccess, error) {
-        this.value = value;
+        Payload = value;
     }
 
-    public T Value => this.value;
+    public T Payload { get; }
 
     /**
      * Creates a successful Result holding the specified value.
@@ -124,7 +122,7 @@ public class Result<T> : Result {
      */
     public new Result<T> OnSuccess(Action<T> action) {
         if (IsSuccess) {
-            action?.Invoke(this.Value);
+            action?.Invoke(Payload);
         }
 
         return this;

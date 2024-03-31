@@ -2,12 +2,12 @@ using ViaEventAssociation.Core.Domain.Aggregates.Guests;
 using ViaEventAssociation.Core.Domain.Common.Values;
 using W3TL.Core.Domain.Agregates.User.Values;
 using W3TL.Core.Domain.Common.Values;
-
 using Xunit.Abstractions;
 using static UnitTests.Common.Factories.ValidFields;
 
 public class UserCreationTestsSuccess {
     private readonly ITestOutputHelper _testOutputHelper;
+
     public UserCreationTestsSuccess(ITestOutputHelper testOutputHelper) {
         _testOutputHelper = testOutputHelper;
     }
@@ -16,28 +16,27 @@ public class UserCreationTestsSuccess {
     [Fact]
     public void CreateUser_TestTheValidConstants_ReturnSuccess() {
         //Arrange
-        var userId = UserID.Create(VALID_USER_ID).Value;
-        var userName = UserNameType.Create(VALID_USERNAME).Value;
-        var firstName = NameType.Create(VALID_FIRST_NAME).Value;
-        var lastName = LastNameType.Create(VALID_LAST_NAME).Value;
-        var email = EmailType.Create(VALID_EMAIL).Value;
-        var pub = PubType.Create(VALID_PUB_KEY).Value;
-        var createdAt = CreatedAtType.Create(VALID_CREATED_AT_UNIX).Value;
+        var userId = UserID.Create(VALID_USER_ID).Payload;
+        var userName = UserNameType.Create(VALID_USERNAME).Payload;
+        var firstName = NameType.Create(VALID_FIRST_NAME).Payload;
+        var lastName = LastNameType.Create(VALID_LAST_NAME).Payload;
+        var email = EmailType.Create(VALID_EMAIL).Payload;
+        var pub = PubType.Create(VALID_PUB_KEY).Payload;
+        var createdAt = CreatedAtType.Create(VALID_CREATED_AT_UNIX).Payload;
 
         //Act
         var result = User.Create(userName, firstName, lastName, email, pub);
 
         //Assert
         Assert.True(result.IsSuccess);
-        Assert.NotNull(result.Value);
-        Assert.IsType<UserID>(result.Value.Id);
-        Assert.Equal(VALID_USERNAME, result.Value.UserName.Value);
-        Assert.Equal(VALID_FIRST_NAME, result.Value.FirstName.Value);
-        Assert.Equal(VALID_LAST_NAME, result.Value.LastName.Value);
-        Assert.Equal(VALID_EMAIL, result.Value.Email.Value);
-        Assert.Equal(VALID_PUB_KEY, result.Value.Pub.Value);
-        Assert.IsType<long>(result.Value.CreatedAt.Value);
-
+        Assert.NotNull(result.Payload);
+        Assert.IsType<UserID>(result.Payload.Id);
+        Assert.Equal(VALID_USERNAME, result.Payload.UserName.Value);
+        Assert.Equal(VALID_FIRST_NAME, result.Payload.FirstName.Value);
+        Assert.Equal(VALID_LAST_NAME, result.Payload.LastName.Value);
+        Assert.Equal(VALID_EMAIL, result.Payload.Email.Value);
+        Assert.Equal(VALID_PUB_KEY, result.Payload.Pub.Value);
+        Assert.IsType<long>(result.Payload.CreatedAt.Value);
     }
 
     // //ID:UC1.S2
@@ -65,15 +64,15 @@ public class UserCreationTestsSuccess {
     [InlineData("12353")]
     public void CreateUser_CorrectUsername_ReturnSuccess(string username) {
         //Arrange
-        var userName = UserNameType.Create(username).Value;
+        var userName = UserNameType.Create(username).Payload;
 
         //Act
-        var result = User.Create(userName, NameType.Create(VALID_FIRST_NAME).Value, LastNameType.Create(VALID_LAST_NAME).Value, EmailType.Create(VALID_EMAIL).Value, PubType.Create(VALID_PUB_KEY).Value);
+        var result = User.Create(userName, NameType.Create(VALID_FIRST_NAME).Payload, LastNameType.Create(VALID_LAST_NAME).Payload, EmailType.Create(VALID_EMAIL).Payload, PubType.Create(VALID_PUB_KEY).Payload);
 
         // Verification
         Assert.True(result.IsSuccess);
-        Assert.NotNull(result.Value);
-        Assert.Equal(username, result.Value.UserName.Value);
+        Assert.NotNull(result.Payload);
+        Assert.Equal(username, result.Payload.UserName.Value);
     }
 
     //ID:UC1.S4
@@ -83,16 +82,15 @@ public class UserCreationTestsSuccess {
     [InlineData("user123@domain.com")]
     public void CreateUser_CorrectEmail_ReturnSuccess(string emailInput) {
         //Arrange
-        var email = EmailType.Create(emailInput).Value;
+        var email = EmailType.Create(emailInput).Payload;
 
         //Act
-        var result = User.Create(UserNameType.Create(VALID_USERNAME).Value, NameType.Create(VALID_FIRST_NAME).Value, LastNameType.Create(VALID_LAST_NAME).Value, email, PubType.Create(VALID_PUB_KEY).Value);
+        var result = User.Create(UserNameType.Create(VALID_USERNAME).Payload, NameType.Create(VALID_FIRST_NAME).Payload, LastNameType.Create(VALID_LAST_NAME).Payload, email, PubType.Create(VALID_PUB_KEY).Payload);
 
         // Verification
         Assert.True(result.IsSuccess);
-        Assert.NotNull(result.Value);
-        Assert.Equal(emailInput, result.Value.Email.Value);
-
+        Assert.NotNull(result.Payload);
+        Assert.Equal(emailInput, result.Payload.Email.Value);
     }
 
     //ID:UC1.S5
@@ -102,14 +100,14 @@ public class UserCreationTestsSuccess {
     [InlineData("Alice")]
     public void CreateUser_CorrectFirstName_ReturnSuccess(string firstName) {
         //Arrange
-        var name = NameType.Create(firstName).Value;
+        var name = NameType.Create(firstName).Payload;
 
         //Act
-        var result = User.Create(UserNameType.Create(VALID_USERNAME).Value, name, LastNameType.Create(VALID_LAST_NAME).Value, EmailType.Create(VALID_EMAIL).Value, PubType.Create(VALID_PUB_KEY).Value);
+        var result = User.Create(UserNameType.Create(VALID_USERNAME).Payload, name, LastNameType.Create(VALID_LAST_NAME).Payload, EmailType.Create(VALID_EMAIL).Payload, PubType.Create(VALID_PUB_KEY).Payload);
         // Verification
         Assert.True(result.IsSuccess);
-        Assert.NotNull(result.Value);
-        Assert.Equal(firstName, result.Value.FirstName.Value);
+        Assert.NotNull(result.Payload);
+        Assert.Equal(firstName, result.Payload.FirstName.Value);
     }
 
     //ID:UC1.S6
@@ -119,14 +117,14 @@ public class UserCreationTestsSuccess {
     [InlineData("Johnson")]
     public void CreateUser_CorrectLastName_ReturnSuccess(string lastName) {
         //Arrange
-        var name = LastNameType.Create(lastName).Value;
+        var name = LastNameType.Create(lastName).Payload;
 
         //Act
-        var result = User.Create(UserNameType.Create(VALID_USERNAME).Value, NameType.Create(VALID_FIRST_NAME).Value, name, EmailType.Create(VALID_EMAIL).Value, PubType.Create(VALID_PUB_KEY).Value);
+        var result = User.Create(UserNameType.Create(VALID_USERNAME).Payload, NameType.Create(VALID_FIRST_NAME).Payload, name, EmailType.Create(VALID_EMAIL).Payload, PubType.Create(VALID_PUB_KEY).Payload);
         // Verification
         Assert.True(result.IsSuccess);
-        Assert.NotNull(result.Value);
-        Assert.Equal(lastName, result.Value.LastName.Value);
+        Assert.NotNull(result.Payload);
+        Assert.Equal(lastName, result.Payload.LastName.Value);
     }
 
     //ID:UC1.S7
@@ -136,14 +134,14 @@ public class UserCreationTestsSuccess {
     [InlineData("FJbAsEj5pj+xm0lMRwqym71234560NNeFxwId+bC1iF=")]
     public void CreateUser_CorrectPubKey_ReturnSuccess(string pubKey) {
         //Arrange
-        var pub = PubType.Create(pubKey).Value;
+        var pub = PubType.Create(pubKey).Payload;
 
         //Act
-        var result = User.Create(UserNameType.Create(VALID_USERNAME).Value, NameType.Create(VALID_FIRST_NAME).Value, LastNameType.Create(VALID_LAST_NAME).Value, EmailType.Create(VALID_EMAIL).Value, pub);
+        var result = User.Create(UserNameType.Create(VALID_USERNAME).Payload, NameType.Create(VALID_FIRST_NAME).Payload, LastNameType.Create(VALID_LAST_NAME).Payload, EmailType.Create(VALID_EMAIL).Payload, pub);
         // Verification
         Assert.True(result.IsSuccess);
-        Assert.NotNull(result.Value);
-        Assert.Equal(pubKey, result.Value.Pub.Value);
+        Assert.NotNull(result.Payload);
+        Assert.Equal(pubKey, result.Payload.Pub.Value);
     }
 
     // //ID:UC1.S8

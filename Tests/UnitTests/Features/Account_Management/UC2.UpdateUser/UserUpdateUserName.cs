@@ -4,7 +4,6 @@ using W3TL.Core.Domain.Agregates.User.Values;
 namespace UnitTests.Features.User.UpdateUserName;
 
 public class UserUpdateUserNameTestsSuccess {
-
     //ID:UC2.S1
     [Theory]
     [InlineData("ValidUsername")]
@@ -16,7 +15,7 @@ public class UserUpdateUserNameTestsSuccess {
     public void UpdateUserName_ValidUsername_ReturnSuccess(string newUsername) {
         // Arrange
         var user = UserFactory.InitWithDefaultValues().Build();
-        var newUserNameType = UserNameType.Create(newUsername).Value;
+        var newUserNameType = UserNameType.Create(newUsername).Payload;
 
         // Act
         var result = user.UpdateUserName(newUserNameType);

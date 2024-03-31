@@ -1,11 +1,8 @@
-using Xunit;
 using ViaEventAssociation.Core.Domain.Common.Values;
-using System.Linq;
 
 namespace UnitTests.Features.User.CreateAUser;
 
 public class UserCreationTestFailure_WrongPubKey {
-
     // UC1.F21 - Test for failure when PubKey is blank
     [Theory]
     [InlineData("")]

@@ -15,7 +15,7 @@ public class UserUpdateFirstNameTests {
     public void UpdateFirstName_ValidFirstName_ReturnSuccess(string newFirstName) {
         // Arrange
         var user = UserFactory.InitWithDefaultValues().Build();
-        var newFirstNameType = NameType.Create(newFirstName).Value;
+        var newFirstNameType = NameType.Create(newFirstName).Payload;
 
         // Act
         var result = user.UpdateFirstName(newFirstNameType);

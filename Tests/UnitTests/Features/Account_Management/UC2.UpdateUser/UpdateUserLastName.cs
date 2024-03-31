@@ -4,7 +4,6 @@ using ViaEventAssociation.Core.Domain.Aggregates.Guests;
 namespace UnitTests.Features.User.UpdateUserName;
 
 public class UpdateUserLastName {
-
     // Success Scenarios
 
     //ID:UC4.S1
@@ -18,7 +17,7 @@ public class UpdateUserLastName {
     public void UpdateLastName_ValidLastName_ReturnSuccess(string newLastName) {
         // Arrange
         var user = UserFactory.InitWithDefaultValues().Build();
-        var newLastNameType = LastNameType.Create(newLastName).Value;
+        var newLastNameType = LastNameType.Create(newLastName).Payload;
 
         // Act
         var result = user.UpdateLastName(newLastNameType);

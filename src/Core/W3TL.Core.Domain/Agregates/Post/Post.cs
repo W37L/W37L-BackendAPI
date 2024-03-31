@@ -7,16 +7,16 @@ using W3TL.Core.Domain.Agregates.User.Entity.Values;
 namespace W3TL.Core.Domain.Agregates.Post;
 
 public class Post : Content {
-    public MediaUrl MediaUrl { get; private set; }
-    public ContentType ContentType { get; private set; }
-    List<Comment>? Comments { get; set; }
-
     private Post(PostID postId, CreatedAtType createdAt, TheString contentTweet, Count likes, global::User creator, Signature signature, PostType postType, MediaUrl mediaUrl, ContentType contentType, Content? parentPost = null)
         : base(postId, createdAt, contentTweet, likes, creator, signature, postType, parentPost) {
         MediaUrl = mediaUrl;
         ContentType = contentType;
         Comments = new List<Comment>();
     }
+
+    public MediaUrl MediaUrl { get; private set; }
+    public ContentType ContentType { get; private set; }
+    List<Comment>? Comments { get; set; }
 
     public static Result<Post> Create(
         TheString contentTweet,
@@ -28,13 +28,13 @@ public class Post : Content {
         Content? parentPost = null
     ) {
         try {
-            var postId = PostID.Generate().Value;
-            var createdAt = CreatedAtType.Create().Value;
+            var postId = PostID.Generate().Payload;
+            var createdAt = CreatedAtType.Create().Payload;
             var likes = Count.Zero;
             var post = new Post(postId, createdAt, contentTweet, likes, creator, signature, postType, mediaUrl!, contentType!, parentPost!);
             return post;
         }
-        catch (System.Exception ex) {
+        catch (Exception ex) {
             return Error.FromException(ex);
         }
     }
@@ -108,5 +108,4 @@ public class Post : Content {
             return Error.FromException(exception);
         }
     }
-
 }

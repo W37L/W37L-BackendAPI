@@ -1,11 +1,8 @@
-using Xunit;
 using W3TL.Core.Domain.Agregates.User.Values;
-using System.Linq;
 
 namespace UnitTests.Features.User.CreateAUser;
 
 public class UserCreationTestFailure_WrongUsername {
-
     // UC1.F5 - Test for failure when Username is blank
     [Theory]
     [InlineData("")]

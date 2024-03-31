@@ -53,6 +53,7 @@ public class Error {
     public static Error CannotFollowSelf => new Error("A user cannot follow themselves.");
     public static Error NullUser => new Error("The user cannot be null.");
     public static Error UserNotFollowed => new Error("The user is not followed, and the operation cannot be performed.");
+    public static Error InvalidSignature => new("The signature is invalid. It must be a 128-character hexadecimal or 88-character base64 string.");
 
 
     public static Error TooLongString(int maxLength) => new Error($"The string cannot exceed {maxLength} characters.");
@@ -61,12 +62,6 @@ public class Error {
     public static Error FromException(Exception exception) => new Error(exception.Message);
     public static Error TooLongBio(int maxLength) => new Error($"The biography cannot exceed {maxLength} characters.");
     public static Error TooLongLocation(int maxLength) => new Error($"The location cannot exceed {maxLength} characters.");
-
-
-
-
-
-
 
 
     /**
@@ -150,9 +145,4 @@ public class Error {
     public override int GetHashCode() {
         return HashCode.Combine(message);
     }
-
-
-
 }
-
-

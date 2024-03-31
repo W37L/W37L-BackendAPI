@@ -17,10 +17,17 @@ public static class FollowService {
             return Error.CompileErrors(errors);
 
         try {
+            //Update the follower
             follower.Following.Add(followee);
+            follower.Profile.Following.Increment();
+
+            //Update the followee
             followee.Followers.Add(follower);
+            followee.Profile.Followers.Increment();
+
             return Result.Ok;
-        } catch (Exception exception) {
+        }
+        catch (Exception exception) {
             return Error.FromException(exception);
         }
     }

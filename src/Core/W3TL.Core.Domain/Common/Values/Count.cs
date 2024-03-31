@@ -3,11 +3,13 @@ using ViaEventAssociation.Core.Domain.Common.Bases;
 namespace W3TL.Core.Domain.Agregates.User.Entity.Values;
 
 public class Count : ValueObject {
-    public int Value { get; private set; }
-
     private Count(int value) {
         Value = value;
     }
+
+    public int Value { get; private set; }
+
+    public static Count Zero => new(0);
 
     public static Result<Count> Create(int value) {
         try {
@@ -33,6 +35,26 @@ public class Count : ValueObject {
         }
     }
 
+    public Result Increment() {
+        try {
+            Value++;
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
+
+    public Result Decrement() {
+        try {
+            Value--;
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
+
     private static Result Validate(int value) {
         var errors = new HashSet<Error>();
 
@@ -44,8 +66,6 @@ public class Count : ValueObject {
 
         return Result.Ok;
     }
-
-    public static Count Zero => new Count(0);
 
 
     protected override IEnumerable<object> GetEqualityComponents() {

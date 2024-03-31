@@ -1,10 +1,8 @@
-
 using ViaEventAssociation.Core.Domain.Aggregates.Guests;
 
 namespace UnitTests.Features.User.CreateAUser;
 
 public class UserCreationTestFailureWrongLastName {
-
     // UC1.F13 - Test for failure when LastName is blank
     [Theory]
     [InlineData("")]

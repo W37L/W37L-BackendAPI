@@ -1,10 +1,8 @@
-
 using ViaEventAssociation.Core.Domain.Aggregates.Guests;
 
 namespace UnitTests.Features.User.CreateAUser;
 
 public class UserCreationTestFailure_WrongFirstName {
-
     // UC1.F9 - Test for failure when FirstName is blank
     [Theory]
     [InlineData(" ")]

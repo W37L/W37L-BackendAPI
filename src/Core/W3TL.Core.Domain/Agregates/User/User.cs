@@ -1,4 +1,3 @@
-
 using ViaEventAssociation.Core.Domain.Aggregates.Guests;
 using ViaEventAssociation.Core.Domain.Common.Values;
 using W3TL.Core.Domain.Agregates.Post;
@@ -9,22 +8,6 @@ using W3TL.Core.Domain.Common.Values;
 using W3TL.Core.Domain.Services;
 
 public class User : AggregateRoot<UserID> {
-
-    public UserNameType UserName { get; internal set; }
-    public NameType FirstName { get; internal set; }
-    public LastNameType LastName { get; internal set; }
-    public EmailType Email { get; internal set; }
-    public PubType Pub { get; internal set; }
-    public CreatedAtType CreatedAt { get; internal set; }
-    public Profile Profile { get; internal set; }
-
-    public List<User> Followers { get; private set; }
-    public List<User> Following { get; private set; }
-    public List<User> Blocked { get; private set; }
-    public List<User> Muted { get; private set; }
-
-    public List<Post> Posts { get; private set; }
-
     internal User(UserID userId) : base(userId) { }
 
     private User(
@@ -51,11 +34,26 @@ public class User : AggregateRoot<UserID> {
         Posts = new List<Post>();
     }
 
+    public UserNameType UserName { get; internal set; }
+    public NameType FirstName { get; internal set; }
+    public LastNameType LastName { get; internal set; }
+    public EmailType Email { get; internal set; }
+    public PubType Pub { get; internal set; }
+    public CreatedAtType CreatedAt { get; internal set; }
+    public Profile Profile { get; internal set; }
+
+    public List<User> Followers { get; private set; }
+    public List<User> Following { get; private set; }
+    public List<User> Blocked { get; private set; }
+    public List<User> Muted { get; private set; }
+
+    public List<Post> Posts { get; private set; }
+
     public static Result<User> Create(UserNameType userName, NameType firstName, LastNameType lastName, EmailType email, PubType pub) {
         try {
-            var userId = UserID.Generate().Value;
-            var profile = Profile.Create(userId).Value;
-            var createdAt = CreatedAtType.Create().Value;
+            var userId = UserID.Generate().Payload;
+            var profile = Profile.Create(userId).Payload;
+            var createdAt = CreatedAtType.Create().Payload;
             var user = new User(userId, userName, firstName, lastName, email, pub, createdAt, profile);
             return user;
         }

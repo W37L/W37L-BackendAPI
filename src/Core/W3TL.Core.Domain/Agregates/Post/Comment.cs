@@ -1,4 +1,3 @@
-using System.Net.Mime;
 using ViaEventAssociation.Core.Domain.Common.Values;
 using W3TL.Core.Domain.Agregates.Post;
 using W3TL.Core.Domain.Agregates.Post.Enum;
@@ -17,13 +16,13 @@ public class Comment : Content {
         Content parentPost
     ) {
         try {
-            var postId = PostID.Generate().Value;
-            var createdAt = CreatedAtType.Create().Value;
+            var postId = PostID.Generate().Payload;
+            var createdAt = CreatedAtType.Create().Payload;
             var likes = Count.Zero;
             var comment = new Comment(postId, createdAt, contentTweet, likes, creator, signature, postType, parentPost);
             return comment;
         }
-        catch (System.Exception ex) {
+        catch (Exception ex) {
             return Error.FromException(ex);
         }
     }

@@ -1,9 +1,6 @@
-using Xunit;
 using W3TL.Core.Domain.Common.Values;
-using System.Linq;
 
 public class UserCreationTestFailure_WrongId {
-
     //UC1.F1
     // Test for failure when UserID is blank
     [Theory]

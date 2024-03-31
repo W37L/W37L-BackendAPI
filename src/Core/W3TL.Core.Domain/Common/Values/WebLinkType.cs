@@ -9,11 +9,6 @@ namespace W3TL.Core.Domain.Common.Values;
 */
 public abstract class WebLinkType : ValueObject {
     /**
- * The URL value encapsulated by this instance.
- */
-    public string Url { get; }
-
-    /**
  * Constructs a WebLinkType instance with a specified URL.
  * This constructor validates and, if necessary, normalizes the URL (e.g., prepending "https://").
  *
@@ -33,12 +28,17 @@ public abstract class WebLinkType : ValueObject {
     }
 
     /**
+ * The URL value encapsulated by this instance.
+ */
+    public string Url { get; }
+
+    /**
  * Validates the provided URL against a series of rules to ensure it is well-formed.
  *
  * @param url The URL to validate.
  * @return A Result object indicating success, or containing errors if the validation fails.
  */
-    protected Result Validate(string url) {
+    protected static Result Validate(string url) {
         var errors = new HashSet<Error>();
 
         if (url == null) {
@@ -68,12 +68,4 @@ public abstract class WebLinkType : ValueObject {
     protected override IEnumerable<object> GetEqualityComponents() {
         yield return Url;
     }
-
-    /**
- * Creates a new instance of a derived type with the specified URL.
- *
- * @param url The URL to encapsulate.
- * @return A new instance of a derived type with the specified URL.
- */
-    public abstract Result<WebLinkType> Create(string url);
 }

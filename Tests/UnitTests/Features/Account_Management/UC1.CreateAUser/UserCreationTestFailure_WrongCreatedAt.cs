@@ -1,9 +1,6 @@
-
-
 using ViaEventAssociation.Core.Domain.Common.Values;
 
 public class UserCreationTestFailure_WrongCreatedAt {
-
     // UC1.F24 - Test for failure when CreatedAt is an invalid Unix timestamp (negative or zero)
     [Theory]
     [InlineData(0)]
