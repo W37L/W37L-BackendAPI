@@ -32,6 +32,7 @@ public class User : AggregateRoot<UserID> {
         Blocked = new List<User>();
         Muted = new List<User>();
         Posts = new List<Post>();
+        Likes = new List<Content>();
     }
 
     public UserNameType UserName { get; internal set; }
@@ -48,6 +49,7 @@ public class User : AggregateRoot<UserID> {
     public List<User> Muted { get; private set; }
 
     public List<Post> Posts { get; private set; }
+    public List<Content> Likes { get; private set; }
 
     public static Result<User> Create(UserNameType userName, NameType firstName, LastNameType lastName, EmailType email, PubType pub) {
         HashSet<Error> errors = new();
@@ -129,6 +131,8 @@ public class User : AggregateRoot<UserID> {
 
     public Result Block(User user) {
         try {
+            if (user == null) return Error.NullUser;
+            if (Blocked.Contains(user)) return Error.UserAlreadyBlocked;
             Blocked.Add(user);
             return Result.Ok;
         }
@@ -139,6 +143,8 @@ public class User : AggregateRoot<UserID> {
 
     public Result Unblock(User user) {
         try {
+            if (user == null) return Error.NullUser;
+            if (!Blocked.Contains(user)) return Error.UserNotBlocked;
             Blocked.Remove(user);
             return Result.Ok;
         }

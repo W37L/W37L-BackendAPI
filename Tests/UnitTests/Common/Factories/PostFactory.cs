@@ -1,6 +1,4 @@
-using System.Net.Mime;
 using ViaEventAssociation.Core.Domain.Common.Values;
-using W3TL.Core.Domain.Agregates.Post;
 using W3TL.Core.Domain.Agregates.Post.Enum;
 using W3TL.Core.Domain.Agregates.Post.Values;
 using W3TL.Core.Domain.Agregates.User.Entity.Values;
@@ -15,7 +13,7 @@ public class PostFactory {
 
     public static PostFactory Init() {
         var factory = new PostFactory();
-        var postId = PostID.Generate().Payload;
+        var postId = PostId.Generate().Payload;
         factory._post = new Post(postId);
         return new PostFactory();
     }
@@ -37,8 +35,14 @@ public class PostFactory {
         return _post;
     }
 
+    public PostFactory WithInvalidId() {
+        var invalidId = PostId.Create(null).Payload;
+        invalidId.Value = "invalid-id";
+        return this;
+    }
+
     public PostFactory WithValidId(string? uid) {
-        _post.Id = PostID.Create(uid).Payload;
+        _post.Id = PostId.Create(uid).Payload;
         return this;
     }
 
@@ -67,8 +71,8 @@ public class PostFactory {
         return this;
     }
 
-    public PostFactory WithValidContentType(ContentType contentType) {
-        _post.ContentType = contentType;
+    public PostFactory WithValidContentType(MediaType mediaType) {
+        _post.MediaType = mediaType;
         return this;
     }
 

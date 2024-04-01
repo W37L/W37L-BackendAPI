@@ -1,27 +1,27 @@
 namespace W3TL.Core.Domain.Agregates.Post.Values;
 
-public class PostId : ContentIDBase {
-    private const string Prefix = "PID";
+public class CommentId : ContentIDBase {
+    private const string Prefix = "CID";
 
-    private PostId(string? value) : base(Prefix, value) { }
+    private CommentId(string? value) : base(Prefix, value) { }
 
-    private PostId(string? prefix, string? value) : base(prefix, value) { }
+    private CommentId(string? prefix, string? value) : base(prefix, value) { }
 
-    public static Result<PostId> Generate() {
+    public static Result<CommentId> Generate() {
         try {
-            return new PostId(Prefix);
+            return new CommentId(Prefix);
         }
         catch (Exception exception) {
             return Error.FromException(exception);
         }
     }
 
-    public static Result<PostId> Create(string? value) {
+    public static Result<CommentId> Create(string? value) {
         try {
             var validation = Validate(Prefix, value);
             if (validation.IsFailure)
                 return validation.Error;
-            return new PostId(Prefix, value);
+            return new CommentId(Prefix, value);
         }
         catch (Exception exception) {
             return Error.FromException(exception);

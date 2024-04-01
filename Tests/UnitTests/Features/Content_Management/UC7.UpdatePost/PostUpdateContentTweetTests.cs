@@ -1,5 +1,6 @@
 using UnitTests.Common.Factories;
 using W3TL.Core.Domain.Agregates.Post.Values;
+using static UnitTests.Common.Factories.ValidFields;
 
 namespace UnitTests.Features.Content_Management.UpdatePost;
 
@@ -14,9 +15,10 @@ public class PostUpdateContentTweetTests {
         // Arrange
         var post = PostFactory.InitWithDefaultValues().Build();
         var newContentTweet = TheString.Create(validContent).Payload;
+        var signature = Signature.Create(VALID_SIGNATURE).Payload;
 
         // Act
-        var result = post.UpdateContentTweet(newContentTweet);
+        var result = post.EditContent(newContentTweet, signature);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -33,9 +35,10 @@ public class PostUpdateContentTweetTests {
         var post = PostFactory.InitWithDefaultValues().Build();
         var contentTweet = new string('a', length);
         var newContentTweet = TheString.Create(contentTweet).Payload;
+        var signature = Signature.Create(VALID_SIGNATURE).Payload;
 
         //Act
-        var result = post.UpdateContentTweet(newContentTweet);
+        var result = post.EditContent(newContentTweet, signature);
 
         //Assert
         Assert.True(result.IsSuccess);
@@ -104,5 +107,20 @@ public class PostUpdateContentTweetTests {
         // Assert
         Assert.True(newContentResult.IsFailure);
         Assert.Contains(Error.TooLongString(TheString.MAX_LENGTH), newContentResult.Error.EnumerateAll());
+    }
+
+    // ID:UC7.F5
+    [Fact]
+    public void UpdateContentTweet_WithNullContent_ReturnFailure() {
+        // Arrange
+        var post = PostFactory.InitWithDefaultValues().Build();
+        string? invalidContent = null;
+
+        // Act
+        var newContentResult = TheString.Create(invalidContent);
+
+        // Assert
+        Assert.True(newContentResult.IsFailure);
+        Assert.Contains(Error.BlankOrNullString, newContentResult.Error.EnumerateAll());
     }
 }

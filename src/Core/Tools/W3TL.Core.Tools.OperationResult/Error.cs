@@ -58,6 +58,17 @@ public class Error {
     public static Error NullSignature => new("The signature cannot be null.");
     public static Error NullPostType => new("The post type cannot be null.");
     public static Error BlankOrNullString => new("The string cannot be blank or null.");
+    public static Error NullComment => new("The comment cannot be null.");
+    public static Error NullString => new("The string cannot be null.");
+    public static Error BlankString => new("The string cannot be blank.");
+    public static Error InvalidEmailDomain => new("The email domain is invalid.");
+    public static Error NullMediaUrl => new("The media URL cannot be null.");
+    public static Error NullContentType => new("The content type cannot be null.");
+    public static Error NullParentPost => new("The parent post cannot be null.");
+    public static Error UserAlreadyLiked => new("The user has already liked the post.");
+    public static Error UserNotLiked => new("The user has not liked the post.");
+    public static Error UserAlreadyBlocked => new("The user is already blocked.");
+    public static Error UserNotBlocked => new("The user is not blocked.");
 
 
     public static Error TooLongString(int maxLength) => new Error($"The string cannot exceed {maxLength} characters.");

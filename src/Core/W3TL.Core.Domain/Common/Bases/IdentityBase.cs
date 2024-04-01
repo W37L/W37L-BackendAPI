@@ -26,7 +26,7 @@ public abstract class IdentityBase : ValueObject {
         Value = value;
     }
 
-    public string? Value { get; }
+    public string? Value { get; internal set; }
 
     protected override IEnumerable<object?> GetEqualityComponents() {
         yield return Value;

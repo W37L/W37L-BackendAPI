@@ -8,7 +8,7 @@ public class PostCreationTestFailure_WrongId {
     [InlineData(null)]
     public void CreatePostID_BlankID_ReturnBlankStringError(string? postIdInput) {
         // Act
-        var result = PostID.Create(postIdInput);
+        var result = PostId.Create(postIdInput);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -21,7 +21,7 @@ public class PostCreationTestFailure_WrongId {
     [InlineData("XPID-1234567890123456789012345678901234567890")]
     public void CreatePostID_IncorrectPrefix_ReturnInvalidPrefixError(string? postIdInput) {
         // Act
-        var result = PostID.Create(postIdInput);
+        var result = PostId.Create(postIdInput);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -34,7 +34,7 @@ public class PostCreationTestFailure_WrongId {
     [InlineData("PID-12345678901234567890123456789012345678901234567890")]
     public void CreatePostID_IncorrectLength_ReturnInvalidLengthError(string? postIdInput) {
         // Act
-        var result = PostID.Create(postIdInput);
+        var result = PostId.Create(postIdInput);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -48,7 +48,7 @@ public class PostCreationTestFailure_WrongId {
         var postIdInput = "Wrong-123"; // Example input that fails multiple validations
 
         // Act
-        var result = PostID.Create(postIdInput);
+        var result = PostId.Create(postIdInput);
 
         // Assert
         Assert.True(result.IsFailure);

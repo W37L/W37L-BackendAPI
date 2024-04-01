@@ -3,21 +3,21 @@ using W3TL.Core.Domain.Agregates.Post.Enum;
 using W3TL.Core.Domain.Agregates.Post.Values;
 using W3TL.Core.Domain.Agregates.User.Entity.Values;
 using W3TL.Core.Domain.Common.Bases;
+using W3TL.Core.Domain.Services;
 
 namespace W3TL.Core.Domain.Agregates.Post;
 
-public abstract class Content : AggregateRoot<PostID> {
+public abstract class Content : AggregateRoot<ContentIDBase> {
     //Constructor for the Test Factory
-    internal Content(PostID postId) : base(postId) { }
+    internal Content(PostId postId) : base(postId) { }
 
     //Posible not used constructor
-    protected Content(PostID postId, CreatedAtType createdAt, TheString contentTweet, Count likes, global::User creator, Signature signature, PostType postType, Content? parentPost = null) : base(postId) {
+    protected Content(PostId postId, CreatedAtType createdAt, TheString contentTweet, Count likes, global::User creator, Signature signature, Content? parentPost = null) : base(postId) {
         CreatedAt = createdAt;
         ContentTweet = contentTweet;
         Likes = likes;
         Creator = creator;
         Signature = signature;
-        PostType = postType;
         ParentPost = parentPost;
     }
 
@@ -28,4 +28,21 @@ public abstract class Content : AggregateRoot<PostID> {
     public Signature Signature { get; internal set; }
     public PostType PostType { get; internal set; }
     public Content? ParentPost { get; internal set; }
+
+    public Result EditContent(TheString contentTweet, Signature signature) {
+        if (contentTweet is null) return Error.NullContentTweet;
+        if (signature is null) return Error.NullSignature;
+        try {
+            ContentTweet = contentTweet;
+            Signature = signature;
+            return Result.Ok;
+        }
+        catch (Exception ex) {
+            return Error.FromException(ex);
+        }
+    }
+
+    public Result Like(global::User liker) {
+        return LikeService.Handle(liker, this);
+    }
 }

@@ -13,7 +13,7 @@ public class Signature : ValueObject {
 
     public string? Value { get; }
 
-    public static Result<Signature?> Create(string? value) {
+    public static Result<Signature> Create(string? value) {
         try {
             var validation = Validate(value);
             if (validation.IsFailure)
