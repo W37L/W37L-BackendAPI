@@ -9,9 +9,9 @@ public class Count : ValueObject {
 
     public int Value { get; private set; }
 
-    public static Count Zero => new(0);
+    public static Count? Zero => new(0);
 
-    public static Result<Count> Create(int value) {
+    public static Result<Count?> Create(int value) {
         try {
             var validation = Validate(value);
             if (validation.IsFailure)
@@ -68,7 +68,7 @@ public class Count : ValueObject {
     }
 
 
-    protected override IEnumerable<object> GetEqualityComponents() {
+    protected override IEnumerable<object?> GetEqualityComponents() {
         throw new NotImplementedException();
     }
 }

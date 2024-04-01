@@ -35,32 +35,32 @@ public class UserFactory {
         return _user;
     }
 
-    public UserFactory WitValidId(string uid) {
+    public UserFactory WitValidId(string? uid) {
         _user.Id = UserID.Create(uid).Payload;
         return this;
     }
 
-    public UserFactory WithValidUserName(string userName) {
+    public UserFactory WithValidUserName(string? userName) {
         _user.UserName = UserNameType.Create(userName).Payload;
         return this;
     }
 
-    public UserFactory WithValidFirstName(string firstName) {
+    public UserFactory WithValidFirstName(string? firstName) {
         _user.FirstName = NameType.Create(firstName).Payload;
         return this;
     }
 
-    public UserFactory WithValidLastName(string lastName) {
+    public UserFactory WithValidLastName(string? lastName) {
         _user.LastName = LastNameType.Create(lastName).Payload;
         return this;
     }
 
-    public UserFactory WithValidEmail(string email) {
+    public UserFactory WithValidEmail(string? email) {
         _user.Email = EmailType.Create(email).Payload;
         return this;
     }
 
-    public UserFactory WithValidPubKey(string pubKey) {
+    public UserFactory WithValidPubKey(string? pubKey) {
         _user.Pub = PubType.Create(pubKey).Payload;
         return this;
     }

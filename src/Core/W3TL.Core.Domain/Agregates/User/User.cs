@@ -76,6 +76,7 @@ public class User : AggregateRoot<UserID> {
 
 
     public Result UpdateUserName(UserNameType userName) {
+        if (userName is null) return Error.BlankUserName;
         try {
             UserName = userName;
             return Result.Ok;
@@ -86,6 +87,7 @@ public class User : AggregateRoot<UserID> {
     }
 
     public Result UpdateFirstName(NameType firstName) {
+        if (firstName is null) return Error.InvalidName;
         try {
             FirstName = firstName;
             return Result.Ok;
@@ -96,6 +98,7 @@ public class User : AggregateRoot<UserID> {
     }
 
     public Result UpdateLastName(LastNameType lastName) {
+        if (lastName is null) return Error.InvalidName;
         try {
             LastName = lastName;
             return Result.Ok;
@@ -106,6 +109,7 @@ public class User : AggregateRoot<UserID> {
     }
 
     public Result UpdateEmail(EmailType email) {
+        if (email is null) return Error.InvalidEmail;
         try {
             Email = email;
             return Result.Ok;

@@ -4,16 +4,16 @@ using ViaEventAssociation.Core.Domain.Common.Bases;
 namespace W3TL.Core.Domain.Agregates.Post.Values;
 
 public class Signature : ValueObject {
-    private static readonly Regex _hexRegex = new("^[a-fA-F0-9]{128}$");
-    private static readonly Regex _base64Regex = new("^[A-Za-z0-9+/]{86}==$|^[A-Za-z0-9+/]{87}=$|^[A-Za-z0-9+/]{88}$\n");
+    private static readonly Regex HexRegex = new("^[a-fA-F0-9]{128}$");
+    private static readonly Regex Base64Regex = new("^[A-Za-z0-9+/]{86}==$|^[A-Za-z0-9+/]{87}=$|^[A-Za-z0-9+/]{88}$\n");
 
-    private Signature(string value) {
+    private Signature(string? value) {
         Value = value;
     }
 
-    public string Value { get; }
+    public string? Value { get; }
 
-    public static Result<Signature> Create(string value) {
+    public static Result<Signature?> Create(string? value) {
         try {
             var validation = Validate(value);
             if (validation.IsFailure)
@@ -25,17 +25,17 @@ public class Signature : ValueObject {
         }
     }
 
-    private static Result Validate(string value) {
+    private static Result Validate(string? value) {
         var errors = new HashSet<Error>();
 
-        if (value == null)
-            return Error.BlankString;
+        if (value is null)
+            return Error.BlankOrNullString;
 
-        if (!(_hexRegex.IsMatch(value) || _base64Regex.IsMatch(value)))
+        if (!(HexRegex.IsMatch(value) || Base64Regex.IsMatch(value)))
             errors.Add(Error.InvalidSignature);
 
         if (string.IsNullOrWhiteSpace(value))
-            errors.Add(Error.BlankString);
+            errors.Add(Error.BlankOrNullString);
 
         if (errors.Any())
             return Error.CompileErrors(errors);
@@ -44,9 +44,11 @@ public class Signature : ValueObject {
     }
 
 
-    public static implicit operator string(Signature signature) => signature.Value;
+    public static implicit operator string?(Signature signature) {
+        return signature.Value;
+    }
 
-    protected override IEnumerable<object> GetEqualityComponents() {
+    protected override IEnumerable<object?> GetEqualityComponents() {
         yield return Value;
     }
 }

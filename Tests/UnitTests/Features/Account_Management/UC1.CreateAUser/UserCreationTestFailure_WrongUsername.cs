@@ -8,7 +8,7 @@ public class UserCreationTestFailure_WrongUsername {
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public void CreateUser_BlankUsername_ReturnBlankUserNameError(string usernameInput) {
+    public void CreateUser_BlankUsername_ReturnBlankUserNameError(string? usernameInput) {
         // Arrange
 
         // Act
@@ -24,7 +24,7 @@ public class UserCreationTestFailure_WrongUsername {
     [InlineData("invalid#username")]
     [InlineData("username@here")]
     [InlineData("username&123")]
-    public void CreateUser_SpecialCharacterInUsername_ReturnInvalidUserNameFormatError(string usernameInput) {
+    public void CreateUser_SpecialCharacterInUsername_ReturnInvalidUserNameFormatError(string? usernameInput) {
         // Arrange
 
         // Act
@@ -41,7 +41,7 @@ public class UserCreationTestFailure_WrongUsername {
     [InlineData("a")] // Too short
     [InlineData("1")] // Too short
     [InlineData("_")] // Too short
-    public void CreateUser_TooShortUsername_ReturnInvalidUserNameFormatError(string usernameInput) {
+    public void CreateUser_TooShortUsername_ReturnInvalidUserNameFormatError(string? usernameInput) {
         // Arrange
 
         // Act
@@ -57,7 +57,7 @@ public class UserCreationTestFailure_WrongUsername {
     [InlineData("abcdefghijklmnopqrstuvwxyzabcdef")] // 32 characters
     [InlineData("abcdefghijklmnopqrstuvwxyzabcdefg1234567")] // 39 characters
     [InlineData("abcdefghijklmnopqrstuvwxyzabcdefg1234567890")] // 44 characters
-    public void CreateUser_TooLongUsername_ReturnInvalidUserNameFormatError(string usernameInput) {
+    public void CreateUser_TooLongUsername_ReturnInvalidUserNameFormatError(string? usernameInput) {
         // Arrange
 
         // Act

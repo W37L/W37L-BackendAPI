@@ -9,19 +9,17 @@ namespace W3TL.Core.Domain.Agregates.User.Values;
 * inspired by social media platforms like Twitter or Instagram.
 */
 public class UserNameType : ValueObject {
-    private readonly string value;
-
     /**
  * Private constructor to ensure instantiation through the Create method
  * after ensuring the username meets the required validation criteria.
  *
  * @param value The validated username as a string.
  */
-    private UserNameType(string value) {
-        this.value = value;
+    private UserNameType(string? value) {
+        this.Value = value;
     }
 
-    public string Value => this.value;
+    public string? Value { get; }
 
     /**
  * Attempts to create a UserNameType instance from a string representing the username,
@@ -30,7 +28,7 @@ public class UserNameType : ValueObject {
  * @param username The username string to validate and use for instantiation.
  * @returns A Result containing either a UserNameType instance or an error, based on validation outcome.
  */
-    public static Result<UserNameType> Create(string username) {
+    public static Result<UserNameType> Create(string? username) {
         var validation = Validate(username);
         if (validation.IsSuccess)
             return new UserNameType(username);
@@ -45,7 +43,7 @@ public class UserNameType : ValueObject {
  * @param username The username string to validate.
  * @returns A Result indicating the validation outcome.
  */
-    private static Result Validate(string username) {
+    private static Result Validate(string? username) {
         if (string.IsNullOrWhiteSpace(username))
             return Error.BlankUserName;
 
@@ -64,7 +62,7 @@ public class UserNameType : ValueObject {
  *
  * @returns An enumerable of objects used in equality comparison.
  */
-    protected override IEnumerable<object> GetEqualityComponents() {
-        yield return value;
+    protected override IEnumerable<object?> GetEqualityComponents() {
+        yield return Value;
     }
 }

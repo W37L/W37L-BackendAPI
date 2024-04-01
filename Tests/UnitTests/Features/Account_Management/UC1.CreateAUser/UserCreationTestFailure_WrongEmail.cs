@@ -8,7 +8,7 @@ public class UserCreationTestFailure_WrongEmail {
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public void CreateEmailType_BlankEmail_ReturnBlankStringError(string emailInput) {
+    public void CreateEmailType_BlankEmail_ReturnBlankStringError(string? emailInput) {
         // Arrange
 
         // Act
@@ -16,7 +16,7 @@ public class UserCreationTestFailure_WrongEmail {
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Contains(Error.BlankString, result.Error.EnumerateAll());
+        Assert.Contains(Error.BlankOrNullString, result.Error.EnumerateAll());
     }
 
     // UC1.F18 - Test for failure when Email is in incorrect format
@@ -24,7 +24,7 @@ public class UserCreationTestFailure_WrongEmail {
     [InlineData("emailwithoutat.com")]
     [InlineData("incomplete@")]
     [InlineData("@nouser.com")]
-    public void CreateEmailType_InvalidFormatEmail_ReturnInvalidEmailError(string emailInput) {
+    public void CreateEmailType_InvalidFormatEmail_ReturnInvalidEmailError(string? emailInput) {
         // Arrange
 
         // Act
@@ -40,7 +40,7 @@ public class UserCreationTestFailure_WrongEmail {
     [InlineData("nodomain@com")]
     [InlineData("missing@.")]
     [InlineData("user@missingdot")]
-    public void CreateEmailType_MissingDomainEmail_ReturnInvalidEmailError(string emailInput) {
+    public void CreateEmailType_MissingDomainEmail_ReturnInvalidEmailError(string? emailInput) {
         // Arrange
 
         // Act
@@ -56,7 +56,7 @@ public class UserCreationTestFailure_WrongEmail {
     [InlineData("@domain.com")]
     [InlineData("@example.com")]
     [InlineData("@test.com")]
-    public void CreateEmailType_MissingUsernameEmail_ReturnInvalidEmailError(string emailInput) {
+    public void CreateEmailType_MissingUsernameEmail_ReturnInvalidEmailError(string? emailInput) {
         // Arrange
 
         // Act

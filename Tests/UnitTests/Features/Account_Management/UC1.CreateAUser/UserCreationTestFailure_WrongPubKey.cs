@@ -8,7 +8,7 @@ public class UserCreationTestFailure_WrongPubKey {
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public void CreatePubType_BlankPubKey_ReturnBlankPublicKeyError(string pubKeyInput) {
+    public void CreatePubType_BlankPubKey_ReturnBlankPublicKeyError(string? pubKeyInput) {
         // Arrange
 
         // Act
@@ -24,7 +24,7 @@ public class UserCreationTestFailure_WrongPubKey {
     [InlineData("ABCDEF")] // Too short
     [InlineData("12345678901234567890123456789012345678901234")] // No '=' at the end
     [InlineData("1234567890123456789012345678901234567890123?=")] // Invalid character '?'
-    public void CreatePubType_InvalidFormatPubKey_ReturnInvalidPublicKeyFormatError(string pubKeyInput) {
+    public void CreatePubType_InvalidFormatPubKey_ReturnInvalidPublicKeyFormatError(string? pubKeyInput) {
         // Arrange
 
         // Act
@@ -40,7 +40,7 @@ public class UserCreationTestFailure_WrongPubKey {
     [InlineData("abc+def/ghi=jklmnopqrstuvwxyzABCDEFGHIJKLMN=")] // Valid characters but incorrect padding
     [InlineData("/+1234567890abcdefghijklmnopqrstuvwxyzABCDE==")] // Double '=' padding
     [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=")] // Correct length and padding, for demonstration
-    public void CreatePubType_WrongBase64FormatPubKey_ReturnInvalidPublicKeyFormatError(string pubKeyInput) {
+    public void CreatePubType_WrongBase64FormatPubKey_ReturnInvalidPublicKeyFormatError(string? pubKeyInput) {
         // Arrange
 
         // Act

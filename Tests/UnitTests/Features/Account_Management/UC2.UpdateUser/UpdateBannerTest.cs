@@ -9,7 +9,7 @@ public class UpdateBannerTest {
     [InlineData("https://example.com/banner.jpg", "https://example.com/banner.jpg")]
     [InlineData("http://example.com/banner.png", "http://example.com/banner.png")]
     [InlineData("www.example.com/banner.gif", "https://www.example.com/banner.gif")]
-    public void UpdateBanner_ValidUrl_ShouldNormalizeAndUpdateSuccessfully(string inputUrl, string expectedUrl) {
+    public void UpdateBanner_ValidUrl_ShouldNormalizeAndUpdateSuccessfully(string? inputUrl, string expectedUrl) {
         // Arrange
         var user = UserFactory.InitWithDefaultValues().Build();
 
@@ -32,7 +32,7 @@ public class UpdateBannerTest {
     [InlineData("")]
     [InlineData("   ")]
     [InlineData(null)]
-    public void UpdateBanner_InvalidUrl_BlankOrWhitespace_ShouldFail(string url) {
+    public void UpdateBanner_InvalidUrl_BlankOrWhitespace_ShouldFail(string? url) {
         // Arrange
         var user = UserFactory.InitWithDefaultValues().Build();
 
@@ -41,7 +41,7 @@ public class UpdateBannerTest {
 
         // Assert
         Assert.False(result.IsSuccess);
-        Assert.Contains(Error.BlankString, result.Error.EnumerateAll());
+        Assert.Contains(Error.BlankOrNullString, result.Error.EnumerateAll());
     }
 
     // ID:UC2.F8
@@ -49,7 +49,7 @@ public class UpdateBannerTest {
     [InlineData("justastring")]
     [InlineData("ftp://example.com/banner.jpg")]
     [InlineData("##__!!")]
-    public void UpdateBanner_InvalidUrl_FormatError_ShouldFail(string url) {
+    public void UpdateBanner_InvalidUrl_FormatError_ShouldFail(string? url) {
         // Arrange
         var user = UserFactory.InitWithDefaultValues().Build();
 

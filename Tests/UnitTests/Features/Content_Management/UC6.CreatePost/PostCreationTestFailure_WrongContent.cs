@@ -9,20 +9,20 @@ public class PostCreationTestFailureWrongContent {
     [InlineData(" ")]
     [InlineData("\t")]
     [InlineData("\n")]
-    public void CreateTheString_BlankOrWhitespaceContent_ReturnBlankStringError(string contentInput) {
+    public void CreateTheString_BlankOrWhitespaceContent_ReturnBlankStringError(string? contentInput) {
         // Act
         var result = TheString.Create(contentInput);
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Contains(Error.BlankString, result.Error.EnumerateAll());
+        Assert.Contains(Error.BlankOrNullString, result.Error.EnumerateAll());
     }
 
     // UC6.F10 - Test for failure when TheString content exceeds maximum length
     [Theory]
     [InlineData("This string exceeds the maximum allowed length of one hundred and forty characters for the purpose of this test and should therefore result in a validation error, as it is too long.")]
     [InlineData("Another example of a string that is too long and exceeds the maximum length limit, causing a failure in the creation process of TheString, as it is not allowed to be longer than one hundred and forty characters.")]
-    public void CreateTheString_TooLongContent_ReturnTooLongStringError(string contentInput) {
+    public void CreateTheString_TooLongContent_ReturnTooLongStringError(string? contentInput) {
         // Act
         var result = TheString.Create(contentInput);
 

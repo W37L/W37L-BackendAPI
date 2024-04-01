@@ -7,6 +7,10 @@ using W3TL.Core.Domain.Agregates.User.Entity.Values;
 namespace W3TL.Core.Domain.Agregates.Post;
 
 public class Post : Content {
+    //Constructor for the Test Factory
+    internal Post(PostID postId) : base(postId) { }
+
+
     private Post(PostID postId, CreatedAtType createdAt, TheString contentTweet, Count likes, global::User creator, Signature signature, PostType postType, MediaUrl mediaUrl, ContentType contentType, Content? parentPost = null)
         : base(postId, createdAt, contentTweet, likes, creator, signature, postType, parentPost) {
         MediaUrl = mediaUrl;
@@ -14,8 +18,8 @@ public class Post : Content {
         Comments = new List<Comment>();
     }
 
-    public MediaUrl MediaUrl { get; private set; }
-    public ContentType ContentType { get; private set; }
+    public MediaUrl MediaUrl { get; internal set; }
+    public ContentType ContentType { get; internal set; }
     List<Comment>? Comments { get; set; }
 
     public static Result<Post> Create(
@@ -47,6 +51,7 @@ public class Post : Content {
     }
 
     public Result UpdateContentTweet(TheString contentTweet) {
+        if (contentTweet is null) return Error.NullContentTweet;
         try {
             ContentTweet = contentTweet;
             return Result.Ok;
@@ -57,6 +62,7 @@ public class Post : Content {
     }
 
     public Result AddComment(Comment comment) {
+        //TODO: Add validation
         try {
             Comments.Add(comment);
             return Result.Ok;
@@ -67,6 +73,7 @@ public class Post : Content {
     }
 
     public Result RemoveComment(Comment comment) {
+        //TODO: Add validation
         try {
             Comments.Remove(comment);
             return Result.Ok;
@@ -77,6 +84,7 @@ public class Post : Content {
     }
 
     public Result UpdateMediaUrl(MediaUrl mediaUrl) {
+        //TODO: Add validation
         try {
             MediaUrl = mediaUrl;
             return Result.Ok;
@@ -87,6 +95,7 @@ public class Post : Content {
     }
 
     public Result UpdateContentType(ContentType contentType) {
+        //TODO: Add validation
         try {
             ContentType = contentType;
             return Result.Ok;
@@ -97,6 +106,7 @@ public class Post : Content {
     }
 
     public Result UpdateComments(List<Comment> comments) {
+        //TODO: Add validation
         try {
             Comments = comments;
             return Result.Ok;
@@ -107,6 +117,7 @@ public class Post : Content {
     }
 
     public Result UpdateLikes(Count likes) {
+        //TODO: Add validation
         try {
             Likes = likes;
             return Result.Ok;

@@ -9,7 +9,7 @@ public class UpdateLocationTest {
     [InlineData("New York, NY")]
     [InlineData("San Francisco, CA")]
     [InlineData("")] // Assuming an empty string is a valid location.
-    public void UpdateLocation_ValidInput_ShouldUpdateSuccessfully(string locationText) {
+    public void UpdateLocation_ValidInput_ShouldUpdateSuccessfully(string? locationText) {
         // Arrange
         var user = UserFactory.InitWithDefaultValues().Build();
 
@@ -35,7 +35,7 @@ public class UpdateLocationTest {
 
         // Assert
         Assert.False(result.IsSuccess);
-        Assert.Contains(Error.BlankString, result.Error.EnumerateAll());
+        Assert.Contains(Error.BlankOrNullString, result.Error.EnumerateAll());
     }
 
     // ID:UC2.F13 - Location string exceeding maximum length

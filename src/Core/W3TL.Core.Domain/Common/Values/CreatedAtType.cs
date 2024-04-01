@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 using ViaEventAssociation.Core.Domain.Common.Bases;
 
@@ -26,7 +24,7 @@ public class CreatedAtType : ValueObject {
     /**
      * Attempts to create a CreatedAtType instance from a Unix timestamp.
      * Validates the provided Unix timestamp before instantiation.
-     * 
+     *
      * @param unixTime The Unix timestamp to validate and use for creating the instance.
      * @returns A Result containing either a CreatedAtType instance or an error.
      */
@@ -37,7 +35,7 @@ public class CreatedAtType : ValueObject {
         return validation.Error;
     }
 
-    public static Result<CreatedAtType> Create() {
+    public static Result<CreatedAtType?> Create() {
         return new CreatedAtType(DateTimeOffset.Now.ToUnixTimeSeconds());
     }
 
@@ -77,14 +75,14 @@ public class CreatedAtType : ValueObject {
     private static Result ValidateDateString(string dateString, out long unixTime) {
         unixTime = 0;
         if (string.IsNullOrWhiteSpace(dateString))
-            return Error.BlankString;
+            return Error.BlankOrNullString;
 
         if (DateTime.TryParse(dateString, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out DateTime dateTime)) {
-            unixTime = ((DateTimeOffset)dateTime).ToUnixTimeSeconds();
+            unixTime = ((DateTimeOffset) dateTime).ToUnixTimeSeconds();
             return Result.Success();
-        } else {
-            return Error.InvalidDateFormat;
         }
+
+        return Error.InvalidDateFormat;
     }
 
     /**
@@ -101,7 +99,7 @@ public class CreatedAtType : ValueObject {
      *
      * @returns A string representation of the CreatedAtType instance.
      */
-    public override string ToString() {
+    public override string? ToString() {
         return ToDateTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
     }
 
@@ -110,7 +108,7 @@ public class CreatedAtType : ValueObject {
      *
      * @returns An enumerable of objects used in equality comparison.
      */
-    protected override IEnumerable<object> GetEqualityComponents() {
+    protected override IEnumerable<object?> GetEqualityComponents() {
         yield return Value;
     }
 }

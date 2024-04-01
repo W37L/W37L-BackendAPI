@@ -14,7 +14,7 @@ public abstract class ValueObject {
         return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
     }
 
-    protected abstract IEnumerable<object> GetEqualityComponents();
+    protected abstract IEnumerable<object?> GetEqualityComponents();
 
     public override int GetHashCode() {
         unchecked {
@@ -22,6 +22,7 @@ public abstract class ValueObject {
             foreach (var obj in GetEqualityComponents()) {
                 hash = hash * 23 + (obj?.GetHashCode() ?? 0);
             }
+
             return hash;
         }
     }
@@ -34,10 +35,8 @@ public abstract class ValueObject {
         return !(a == b);
     }
 
-    public override string ToString() {
+    public override string? ToString() {
         var components = GetEqualityComponents().Select(c => c?.ToString() ?? "null");
         return $"{GetType().Name}[{string.Join(", ", components)}]";
     }
-
-
 }

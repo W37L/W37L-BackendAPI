@@ -10,19 +10,19 @@ namespace W3TL.Core.Domain.Agregates.User.Values;
 */
 public class EmailType : ValueObject {
     /**
- * The email value encapsulated by this EmailType instance.
- */
-    public string Value { get; }
-
-    /**
  * Initializes a new instance of the EmailType class with a given email address.
  * This constructor is private to ensure that the email address is validated before instantiation.
  *
  * @param value The validated email address.
  */
-    private EmailType(string value) {
+    private EmailType(string? value) {
         Value = value;
     }
+
+    /**
+ * The email value encapsulated by this EmailType instance.
+ */
+    public string? Value { get; }
 
     /**
  * Attempts to create an EmailType instance from a given email address string, validating the input.
@@ -30,7 +30,7 @@ public class EmailType : ValueObject {
  * @param email The email address string to validate and use for creating an EmailType instance.
  * @returns A Result containing either an EmailType instance or an error.
  */
-    public static Result<EmailType> Create(string email) {
+    public static Result<EmailType> Create(string? email) {
         var validation = Validate(email);
         if (validation.IsSuccess)
             return new EmailType(email);
@@ -44,13 +44,13 @@ public class EmailType : ValueObject {
  * @param email The email address string to validate.
  * @returns A Result indicating whether the validation succeeded or failed.
  */
-    private static Result Validate(string email) {
+    private static Result Validate(string? email) {
         var errors = new HashSet<Error>();
 
         if (email == null)
-            return Error.BlankString;
+            return Error.BlankOrNullString;
         if (string.IsNullOrWhiteSpace(email))
-            errors.Add(Error.BlankString);
+            errors.Add(Error.BlankOrNullString);
 
         // General email pattern validation
         if (!Regex.IsMatch(email, @"^[\w\.-]+@[\w\.-]+\.\w+$"))
@@ -68,7 +68,7 @@ public class EmailType : ValueObject {
  *
  * @returns An enumerable of objects used in equality comparison.
  */
-    protected override IEnumerable<object> GetEqualityComponents() {
+    protected override IEnumerable<object?> GetEqualityComponents() {
         yield return Value;
     }
 }

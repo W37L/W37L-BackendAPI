@@ -22,15 +22,17 @@ public abstract class IdentityBase : ValueObject {
  * @param prefix A string prefix to prepend to the unique identifier.
  * @param value The unique identifier value.
  */
-    protected IdentityBase(string prefix, string value) {
+    protected IdentityBase(string? prefix, string? value) {
         Value = value;
     }
 
-    public string Value { get; }
+    public string? Value { get; }
 
-    protected override IEnumerable<object> GetEqualityComponents() {
+    protected override IEnumerable<object?> GetEqualityComponents() {
         yield return Value;
     }
 
-    public override string ToString() => Value;
+    public override string? ToString() {
+        return Value;
+    }
 }

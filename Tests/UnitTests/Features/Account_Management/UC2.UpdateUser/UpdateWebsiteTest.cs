@@ -11,7 +11,7 @@ public class UpdateWebsiteTest {
     [InlineData("http://example.com", "http://example.com")]
     [InlineData("https://example.com", "https://example.com")]
     [InlineData("www.example.com", "https://www.example.com")]
-    public void UpdateWebsite_ValidUrl_ShouldNormalizeAndUpdateSuccessfully(string inputUrl, string expectedUrl) {
+    public void UpdateWebsite_ValidUrl_ShouldNormalizeAndUpdateSuccessfully(string? inputUrl, string expectedUrl) {
         // Arrange
         var user = UserFactory.InitWithDefaultValues().Build();
 
@@ -33,7 +33,7 @@ public class UpdateWebsiteTest {
     [InlineData("")]
     [InlineData("   ")]
     [InlineData(null)]
-    public void UpdateWebsite_InvalidUrl_BlankOrWhitespace_ShouldFail(string url) {
+    public void UpdateWebsite_InvalidUrl_BlankOrWhitespace_ShouldFail(string? url) {
         // Arrange
 
         // Act
@@ -41,7 +41,7 @@ public class UpdateWebsiteTest {
 
         // Assert
         Assert.False(result.IsSuccess);
-        Assert.Contains(Error.BlankString, result.Error.EnumerateAll());
+        Assert.Contains(Error.BlankOrNullString, result.Error.EnumerateAll());
     }
 
     // ID:UC2.F11
@@ -49,7 +49,7 @@ public class UpdateWebsiteTest {
     [InlineData("justastring")]
     [InlineData("ftp://example.com")]
     [InlineData("##__!!")]
-    public void UpdateWebsite_InvalidUrl_FormatError_ShouldFail(string url) {
+    public void UpdateWebsite_InvalidUrl_FormatError_ShouldFail(string? url) {
         // Arrange
 
         // Act

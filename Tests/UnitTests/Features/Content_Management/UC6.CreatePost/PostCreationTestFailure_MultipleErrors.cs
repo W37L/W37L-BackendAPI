@@ -13,7 +13,7 @@ public class PostCreationTestFailureInvalidParameters {
         // Arrange
         var invalidContent = ""; // Empty content is not valid
         var invalidSignature = "thisisnotavalidsignaturebecauseitisnotintheexpectedformat"; // Not a valid signature format
-        global::User invalidCreator = null; // Null creator
+        global::User? invalidCreator = null; // Null creator
 
         // Act
         var contentResult = TheString.Create(invalidContent).Payload; // This should fail due to empty content

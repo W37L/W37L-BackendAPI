@@ -62,7 +62,7 @@ public class UserCreationTestsSuccess {
     [InlineData("ValidUsername1")]
     [InlineData("Username2")]
     [InlineData("12353")]
-    public void CreateUser_CorrectUsername_ReturnSuccess(string username) {
+    public void CreateUser_CorrectUsername_ReturnSuccess(string? username) {
         //Arrange
         var userName = UserNameType.Create(username).Payload;
 
@@ -80,7 +80,7 @@ public class UserCreationTestsSuccess {
     [InlineData("email@example.com")]
     [InlineData("another.email@example.co.uk")]
     [InlineData("user123@domain.com")]
-    public void CreateUser_CorrectEmail_ReturnSuccess(string emailInput) {
+    public void CreateUser_CorrectEmail_ReturnSuccess(string? emailInput) {
         //Arrange
         var email = EmailType.Create(emailInput).Payload;
 
@@ -98,7 +98,7 @@ public class UserCreationTestsSuccess {
     [InlineData("John")]
     [InlineData("Jane")]
     [InlineData("Alice")]
-    public void CreateUser_CorrectFirstName_ReturnSuccess(string firstName) {
+    public void CreateUser_CorrectFirstName_ReturnSuccess(string? firstName) {
         //Arrange
         var name = NameType.Create(firstName).Payload;
 
@@ -115,7 +115,7 @@ public class UserCreationTestsSuccess {
     [InlineData("Doe")]
     [InlineData("Smith")]
     [InlineData("Johnson")]
-    public void CreateUser_CorrectLastName_ReturnSuccess(string lastName) {
+    public void CreateUser_CorrectLastName_ReturnSuccess(string? lastName) {
         //Arrange
         var name = LastNameType.Create(lastName).Payload;
 
@@ -132,7 +132,7 @@ public class UserCreationTestsSuccess {
     [InlineData("FJbAsEj5pj+xm0lMRwqym72lPWOU0NNeFxwId+bC1iF=")]
     [InlineData("FJbAsEj5pj+xm0lM123ym72lPWOU0NNeFxwId+bC1iF=")]
     [InlineData("FJbAsEj5pj+xm0lMRwqym71234560NNeFxwId+bC1iF=")]
-    public void CreateUser_CorrectPubKey_ReturnSuccess(string pubKey) {
+    public void CreateUser_CorrectPubKey_ReturnSuccess(string? pubKey) {
         //Arrange
         var pub = PubType.Create(pubKey).Payload;
 

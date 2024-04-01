@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using ViaEventAssociation.Core.Domain.Common.Bases;
 
@@ -11,28 +9,26 @@ namespace ViaEventAssociation.Core.Domain.Common.Values;
  * and standards, particularly those used by the NaCl library for encryption.
  */
 public class PubType : ValueObject {
-    private readonly string value;
-
     /**
      * Private constructor to ensure instantiation through the Create method
      * after ensuring the public key meets the required validation criteria.
      *
      * @param value The validated public key as a string.
      */
-    private PubType(string value) {
-        this.value = value;
+    private PubType(string? value) {
+        this.Value = value;
     }
 
-    public string Value => this.value;
+    public string? Value { get; }
 
     /**
      * Attempts to create a PubType instance from a string representing the public key,
      * validating it against expected formats for NaCl library-generated keys.
-     * 
+     *
      * @param publicKey The public key string to validate and use for instantiation.
      * @returns A Result containing either a PubType instance or an error, based on validation outcome.
      */
-    public static Result<PubType> Create(string publicKey) {
+    public static Result<PubType> Create(string? publicKey) {
         var validation = Validate(publicKey);
         if (validation.IsSuccess)
             return new PubType(publicKey);
@@ -46,7 +42,7 @@ public class PubType : ValueObject {
      * @param publicKey The public key string to validate.
      * @returns A Result indicating the validation outcome.
      */
-    private static Result Validate(string publicKey) {
+    private static Result Validate(string? publicKey) {
         if (string.IsNullOrWhiteSpace(publicKey))
             return Error.BlankPublicKey;
 
@@ -61,10 +57,10 @@ public class PubType : ValueObject {
     /**
      * Provides components for equality comparison between instances of PubType,
      * primarily based on the public key value.
-     * 
+     *
      * @returns An enumerable of objects used in equality comparison.
      */
-    protected override IEnumerable<object> GetEqualityComponents() {
-        yield return value;
+    protected override IEnumerable<object?> GetEqualityComponents() {
+        yield return Value;
     }
 }

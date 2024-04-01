@@ -30,7 +30,7 @@ public class UserCreationTestFailure_WrongCreatedAt {
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Contains(Error.BlankString, result.Error.EnumerateAll());
+        Assert.Contains(Error.BlankOrNullString, result.Error.EnumerateAll());
     }
 
     // UC1.F26 - Test for failure when CreatedAt date string is in an invalid format

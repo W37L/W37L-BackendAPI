@@ -34,7 +34,6 @@ public class Error {
     public static Error ExampleError => new Error("An example error occurred.");
 
     public static Error Unknown => new Error("An unknown error occurred.");
-    public static Error BlankString => new Error("The string cannot be blank.");
     public static Error InvalidName => new Error("The name contains invalid characters.");
     public static Error InvalidEmail => new Error("The email address format is invalid.");
     public static Error InvalidUnixTime => new Error("The Unix timestamp is invalid.");
@@ -58,6 +57,7 @@ public class Error {
     public static Error NullCreator => new("The creator cannot be null.");
     public static Error NullSignature => new("The signature cannot be null.");
     public static Error NullPostType => new("The post type cannot be null.");
+    public static Error BlankOrNullString => new("The string cannot be blank or null.");
 
 
     public static Error TooLongString(int maxLength) => new Error($"The string cannot exceed {maxLength} characters.");

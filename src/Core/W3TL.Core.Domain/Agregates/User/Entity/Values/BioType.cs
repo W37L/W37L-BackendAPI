@@ -5,13 +5,13 @@ namespace W3TL.Core.Domain.Agregates.User.Entity.Values;
 public class BioType : ValueObject {
     public static readonly int MAX_LENGTH = 500;
 
-    private BioType(string value) {
+    private BioType(string? value) {
         Value = value;
     }
 
-    public string Value { get; }
+    public string? Value { get; }
 
-    public static Result<BioType> Create(string value) {
+    public static Result<BioType> Create(string? value) {
         try {
             var validation = Validate(value);
             if (validation.IsFailure)
@@ -23,11 +23,11 @@ public class BioType : ValueObject {
         }
     }
 
-    private static Result Validate(string value) {
+    private static Result Validate(string? value) {
         var errors = new HashSet<Error>();
 
         if (value is null)
-            return Error.BlankString;
+            return Error.BlankOrNullString;
 
         if (value.Length > MAX_LENGTH)
             errors.Add(Error.TooLongBio(MAX_LENGTH));
@@ -38,9 +38,11 @@ public class BioType : ValueObject {
         return Result.Ok;
     }
 
-    protected override IEnumerable<object> GetEqualityComponents() {
+    protected override IEnumerable<object?> GetEqualityComponents() {
         yield return Value;
     }
 
-    public override string ToString() => Value;
+    public override string? ToString() {
+        return Value;
+    }
 }

@@ -1,4 +1,3 @@
-
 using W3TL.Core.Domain.Common.Bases;
 
 namespace W3TL.Core.Domain.Common.Values;
@@ -10,15 +9,15 @@ namespace W3TL.Core.Domain.Common.Values;
  * specific format and validation rules.
  */
 public class UserID : IdentityBase {
-    private const string PREFIX = "UID";
+    private const string? PREFIX = "UID";
     private const int EXPECTED_LENGTH = 40; // Including PREFIX + GUID length.
 
     /**
      * Private constructor to enforce factory method usage for UserId instantiation.
-     * 
+     *
      * @param value The unique identifier value for the UserId, including the PREFIX.
      */
-    private UserID(string value) : base(PREFIX, value) { }
+    private UserID(string? value) : base(PREFIX, value) { }
 
     /**
      * Private constructor to enforce factory method usage for UserId instantiation.
@@ -26,13 +25,13 @@ public class UserID : IdentityBase {
      * @param prefix The prefix for the unique identifier.
      * @param value The unique identifier value for the UserId.
      */
-    private UserID(string prefix, string value) : base(prefix, value) { }
+    private UserID(string? prefix, string? value) : base(prefix, value) { }
 
     /**
      * Generates a new UserId with a unique identifier prefixed with "UID-".
      * This method encapsulates the logic for creating a globally unique identifier
      * for User entities.
-     * 
+     *
      * @return A Result containing a new UserId instance or an error if generation fails.
      */
     public static Result<UserID> Generate() {
@@ -48,25 +47,40 @@ public class UserID : IdentityBase {
      * Validates and creates a UserId from a provided string value. This method
      * ensures the input string adheres to specific format and validation criteria,
      * such as length and prefix requirements.
-     * 
+     *
      * @param value The string value to validate and convert into a UserId.
      * @return A Result containing either a UserId instance or an error based on validation results.
      */
-    public static Result<UserID> Create(string value) {
+    public static Result<UserID> Create(string? value) {
         try {
-            if (value == null) return Error.BlankString;
-            var errors = new HashSet<Error>();
-            if (string.IsNullOrWhiteSpace(value)) errors.Add(Error.BlankString);
-            if (value.Length != EXPECTED_LENGTH) errors.Add(Error.InvalidLength);
-            if (!value.StartsWith(PREFIX)) errors.Add(Error.InvalidPrefix);
-
-            if (errors.Any()) return Error.CompileErrors(errors);
-
-            return new UserID(PREFIX, value);
+            var validation = Validate(value);
+            if (validation.IsFailure)
+                return validation.Error;
+            return new UserID(value);
         }
         catch (Exception exception) {
             return Error.FromException(exception);
         }
     }
 
+    private static Result Validate(string? value) {
+        var errors = new HashSet<Error>();
+
+        if (value is null)
+            return Error.BlankOrNullString;
+
+        if (string.IsNullOrWhiteSpace(value))
+            errors.Add(Error.BlankOrNullString);
+
+        if (value.Length != EXPECTED_LENGTH)
+            errors.Add(Error.InvalidLength);
+
+        if (!value.StartsWith(PREFIX))
+            errors.Add(Error.InvalidPrefix);
+
+        if (errors.Any())
+            return Error.CompileErrors(errors);
+
+        return Result.Ok;
+    }
 }

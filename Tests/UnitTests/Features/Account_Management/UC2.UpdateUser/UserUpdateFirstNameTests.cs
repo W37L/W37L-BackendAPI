@@ -12,7 +12,7 @@ public class UserUpdateFirstNameTests {
     [InlineData("Diana")]
     [InlineData("Eve")]
     [InlineData("Frank")]
-    public void UpdateFirstName_ValidFirstName_ReturnSuccess(string newFirstName) {
+    public void UpdateFirstName_ValidFirstName_ReturnSuccess(string? newFirstName) {
         // Arrange
         var user = UserFactory.InitWithDefaultValues().Build();
         var newFirstNameType = NameType.Create(newFirstName).Payload;
@@ -29,12 +29,12 @@ public class UserUpdateFirstNameTests {
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public void UpdateFirstName_InvalidFirstName_FirstNameBlank_ReturnFailure(string invalidFirstName) {
+    public void UpdateFirstName_InvalidFirstName_FirstNameBlank_ReturnFailure(string? invalidFirstName) {
         var user = UserFactory.InitWithDefaultValues().Build();
         var newFirstNameResult = NameType.Create(invalidFirstName);
 
         Assert.True(newFirstNameResult.IsFailure);
-        Assert.Contains(Error.BlankString, newFirstNameResult.Error.EnumerateAll());
+        Assert.Contains(Error.BlankOrNullString, newFirstNameResult.Error.EnumerateAll());
     }
 
     //ID:UC3.F2
@@ -42,7 +42,7 @@ public class UserUpdateFirstNameTests {
     [InlineData("A")]
     [InlineData("B")]
     [InlineData("C")]
-    public void UpdateFirstName_InvalidFirstName_FirstNameTooShort_ReturnFailure(string invalidFirstName) {
+    public void UpdateFirstName_InvalidFirstName_FirstNameTooShort_ReturnFailure(string? invalidFirstName) {
         var user = UserFactory.InitWithDefaultValues().Build();
         var newFirstNameResult = NameType.Create(invalidFirstName);
 
@@ -55,7 +55,7 @@ public class UserUpdateFirstNameTests {
     [InlineData("abcdefghijklmnopqrstuvwxyzs")]
     [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYFD")]
     [InlineData("Zabcdefghijklmnopqrstuvwasdfghjklzxcvbnm")]
-    public void UpdateFirstName_InvalidFirstName_FirstNameTooLong_ReturnFailure(string invalidFirstName) {
+    public void UpdateFirstName_InvalidFirstName_FirstNameTooLong_ReturnFailure(string? invalidFirstName) {
         var user = UserFactory.InitWithDefaultValues().Build();
         var newFirstNameResult = NameType.Create(invalidFirstName);
 
@@ -68,7 +68,7 @@ public class UserUpdateFirstNameTests {
     [InlineData("John1")]
     [InlineData("Anna-")]
     [InlineData("Eve$")]
-    public void UpdateFirstName_InvalidFirstName_ContainsInvalidCharacter_ReturnFailure(string invalidFirstName) {
+    public void UpdateFirstName_InvalidFirstName_ContainsInvalidCharacter_ReturnFailure(string? invalidFirstName) {
         var user = UserFactory.InitWithDefaultValues().Build();
         var newFirstNameResult = NameType.Create(invalidFirstName);
 

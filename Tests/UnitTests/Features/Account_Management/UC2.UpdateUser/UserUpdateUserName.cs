@@ -12,7 +12,7 @@ public class UserUpdateUserNameTestsSuccess {
     [InlineData("user.name")]
     [InlineData("name1234")]
     [InlineData("a_user_name")]
-    public void UpdateUserName_ValidUsername_ReturnSuccess(string newUsername) {
+    public void UpdateUserName_ValidUsername_ReturnSuccess(string? newUsername) {
         // Arrange
         var user = UserFactory.InitWithDefaultValues().Build();
         var newUserNameType = UserNameType.Create(newUsername).Payload;
@@ -29,7 +29,7 @@ public class UserUpdateUserNameTestsSuccess {
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public void UpdateUserName_InvalidUsername_UserNameBlank_ReturnFailure(string invalidUsername) {
+    public void UpdateUserName_InvalidUsername_UserNameBlank_ReturnFailure(string? invalidUsername) {
         var user = UserFactory.InitWithDefaultValues().Build();
         var newUserNameResult = UserNameType.Create(invalidUsername);
 
@@ -42,7 +42,7 @@ public class UserUpdateUserNameTestsSuccess {
     [InlineData("a")]
     [InlineData("b")]
     [InlineData("1")]
-    public void UpdateUserName_InvalidUsername_UserNameTooShort_ReturnFailure(string invalidUsername) {
+    public void UpdateUserName_InvalidUsername_UserNameTooShort_ReturnFailure(string? invalidUsername) {
         var user = UserFactory.InitWithDefaultValues().Build();
         var newUserNameResult = UserNameType.Create(invalidUsername);
 
@@ -55,7 +55,7 @@ public class UserUpdateUserNameTestsSuccess {
     [InlineData("_username")]
     [InlineData(".username")]
     [InlineData("_1a")]
-    public void UpdateUserName_InvalidUsername_StartsWithInvalidCharacter_ReturnFailure(string invalidUsername) {
+    public void UpdateUserName_InvalidUsername_StartsWithInvalidCharacter_ReturnFailure(string? invalidUsername) {
         var user = UserFactory.InitWithDefaultValues().Build();
         var newUserNameResult = UserNameType.Create(invalidUsername);
 
@@ -68,7 +68,7 @@ public class UserUpdateUserNameTestsSuccess {
     [InlineData("inva!d")]
     [InlineData("invalid#username")]
     [InlineData("no$allowed")]
-    public void UpdateUserName_InvalidUsername_ContainsInvalidCharacter_ReturnFailure(string invalidUsername) {
+    public void UpdateUserName_InvalidUsername_ContainsInvalidCharacter_ReturnFailure(string? invalidUsername) {
         var user = UserFactory.InitWithDefaultValues().Build();
         var newUserNameResult = UserNameType.Create(invalidUsername);
 
@@ -81,7 +81,7 @@ public class UserUpdateUserNameTestsSuccess {
     [InlineData("thisiswaytoolongofausernameforthis")]
     [InlineData("usernameistoolongbeyondthelimitset")]
     [InlineData("exceedingthefifteencharlimit")]
-    public void UpdateUserName_InvalidUsername_UserNameTooLong_ReturnFailure(string invalidUsername) {
+    public void UpdateUserName_InvalidUsername_UserNameTooLong_ReturnFailure(string? invalidUsername) {
         var user = UserFactory.InitWithDefaultValues().Build();
         var newUserNameResult = UserNameType.Create(invalidUsername);
 

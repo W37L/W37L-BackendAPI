@@ -11,7 +11,7 @@ public class LastNameType : NamingType {
      *
      * @param name The validated name value.
      */
-    private LastNameType(string name) : base(name) {}
+    private LastNameType(string? name) : base(name) { }
 
     /**
      * Creates a LastNameType instance after validating the given name string.
@@ -19,7 +19,7 @@ public class LastNameType : NamingType {
      * @param name The name string to validate and use for creating the LastNameType instance.
      * @returns A Result containing either a LastNameType instance or an error.
      */
-    public static Result<LastNameType> Create(string name) {
+    public static Result<LastNameType> Create(string? name) {
         var validation = Validate(name);
         if (validation.IsFailure)
             return Result<LastNameType>.Fail(validation.Error);

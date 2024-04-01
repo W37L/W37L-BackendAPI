@@ -8,13 +8,13 @@ public class PostCreationTestFailure_WrongSignature {
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public void CreateSignature_BlankSignature_ReturnBlankStringError(string signatureInput) {
+    public void CreateSignature_BlankSignature_ReturnBlankStringError(string? signatureInput) {
         // Act
         var result = Signature.Create(signatureInput);
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Contains(Error.BlankString, result.Error.EnumerateAll());
+        Assert.Contains(Error.BlankOrNullString, result.Error.EnumerateAll());
     }
 
     // UC6.F6 - Test for failure when Signature does not match hex or base64 patterns
@@ -22,7 +22,7 @@ public class PostCreationTestFailure_WrongSignature {
     [InlineData("ZZZ")]
     [InlineData("1234567890")]
     [InlineData("invalid-signature")]
-    public void CreateSignature_InvalidFormat_ReturnInvalidSignatureError(string signatureInput) {
+    public void CreateSignature_InvalidFormat_ReturnInvalidSignatureError(string? signatureInput) {
         // Act
         var result = Signature.Create(signatureInput);
 
@@ -35,7 +35,7 @@ public class PostCreationTestFailure_WrongSignature {
     [Theory]
     [InlineData("abcdef1234567890abcdef1234567890")] // 32 characters
     [InlineData("abcdef")] // Too short
-    public void CreateSignature_HexIncorrectLength_ReturnInvalidSignatureError(string signatureInput) {
+    public void CreateSignature_HexIncorrectLength_ReturnInvalidSignatureError(string? signatureInput) {
         // Act
         var result = Signature.Create(signatureInput);
 
@@ -48,7 +48,7 @@ public class PostCreationTestFailure_WrongSignature {
     [Theory]
     [InlineData("dGVzdA==test")] // Incorrect padding
     [InlineData("dGVzdA=test")] // Single = but not at the end
-    public void CreateSignature_Base64IncorrectPadding_ReturnInvalidSignatureError(string signatureInput) {
+    public void CreateSignature_Base64IncorrectPadding_ReturnInvalidSignatureError(string? signatureInput) {
         // Act
         var result = Signature.Create(signatureInput);
 

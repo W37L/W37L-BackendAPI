@@ -12,7 +12,7 @@ public class UpdateAvatarTest {
     [InlineData("http://example.com/avatar.png", "http://example.com/avatar.png")] // Already valid http URL
     [InlineData("www.example.com/avatar.gif", "https://www.example.com/avatar.gif")] // www URL gets https prepended
     [InlineData("example.com/avatar", "example.com/avatar")] // Implicit https prepending for no protocol
-    public void UpdateAvatar_ValidUrl_ShouldNormalizeAndUpdateSuccessfully(string inputUrl, string expectedUrl) {
+    public void UpdateAvatar_ValidUrl_ShouldNormalizeAndUpdateSuccessfully(string? inputUrl, string expectedUrl) {
         // Arrange
         var user = UserFactory.InitWithDefaultValues().Build();
 
@@ -34,7 +34,7 @@ public class UpdateAvatarTest {
     [InlineData("")]
     [InlineData("   ")]
     [InlineData(null)]
-    public void UpdateAvatar_InvalidUrl_BlankOrWhitespace_ShouldFail(string url) {
+    public void UpdateAvatar_InvalidUrl_BlankOrWhitespace_ShouldFail(string? url) {
         // Arrange
         var user = UserFactory.InitWithDefaultValues().Build();
 
@@ -43,7 +43,7 @@ public class UpdateAvatarTest {
 
         // Assert
         Assert.False(result.IsSuccess);
-        Assert.Contains(Error.BlankString, result.Error.EnumerateAll());
+        Assert.Contains(Error.BlankOrNullString, result.Error.EnumerateAll());
     }
 
     // ID:UC2.F8
@@ -51,7 +51,7 @@ public class UpdateAvatarTest {
     [InlineData("justastring")]
     [InlineData("ftp://example.com/avatar.jpg")]
     [InlineData("##__!!")]
-    public void UpdateAvatar_InvalidUrl_FormatError_ShouldFail(string url) {
+    public void UpdateAvatar_InvalidUrl_FormatError_ShouldFail(string? url) {
         // Arrange
         var user = UserFactory.InitWithDefaultValues().Build();
 

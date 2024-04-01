@@ -8,7 +8,7 @@ public class UserCreationTestFailureWrongLastName {
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public void CreateLastNameType_BlankLastName_ReturnBlankStringError(string lastNameInput) {
+    public void CreateLastNameType_BlankLastName_ReturnBlankStringError(string? lastNameInput) {
         // Arrange
 
         // Act
@@ -16,7 +16,7 @@ public class UserCreationTestFailureWrongLastName {
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Contains(Error.BlankString, result.Error.EnumerateAll());
+        Assert.Contains(Error.BlankOrNullString, result.Error.EnumerateAll());
     }
 
     // UC1.F14 - Test for failure when LastName contains characters not allowed
@@ -24,7 +24,7 @@ public class UserCreationTestFailureWrongLastName {
     [InlineData("Doe!")]
     [InlineData("O'Neil@")]
     [InlineData("Smith#123")] // Contains a digit and special character, not allowed
-    public void CreateLastNameType_InvalidCharacterInLastName_ReturnInvalidNameError(string lastNameInput) {
+    public void CreateLastNameType_InvalidCharacterInLastName_ReturnInvalidNameError(string? lastNameInput) {
         // Arrange
 
         // Act
@@ -40,7 +40,7 @@ public class UserCreationTestFailureWrongLastName {
     [InlineData("D")]
     [InlineData("O")]
     [InlineData("S")]
-    public void CreateLastNameType_TooShortLastName_ReturnTooShortNameError(string lastNameInput) {
+    public void CreateLastNameType_TooShortLastName_ReturnTooShortNameError(string? lastNameInput) {
         // Arrange
 
         // Act
@@ -56,7 +56,7 @@ public class UserCreationTestFailureWrongLastName {
     [InlineData("abcdefghijklmnopqrstuvwxyzabcdef")]
     [InlineData("abcdefghijklmnopqrstuvwxyzabcdefg1234567")]
     [InlineData("abcdefghijklmnopqrstuvwxyzabcdefg1234567890")]
-    public void CreateLastNameType_TooLongLastName_ReturnTooLongNameError(string lastNameInput) {
+    public void CreateLastNameType_TooLongLastName_ReturnTooLongNameError(string? lastNameInput) {
         // Arrange
 
         // Act

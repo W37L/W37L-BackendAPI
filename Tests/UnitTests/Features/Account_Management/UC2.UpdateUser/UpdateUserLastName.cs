@@ -14,7 +14,7 @@ public class UpdateUserLastName {
     [InlineData("Brown")]
     [InlineData("Jones")]
     [InlineData("Garcia")]
-    public void UpdateLastName_ValidLastName_ReturnSuccess(string newLastName) {
+    public void UpdateLastName_ValidLastName_ReturnSuccess(string? newLastName) {
         // Arrange
         var user = UserFactory.InitWithDefaultValues().Build();
         var newLastNameType = LastNameType.Create(newLastName).Payload;
@@ -33,12 +33,12 @@ public class UpdateUserLastName {
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public void UpdateLastName_InvalidLastName_LastNameBlank_ReturnFailure(string invalidLastName) {
+    public void UpdateLastName_InvalidLastName_LastNameBlank_ReturnFailure(string? invalidLastName) {
         var user = UserFactory.InitWithDefaultValues().Build();
         var newLastNameResult = LastNameType.Create(invalidLastName);
 
         Assert.True(newLastNameResult.IsFailure);
-        Assert.Contains(Error.BlankString, newLastNameResult.Error.EnumerateAll());
+        Assert.Contains(Error.BlankOrNullString, newLastNameResult.Error.EnumerateAll());
     }
 
     //ID:UC4.F3
@@ -46,7 +46,7 @@ public class UpdateUserLastName {
     [InlineData("A")]
     [InlineData("B")]
     [InlineData("C")]
-    public void UpdateLastName_InvalidLastName_LastNameTooShort_ReturnFailure(string invalidLastName) {
+    public void UpdateLastName_InvalidLastName_LastNameTooShort_ReturnFailure(string? invalidLastName) {
         var user = UserFactory.InitWithDefaultValues().Build();
         var newLastNameResult = LastNameType.Create(invalidLastName);
 
@@ -59,7 +59,7 @@ public class UpdateUserLastName {
     [InlineData("abcdefghijklmnopqrstuvwxyz")]
     [InlineData("ABCDEFGHIJKLMNOPQRSTUVWXYZ")]
     [InlineData("Zyxwvutsrqponmlkjihgfedcba")]
-    public void UpdateLastName_InvalidLastName_LastNameTooLong_ReturnFailure(string invalidLastName) {
+    public void UpdateLastName_InvalidLastName_LastNameTooLong_ReturnFailure(string? invalidLastName) {
         var user = UserFactory.InitWithDefaultValues().Build();
         var newLastNameResult = LastNameType.Create(invalidLastName);
 
@@ -72,7 +72,7 @@ public class UpdateUserLastName {
     [InlineData("Smith1")]
     [InlineData("O'Neil")]
     [InlineData("Johnson$")]
-    public void UpdateLastName_InvalidLastName_ContainsInvalidCharacter_ReturnFailure(string invalidLastName) {
+    public void UpdateLastName_InvalidLastName_ContainsInvalidCharacter_ReturnFailure(string? invalidLastName) {
         var user = UserFactory.InitWithDefaultValues().Build();
         var newLastNameResult = LastNameType.Create(invalidLastName);
 

@@ -7,7 +7,7 @@ public class UserCreationTestFailure_WrongId {
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public void CreateUser_BlankUserID_ReturnBlankStringError(string userIdInput) {
+    public void CreateUser_BlankUserID_ReturnBlankStringError(string? userIdInput) {
         // Arrange - setup for the test; in this case, input preparation.
 
         // Act - the action or method under test.
@@ -15,7 +15,7 @@ public class UserCreationTestFailure_WrongId {
 
         // Assert - verifying the outcome.
         Assert.True(result.IsFailure);
-        Assert.Contains(Error.BlankString, result.Error.EnumerateAll());
+        Assert.Contains(Error.BlankOrNullString, result.Error.EnumerateAll());
     }
 
     //UC1.F2
@@ -23,7 +23,7 @@ public class UserCreationTestFailure_WrongId {
     [Theory]
     [InlineData("ID-123456789012345678901234567890123456")]
     [InlineData("XUID-123456789012345678901234567890123456")]
-    public void CreateUser_IncorrectPrefixUserID_ReturnInvalidPrefixError(string userIdInput) {
+    public void CreateUser_IncorrectPrefixUserID_ReturnInvalidPrefixError(string? userIdInput) {
         // Arrange
 
         // Act
@@ -39,7 +39,7 @@ public class UserCreationTestFailure_WrongId {
     [Theory]
     [InlineData("UID-123")]
     [InlineData("UID-123456789012345678901234567890123456789012345")]
-    public void CreateUser_IncorrectLengthUserID_ReturnInvalidLengthError(string userIdInput) {
+    public void CreateUser_IncorrectLengthUserID_ReturnInvalidLengthError(string? userIdInput) {
         // Arrange
 
         // Act

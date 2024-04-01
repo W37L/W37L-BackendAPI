@@ -8,7 +8,7 @@ public class UserCreationTestFailure_WrongFirstName {
     [InlineData(" ")]
     [InlineData("    ")]
     [InlineData(null)]
-    public void CreateNameType_BlankFirstName_ReturnBlankStringError(string firstNameInput) {
+    public void CreateNameType_BlankFirstName_ReturnBlankStringError(string? firstNameInput) {
         // Arrange
 
         // Act
@@ -16,7 +16,7 @@ public class UserCreationTestFailure_WrongFirstName {
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Contains(Error.BlankString, result.Error.EnumerateAll());
+        Assert.Contains(Error.BlankOrNullString, result.Error.EnumerateAll());
     }
 
     // UC1.F10 - Test for failure when FirstName contains characters not allowed
@@ -24,7 +24,7 @@ public class UserCreationTestFailure_WrongFirstName {
     [InlineData("John#")]
     [InlineData("An@na")]
     [InlineData("B0b")] // Contains a digit, which is not allowed
-    public void CreateNameType_InvalidCharacterInFirstName_ReturnInvalidNameError(string firstNameInput) {
+    public void CreateNameType_InvalidCharacterInFirstName_ReturnInvalidNameError(string? firstNameInput) {
         // Arrange
 
         // Act
@@ -40,7 +40,7 @@ public class UserCreationTestFailure_WrongFirstName {
     [InlineData("J")] // One character
     [InlineData("A")]
     [InlineData("B")]
-    public void CreateNameType_TooShortFirstName_ReturnTooShortNameError(string firstNameInput) {
+    public void CreateNameType_TooShortFirstName_ReturnTooShortNameError(string? firstNameInput) {
         // Arrange
 
         // Act
@@ -56,7 +56,7 @@ public class UserCreationTestFailure_WrongFirstName {
     [InlineData("abcdefghijklmnopqrstuvwxyza")]
     [InlineData("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz")]
     [InlineData("abcdefghijklmnopqrstuvwxyzcdefghijklmnopqrstuvwxyzabcdef")]
-    public void CreateNameType_TooLongFirstName_ReturnTooLongNameError(string firstNameInput) {
+    public void CreateNameType_TooLongFirstName_ReturnTooLongNameError(string? firstNameInput) {
         // Arrange
 
         // Act

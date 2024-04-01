@@ -1,4 +1,3 @@
-
 using System.Text.RegularExpressions;
 using ViaEventAssociation.Core.Domain.Common.Bases;
 
@@ -13,7 +12,6 @@ namespace ViaEventAssociation.Core.Domain.Aggregates.Guests;
 public abstract class NamingType : ValueObject {
     public static readonly int MAX_LENGTH = 25;
     public static readonly int MIN_LENGTH = 2;
-    public string Value { get; private set; }
 
     /**
      * Initializes a new instance of the NamingType class with a specified name value.
@@ -21,9 +19,11 @@ public abstract class NamingType : ValueObject {
      *
      * @param name The validated name that conforms to the specified constraints.
      */
-    protected NamingType(string name) {
+    protected NamingType(string? name) {
         Value = name;
     }
+
+    public string? Value { get; }
 
     /**
      * Validates a given name against predefined constraints, such as minimum and maximum length, and allowed characters.
@@ -32,14 +32,14 @@ public abstract class NamingType : ValueObject {
      * @param name The name string to validate.
      * @returns A Result indicating the validation outcome. Success if the name meets all criteria, otherwise Failure.
      */
-    protected static Result Validate(string name) {
+    protected static Result Validate(string? name) {
         var errors = new HashSet<Error>();
 
         if (string.IsNullOrEmpty(name))
-            errors.Add(Error.BlankString);
+            errors.Add(Error.BlankOrNullString);
         else {
             if (string.IsNullOrWhiteSpace(name))
-                errors.Add(Error.BlankString);
+                errors.Add(Error.BlankOrNullString);
             if (!Regex.IsMatch(name, @"^[a-zA-Z]+$"))
                 errors.Add(Error.InvalidName);
             if (name.Length < MIN_LENGTH)
@@ -61,8 +61,7 @@ public abstract class NamingType : ValueObject {
      *
      * @returns An enumerable of objects used in equality comparison.
      */
-    protected override IEnumerable<object> GetEqualityComponents() {
+    protected override IEnumerable<object?> GetEqualityComponents() {
         yield return Value;
     }
-
 }
