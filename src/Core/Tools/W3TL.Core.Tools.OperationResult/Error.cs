@@ -69,6 +69,8 @@ public class Error {
     public static Error UserNotLiked => new("The user has not liked the post.");
     public static Error UserAlreadyBlocked => new("The user is already blocked.");
     public static Error UserNotBlocked => new("The user is not blocked.");
+    public static Error UserAlreadyRegistered => new("The user is already registered.");
+    public static Error InvalidCommand => new("The command is invalid.");
 
 
     public static Error TooLongString(int maxLength) => new Error($"The string cannot exceed {maxLength} characters.");

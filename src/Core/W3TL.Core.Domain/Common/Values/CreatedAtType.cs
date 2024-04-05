@@ -35,7 +35,7 @@ public class CreatedAtType : ValueObject {
         return validation.Error;
     }
 
-    public static Result<CreatedAtType?> Create() {
+    public static Result<CreatedAtType> Create() {
         return new CreatedAtType(DateTimeOffset.Now.ToUnixTimeSeconds());
     }
 

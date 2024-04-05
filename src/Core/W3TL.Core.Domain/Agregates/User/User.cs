@@ -52,22 +52,20 @@ public class User : AggregateRoot<UserID> {
     public List<Content> Likes { get; private set; }
 
     public static Result<User> Create(UserNameType userName, NameType firstName, LastNameType lastName, EmailType email, PubType pub) {
-        HashSet<Error> errors = new();
+        var result = UserID.Generate();
+        if (result.IsFailure) return result.Error;
+        return Create(result.Payload, userName, firstName, lastName, email, pub);
+    }
 
-        // Validate inputs for null and ensure they're valid results
-        if (userName == null) errors.Add(Error.BlankUserName);
-        if (firstName == null) errors.Add(Error.InvalidName);
-        if (lastName == null) errors.Add(Error.InvalidName);
-        if (email == null) errors.Add(Error.InvalidEmail);
-        if (pub == null) errors.Add(Error.InvalidPublicKeyFormat);
-
-        // If there are any errors, return them without creating a User
-        if (errors.Any()) return Error.CompileErrors(errors);
-
+    public static Result<User> Create(UserID userId, UserNameType userName, NameType firstName, LastNameType lastName, EmailType email, PubType pub) {
+        if (userName == null) throw new ArgumentNullException(nameof(userName));
+        if (firstName == null) throw new ArgumentNullException(nameof(firstName));
+        if (lastName == null) throw new ArgumentNullException(nameof(lastName));
+        if (email == null) throw new ArgumentNullException(nameof(email));
+        if (pub == null) throw new ArgumentNullException(nameof(pub));
         try {
-            var userId = UserID.Generate().Payload;
             var profile = Profile.Create(userId).Payload;
-            var createdAt = CreatedAtType.Create().Payload;
+            var createdAt = CreatedAtType.Create().Payload!;
             var user = new User(userId, userName, firstName, lastName, email, pub, createdAt, profile);
             return user;
         }
@@ -78,7 +76,7 @@ public class User : AggregateRoot<UserID> {
 
 
     public Result UpdateUserName(UserNameType userName) {
-        if (userName is null) return Error.BlankUserName;
+        if (userName is null) throw new ArgumentNullException(nameof(userName));
         try {
             UserName = userName;
             return Result.Ok;
@@ -89,7 +87,7 @@ public class User : AggregateRoot<UserID> {
     }
 
     public Result UpdateFirstName(NameType firstName) {
-        if (firstName is null) return Error.InvalidName;
+        if (firstName is null) throw new ArgumentNullException(nameof(firstName));
         try {
             FirstName = firstName;
             return Result.Ok;

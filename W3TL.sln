@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{B19C6E88
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "W3TL.Core.Tools.OperationResult", "src\Core\Tools\W3TL.Core.Tools.OperationResult\W3TL.Core.Tools.OperationResult.csproj", "{ABA32F16-C274-4201-ACA4-F61A91C62743}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "W3TL.Core.Application", "src\Core\W3TL.Core.Application\W3TL.Core.Application.csproj", "{A3BF43B8-14B5-4C08-86F5-1C612EB8A372}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,7 @@ Global
 		{D111E173-D0AD-406E-8C56-6BC16D5BE9DD} = {BFEA2D74-7918-49A2-BE5F-EC823295A137}
 		{B19C6E88-59E1-4D1B-853B-1E0708BB4C1B} = {1488C571-1869-4E59-8234-AB29A2363C8A}
 		{ABA32F16-C274-4201-ACA4-F61A91C62743} = {B19C6E88-59E1-4D1B-853B-1E0708BB4C1B}
+		{A3BF43B8-14B5-4C08-86F5-1C612EB8A372} = {1488C571-1869-4E59-8234-AB29A2363C8A}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3FE4554C-FC1E-4F76-B20C-3CA7E7FEE34A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -48,5 +51,9 @@ Global
 		{ABA32F16-C274-4201-ACA4-F61A91C62743}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABA32F16-C274-4201-ACA4-F61A91C62743}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABA32F16-C274-4201-ACA4-F61A91C62743}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3BF43B8-14B5-4C08-86F5-1C612EB8A372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3BF43B8-14B5-4C08-86F5-1C612EB8A372}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3BF43B8-14B5-4C08-86F5-1C612EB8A372}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3BF43B8-14B5-4C08-86F5-1C612EB8A372}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
