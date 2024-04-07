@@ -7,9 +7,10 @@ public class UpdateContentCommandTests {
         // Arrange
         var validPostId = ValidFields.VALID_POST_ID;
         var validContentTweet = "New content tweet"; // Valid content
+        var validSignature = ValidFields.VALID_SIGNATURE;
 
         // Act
-        var result = UpdateContentCommand.Create(new object[] {validPostId, validContentTweet});
+        var result = UpdateContentCommand.Create(validPostId, validContentTweet, validSignature);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -21,13 +22,14 @@ public class UpdateContentCommandTests {
         // Arrange
         var invalidPostId = "invalidPostId"; // Assuming this fails PostId creation
         var validContentTweet = "New content tweet";
+        var validSignature = ValidFields.VALID_SIGNATURE;
 
         // Act
-        var result = UpdateContentCommand.Create(new object[] {invalidPostId, validContentTweet});
+        var result = UpdateContentCommand.Create(invalidPostId, validContentTweet, validSignature);
 
         // Assert
         Assert.False(result.IsSuccess);
-        // Optionally, assert specific errors are present in the result
+        Assert.Contains(Error.InvalidPrefix, result.Error.EnumerateAll());
     }
 
     [Fact]
@@ -35,13 +37,14 @@ public class UpdateContentCommandTests {
         // Arrange
         var validPostId = ValidFields.VALID_POST_ID;
         var invalidContentTweet = ""; // Assuming empty or null strings are invalid for TheString
+        var validSignature = ValidFields.VALID_SIGNATURE;
 
         // Act
-        var result = UpdateContentCommand.Create(new object[] {validPostId, invalidContentTweet});
+        var result = UpdateContentCommand.Create(validPostId, invalidContentTweet, validSignature);
 
         // Assert
         Assert.False(result.IsSuccess);
-        // Optionally, assert specific errors are present in the result
+        Assert.Contains(Error.BlankOrNullString, result.Error.EnumerateAll());
     }
 
     [Fact]
@@ -54,6 +57,6 @@ public class UpdateContentCommandTests {
 
         // Assert
         Assert.False(result.IsSuccess);
-        // Optionally, assert that the specific error returned is related to insufficient arguments
+        Assert.Contains(Error.InvalidCommand, result.Error.EnumerateAll());
     }
 }

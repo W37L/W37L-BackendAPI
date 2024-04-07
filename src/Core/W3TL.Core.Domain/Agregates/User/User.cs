@@ -8,7 +8,14 @@ using W3TL.Core.Domain.Common.Values;
 using W3TL.Core.Domain.Services;
 
 public class User : AggregateRoot<UserID> {
-    internal User(UserID userId) : base(userId) { }
+    internal User(UserID userId) : base(userId) {
+        Followers = new List<User>();
+        Following = new List<User>();
+        Blocked = new List<User>();
+        Muted = new List<User>();
+        Posts = new List<Post>();
+        Likes = new List<Content>();
+    }
 
     private User(
         UserID userId,

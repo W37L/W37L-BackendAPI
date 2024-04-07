@@ -20,7 +20,7 @@ public class Post : Content {
     public MediaUrl MediaUrl { get; internal set; }
     public MediaType MediaType { get; internal set; }
     public PostType PostType { get; internal set; }
-    List<Comment>? Comments { get; set; }
+    internal List<Comment>? Comments { get; set; }
 
 
     public static Result<Post> Create(

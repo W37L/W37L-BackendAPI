@@ -1,5 +1,4 @@
 using UnitTests.Common.Factories;
-using W3TL.Core.Domain.Services;
 
 namespace UnitTests.Features.Content_Management;
 
@@ -14,7 +13,7 @@ public class UnlikeServiceTests {
         unliker.Likes.Add(content);
         content.Likes.Increment();
 
-        var result = UnlikeService.Handle(unliker, content);
+        var result = content.Unlike(unliker);
 
         Assert.True(result.IsSuccess);
         Assert.DoesNotContain(content, unliker.Likes);
@@ -27,7 +26,7 @@ public class UnlikeServiceTests {
         var unliker = UserFactory.InitWithDefaultValues().Build();
         var content = PostFactory.InitWithDefaultValues().Build();
 
-        var result = UnlikeService.Handle(unliker, content);
+        var result = content.Unlike(unliker);
 
         Assert.True(result.IsFailure);
         Assert.Contains(Error.UserNotLiked, result.Error.EnumerateAll());

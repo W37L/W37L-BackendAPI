@@ -45,4 +45,8 @@ public abstract class Content : AggregateRoot<ContentIDBase> {
     public Result Like(global::User liker) {
         return LikeService.Handle(liker, this);
     }
+
+    public Result Unlike(global::User liker) {
+        return UnlikeService.Handle(liker, this);
+    }
 }

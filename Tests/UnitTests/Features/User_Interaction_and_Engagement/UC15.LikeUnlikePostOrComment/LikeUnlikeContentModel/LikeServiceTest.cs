@@ -13,7 +13,7 @@ public class LikeServiceTests {
             .InitWithDefaultValues()
             .Build();
 
-        var result = LikeService.Handle(liker, content);
+        var result = content.Like(liker);
 
         Assert.True(result.IsSuccess);
         Assert.Contains(content, liker.Likes);
@@ -36,7 +36,7 @@ public class LikeServiceTests {
         // Simulate already liked content
         liker.Likes.Add(content);
 
-        var result = LikeService.Handle(liker, content);
+        var result = content.Like(liker);
         Assert.True(result.IsFailure);
         Assert.Contains(Error.UserAlreadyLiked, result.Error.EnumerateAll());
     }
@@ -53,7 +53,7 @@ public class LikeServiceTests {
         // Simulate blocked relationship
         contentCreator.Block(liker);
 
-        var result = LikeService.Handle(liker, content);
+        var result = content.Like(liker);
         Assert.True(result.IsFailure);
         Assert.Contains(Error.UserBlocked, result.Error.EnumerateAll());
     }
