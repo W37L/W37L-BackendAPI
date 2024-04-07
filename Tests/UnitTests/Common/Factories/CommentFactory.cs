@@ -12,7 +12,7 @@ public class CommentFactory {
         var factory = new CommentFactory();
         var commentId = PostId.Generate().Payload;
         factory._comment = new Comment(commentId);
-        return new CommentFactory();
+        return factory;
     }
 
     public static CommentFactory InitWithDefaultValues() {

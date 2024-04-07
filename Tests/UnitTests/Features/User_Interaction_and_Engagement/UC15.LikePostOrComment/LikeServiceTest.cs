@@ -8,7 +8,10 @@ public class LikeServiceTests {
     [Fact]
     public void Like_ValidParameters_Success() {
         var liker = UserFactory.InitWithDefaultValues().Build();
-        var content = PostFactory.InitWithDefaultValues().Build();
+
+        var content = PostFactory
+            .InitWithDefaultValues()
+            .Build();
 
         var result = LikeService.Handle(liker, content);
 

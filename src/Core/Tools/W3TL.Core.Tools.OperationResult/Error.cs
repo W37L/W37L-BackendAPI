@@ -71,6 +71,12 @@ public class Error {
     public static Error UserNotBlocked => new("The user is not blocked.");
     public static Error UserAlreadyRegistered => new("The user is already registered.");
     public static Error InvalidCommand => new("The command is invalid.");
+    public static Error UserNotFound => new("The user was not found.");
+    public static Error InvalidPostType => new("The post type is invalid.");
+    public static Error InvalidMediaType => new("The media type is invalid.");
+    public static Error PostAlreadyRegistered => new("The post is already registered.");
+    public static Error ParentPostNotFound => new("The parent post was not found.");
+    public static Error ContentNotFound => new("The content was not found.");
 
 
     public static Error TooLongString(int maxLength) => new Error($"The string cannot exceed {maxLength} characters.");

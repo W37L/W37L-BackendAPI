@@ -99,6 +99,15 @@ public class Result<T> : Result {
     }
 
     /**
+     * Creates a successful Result holding the specified value.
+     * @param value The success value.
+     * @return A Result indicating success with the associated value.
+     */
+    public static Result<T> Success(T value) {
+        return Ok(value);
+    }
+
+    /**
      * Creates a failed Result for the specified type, with the given error.
      * @param error The error to be associated with this result.
      * @return A Result indicating failure.

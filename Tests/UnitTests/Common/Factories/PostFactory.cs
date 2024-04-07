@@ -15,7 +15,7 @@ public class PostFactory {
         var factory = new PostFactory();
         var postId = PostId.Generate().Payload;
         factory._post = new Post(postId);
-        return new PostFactory();
+        return factory;
     }
 
     public static PostFactory InitWithDefaultValues() {

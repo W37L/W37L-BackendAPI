@@ -17,7 +17,7 @@ public class UserID : IdentityBase {
      *
      * @param value The unique identifier value for the UserId, including the PREFIX.
      */
-    private UserID(string? value) : base(PREFIX, value) { }
+    private UserID(string? value) : base(PREFIX) { }
 
     /**
      * Private constructor to enforce factory method usage for UserId instantiation.
@@ -56,7 +56,7 @@ public class UserID : IdentityBase {
             var validation = Validate(value);
             if (validation.IsFailure)
                 return validation.Error;
-            return new UserID(value);
+            return new UserID(PREFIX, value);
         }
         catch (Exception exception) {
             return Error.FromException(exception);

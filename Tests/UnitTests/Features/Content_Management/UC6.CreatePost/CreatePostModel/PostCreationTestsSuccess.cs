@@ -1,5 +1,4 @@
 using UnitTests.Common.Factories;
-using W3TL.Core.Domain.Agregates.Post;
 using W3TL.Core.Domain.Agregates.Post.Enum;
 using W3TL.Core.Domain.Agregates.Post.Values;
 using static UnitTests.Common.Factories.ValidFields;

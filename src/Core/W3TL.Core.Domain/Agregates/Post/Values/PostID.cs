@@ -3,7 +3,7 @@ namespace W3TL.Core.Domain.Agregates.Post.Values;
 public class PostId : ContentIDBase {
     private const string Prefix = "PID";
 
-    private PostId(string? value) : base(Prefix, value) { }
+    private PostId(string? value) : base(Prefix) { }
 
     private PostId(string? prefix, string? value) : base(prefix, value) { }
 

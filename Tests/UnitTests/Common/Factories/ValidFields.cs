@@ -12,6 +12,14 @@ public static class ValidFields {
     public static readonly string? VALID_PUB_KEY = "FJbAsEj5pj+xm0lMRwqym72lPWOU0NNeFxwId+bC1iF=";
     public static readonly long VALID_CREATED_AT_UNIX = 1622548800;
 
+    // User Profile
+    public static readonly string? VALID_BIO = "This is a valid bio";
+    public static readonly string? VALID_LOCATION = "This is a valid location";
+    public static readonly string? VALID_WEBSITE = "https://example.com";
+    public static readonly string? VALID_AVATAR_URL = "https://example.com/avatar.jpg";
+    public static readonly string? VALID_BANNER_URL = "https://example.com/banner.jpg";
+
+
     // Post
     public static readonly string VALID_POST_ID = "PID-123456789012345678901234567890123456";
     public static readonly string? VALID_POST_CONTENT = "This is a valid post content";

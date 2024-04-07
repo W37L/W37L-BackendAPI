@@ -14,7 +14,7 @@ public class UserFactory {
         var factory = new UserFactory();
         var userId = UserID.Generate().Payload;
         factory._user = new User(userId);
-        return new UserFactory();
+        return factory;
     }
 
     public static UserFactory InitWithDefaultValues() {

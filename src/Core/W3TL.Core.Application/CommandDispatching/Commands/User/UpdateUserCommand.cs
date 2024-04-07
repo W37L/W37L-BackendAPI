@@ -1,30 +1,30 @@
 using ViaEventAssociation.Core.Domain.Aggregates.Guests;
-using ViaEventAssociation.Core.Domain.Common.Values;
+using W3TL.Core.Domain.Agregates.User.Entity.Values;
 using W3TL.Core.Domain.Agregates.User.Values;
 using W3TL.Core.Domain.Common.Values;
 
 namespace W3TL.Core.Application.CommandDispatching.Commands.User;
 
-public class CreateUserCommand : Command<UserID>, ICommand<CreateUserCommand> {
-    private CreateUserCommand(UserID userId, UserNameType userName, NameType firstName, LastNameType lastName, EmailType email, PubType pub) : base(userId) {
-        UserId = userId;
+public class UpdateUserCommand : Command<UserID>, ICommand<UpdateUserCommand> {
+    private UpdateUserCommand(UserID userId, UserNameType userName, NameType firstName, LastNameType lastName, BioType bio, LocationType location, WebsiteType website) : base(userId) {
         UserName = userName;
         FirstName = firstName;
         LastName = lastName;
-        Email = email;
-        Pub = pub;
+        Bio = bio;
+        Location = location;
+        Website = website;
     }
 
-    public UserID UserId { get; }
     public UserNameType UserName { get; }
     public NameType FirstName { get; }
     public LastNameType LastName { get; }
-    public EmailType Email { get; }
-    public PubType Pub { get; }
+    public BioType Bio { get; }
+    public LocationType Location { get; }
+    public WebsiteType Website { get; }
 
-    public static int ParametersCount { get; } = 6;
+    public static int ParametersCount { get; } = 7;
 
-    public static Result<CreateUserCommand> Create(params object[] args) {
+    public static Result<UpdateUserCommand> Create(params object[] args) {
         if (args.Length != ParametersCount)
             return Error.InvalidCommand;
 
@@ -42,16 +42,18 @@ public class CreateUserCommand : Command<UserID>, ICommand<CreateUserCommand> {
         var lastName = LastNameType.Create(args[3].ToString())
             .OnFailure(error => errors.Add(error));
 
-        var email = EmailType.Create(args[4].ToString())
+        var bio = BioType.Create(args[4].ToString())
             .OnFailure(error => errors.Add(error));
 
-        var pub = PubType.Create(args[5].ToString())
+        var location = LocationType.Create(args[5].ToString())
+            .OnFailure(error => errors.Add(error));
+
+        var website = WebsiteType.Create(args[6].ToString())
             .OnFailure(error => errors.Add(error));
 
         if (errors.Any())
             return Error.CompileErrors(errors);
 
-
-        return new CreateUserCommand(userId.Payload, userName.Payload, firstName.Payload, lastName.Payload, email.Payload, pub.Payload);
+        return new UpdateUserCommand(userId.Payload, userName.Payload, firstName.Payload, lastName.Payload, bio.Payload, location.Payload, website.Payload);
     }
 }
