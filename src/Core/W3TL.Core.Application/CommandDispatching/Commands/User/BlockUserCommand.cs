@@ -13,7 +13,7 @@ public class BlockUserCommand : Command<UserID>, ICommand<BlockUserCommand> {
 
     public static Result<BlockUserCommand> Create(params object[] args) {
         if (args.Length != ParametersCount)
-            return Error.InvalidCommand;
+            return Error.WrongNumberOfParameters;
 
         var errors = new HashSet<Error>();
 

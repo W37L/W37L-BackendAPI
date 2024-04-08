@@ -14,7 +14,9 @@ public class UnfollowAUserCommand : Command<UserID>, ICommand<UnfollowAUserComma
     public static int ParametersCount { get; } = 2;
 
     public static Result<UnfollowAUserCommand> Create(params object[] args) {
-        if (args.Length != ParametersCount) return Error.InvalidCommand;
+        if (args.Length != ParametersCount)
+            return
+                Error.WrongNumberOfParameters;
 
         var errors = new HashSet<Error>();
 

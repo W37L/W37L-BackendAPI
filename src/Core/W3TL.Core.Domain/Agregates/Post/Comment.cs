@@ -15,23 +15,24 @@ public class Comment : Content {
         Signature signature,
         Content parentPost
     ) {
-        try {
-            HashSet<Error> errors = new();
-            if (contentTweet is null) errors.Add(Error.NullContentTweet);
-            if (creator is null) errors.Add(Error.NullCreator);
-            if (signature is null) errors.Add(Error.NullSignature);
-            if (parentPost is null) errors.Add(Error.NullParentPost);
+        ArgumentNullException.ThrowIfNull(contentTweet);
+        ArgumentNullException.ThrowIfNull(creator);
+        ArgumentNullException.ThrowIfNull(signature);
+        ArgumentNullException.ThrowIfNull(parentPost);
 
-            if (errors.Any()) return Error.CompileErrors(errors);
+        HashSet<Error> errors = new();
+        var postId = PostId.Generate()
+            .OnFailure(error => errors.Add(error));
 
-            var postId = PostId.Generate().Payload;
-            var createdAt = CreatedAtType.Create().Payload;
-            var likes = Count.Zero;
-            var comment = new Comment(postId, createdAt, contentTweet, likes, creator, signature, parentPost);
-            return comment;
-        }
-        catch (Exception ex) {
-            return Error.FromException(ex);
-        }
+        var createdAt = CreatedAtType.Create()
+            .OnFailure(error => errors.Add(error));
+
+        var likes = Count.Zero;
+
+        if (errors.Any())
+            return Error.CompileErrors(errors);
+
+        var comment = new Comment(postId.Payload, createdAt.Payload, contentTweet, likes!, creator, signature, parentPost);
+        return comment;
     }
 }

@@ -48,6 +48,6 @@ public class UpdateUserCommandTest {
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Contains(Error.InvalidCommand, result.Error.EnumerateAll());
+        Assert.Contains(Error.WrongNumberOfParameters, result.Error.EnumerateAll());
     }
 }

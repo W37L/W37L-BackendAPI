@@ -14,7 +14,8 @@ public class FollowAUserCommand : Command<UserID>, ICommand<FollowAUserCommand> 
     public static int ParametersCount { get; } = 2;
 
     public static Result<FollowAUserCommand> Create(params object[] args) {
-        if (args.Length != ParametersCount) return Error.InvalidCommand;
+        if (args.Length != ParametersCount)
+            return Error.WrongNumberOfParameters;
 
         var errors = new HashSet<Error>();
 

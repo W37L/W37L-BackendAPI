@@ -78,6 +78,7 @@ public class Error {
     public static Error ParentPostNotFound => new("The parent post was not found.");
     public static Error ContentNotFound => new("The content was not found.");
     public static Error PostNotFound => new("The post was not found.");
+    public static Error WrongNumberOfParameters => new("The number of parameters is incorrect.");
 
 
     public static Error TooLongString(int maxLength) => new Error($"The string cannot exceed {maxLength} characters.");

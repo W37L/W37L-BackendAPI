@@ -19,8 +19,8 @@ public class CommentPostCommand : Command<PostId>, ICommand<CommentPostCommand> 
     public static int ParametersCount { get; } = 5;
 
     public static Result<CommentPostCommand> Create(params object[] args) {
-        if (args.Length < ParametersCount)
-            return Error.InvalidCommand;
+        if (args.Length != ParametersCount)
+            return Error.WrongNumberOfParameters;
 
         var errors = new HashSet<Error>();
 

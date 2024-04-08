@@ -14,9 +14,7 @@ public class UpdateContentCommand : Command<PostId>, ICommand<UpdateContentComma
     public static int ParametersCount { get; } = 3;
 
     public static Result<UpdateContentCommand> Create(params object[] args) {
-        if (args.Length < ParametersCount) {
-            return Error.InvalidCommand;
-        }
+        if (args.Length != ParametersCount) return Error.WrongNumberOfParameters;
 
         var errors = new HashSet<Error>();
 

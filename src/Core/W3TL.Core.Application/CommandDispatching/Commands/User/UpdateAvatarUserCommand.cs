@@ -14,7 +14,7 @@ public class UpdateAvatarUserCommand : Command<UserID>, ICommand<UpdateAvatarUse
 
     public static Result<UpdateAvatarUserCommand> Create(params object[] args) {
         if (args.Length != ParametersCount)
-            return Error.InvalidCommand;
+            return Error.WrongNumberOfParameters;
 
         var errors = new HashSet<Error>();
 

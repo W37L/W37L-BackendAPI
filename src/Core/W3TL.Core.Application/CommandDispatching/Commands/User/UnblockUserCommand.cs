@@ -13,7 +13,7 @@ public class UnblockUserCommand : Command<UserID>, ICommand<UnblockUserCommand> 
 
     public static Result<UnblockUserCommand> Create(params object[] args) {
         if (args.Length != ParametersCount)
-            return Error.InvalidCommand;
+            return Error.WrongNumberOfParameters;
 
         var errors = new HashSet<Error>();
 

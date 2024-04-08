@@ -12,9 +12,7 @@ public class UpdateMediaUrlCommand : Command<PostId>, ICommand<UpdateMediaUrlCom
     public static int ParametersCount { get; } = 2;
 
     public static Result<UpdateMediaUrlCommand> Create(params object[] args) {
-        if (args.Length < ParametersCount) {
-            return Error.InvalidCommand;
-        }
+        if (args.Length != ParametersCount) return Error.WrongNumberOfParameters;
 
         var errors = new HashSet<Error>();
 

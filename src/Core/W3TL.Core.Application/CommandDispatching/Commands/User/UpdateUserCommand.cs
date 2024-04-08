@@ -26,7 +26,7 @@ public class UpdateUserCommand : Command<UserID>, ICommand<UpdateUserCommand> {
 
     public static Result<UpdateUserCommand> Create(params object[] args) {
         if (args.Length != ParametersCount)
-            return Error.InvalidCommand;
+            return Error.WrongNumberOfParameters;
 
         var errors = new HashSet<Error>();
 

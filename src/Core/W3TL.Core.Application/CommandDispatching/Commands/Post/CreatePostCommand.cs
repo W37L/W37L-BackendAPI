@@ -27,7 +27,7 @@ public class CreatePostCommand : Command<PostId>, ICommand<CreatePostCommand> {
 
     public static Result<CreatePostCommand> Create(params object[] args) {
         if (args.Length < ParametersCount) {
-            return Error.InvalidCommand; // Not enough parameters
+            return Error.WrongNumberOfParameters; // Not enough parameters
         }
 
         var errors = new HashSet<Error>();
@@ -42,7 +42,7 @@ public class CreatePostCommand : Command<PostId>, ICommand<CreatePostCommand> {
 
         if (creatorIdResult.IsFailure) errors.Add(creatorIdResult.Error);
         //find the creator in the repository
-        global::User creator; //= creatorRepository.Find(creatorIdResult.Payload);
+        User creator; //= creatorRepository.Find(creatorIdResult.Payload);
 
         var signatureResult = Signature.Create(args[3].ToString());
         if (signatureResult.IsFailure) errors.Add(signatureResult.Error);
@@ -51,7 +51,6 @@ public class CreatePostCommand : Command<PostId>, ICommand<CreatePostCommand> {
         if (!Enum.TryParse<PostType>(args[4].ToString(), true, out var postType)) {
             errors.Add(Error.InvalidPostType);
         }
-
 
         // Optional MediaUrl parsing
         MediaUrl? mediaUrl = null;
@@ -88,6 +87,8 @@ public class CreatePostCommand : Command<PostId>, ICommand<CreatePostCommand> {
                 errors.Add(parentPostIdResult.Error);
             }
         }
+
+        if (args.Length > 8) errors.Add(Error.WrongNumberOfParameters);
 
         if (errors.Any()) {
             return Error.CompileErrors(errors);

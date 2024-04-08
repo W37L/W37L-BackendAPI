@@ -17,10 +17,12 @@ public class CommentCreationTestFailure_WrongParentPost {
         Content parentPost = null;
 
         // Act
-        var result = Comment.Create(contentTweet, creator, signature, parentPost);
-
-        // Assert
-        Assert.True(result.IsFailure);
-        Assert.Contains(Error.NullParentPost, result.Error.EnumerateAll());
+        try {
+            var result = Comment.Create(contentTweet, creator, signature, parentPost);
+        }
+        catch (ArgumentNullException ex) {
+            // Assert
+            Assert.Equal("parentPost", ex.ParamName);
+        }
     }
 }

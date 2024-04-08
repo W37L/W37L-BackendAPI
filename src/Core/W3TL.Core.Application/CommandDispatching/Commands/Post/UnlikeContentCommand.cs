@@ -13,8 +13,8 @@ public class UnlikeContentCommand : Command<PostId>, ICommand<UnlikeContentComma
     public static int ParametersCount { get; } = 2;
 
     public static Result<UnlikeContentCommand> Create(params object[] args) {
-        if (args.Length < ParametersCount)
-            return Error.InvalidCommand;
+        if (args.Length != ParametersCount)
+            return Error.WrongNumberOfParameters;
 
         var errors = new HashSet<Error>();
 

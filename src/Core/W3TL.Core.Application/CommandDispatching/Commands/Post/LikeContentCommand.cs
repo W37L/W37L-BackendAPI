@@ -13,7 +13,7 @@ public class LikeContentCommand : Command<PostId>, ICommand<LikeContentCommand> 
     public static int ParametersCount { get; } = 2;
 
     public static Result<LikeContentCommand> Create(params object[] args) {
-        if (args.Length < ParametersCount)
+        if (args.Length != ParametersCount)
             return Error.InvalidCommand;
 
         var errors = new HashSet<Error>();

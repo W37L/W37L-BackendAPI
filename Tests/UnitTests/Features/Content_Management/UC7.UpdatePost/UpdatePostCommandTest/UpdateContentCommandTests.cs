@@ -57,6 +57,6 @@ public class UpdateContentCommandTests {
 
         // Assert
         Assert.False(result.IsSuccess);
-        Assert.Contains(Error.InvalidCommand, result.Error.EnumerateAll());
+        Assert.Contains(Error.WrongNumberOfParameters, result.Error.EnumerateAll());
     }
 }

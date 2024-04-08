@@ -14,7 +14,7 @@ public class UpdateProfileBannerCommand : Command<UserID>, ICommand<UpdateProfil
 
     public static Result<UpdateProfileBannerCommand> Create(params object[] args) {
         if (args.Length != ParametersCount)
-            return Error.InvalidCommand;
+            return Error.WrongNumberOfParameters;
 
         var errors = new HashSet<Error>();
 
