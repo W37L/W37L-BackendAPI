@@ -1,4 +1,3 @@
-using System.Globalization;
 using ViaEventAssociation.Core.Domain.Common.Bases;
 
 namespace ViaEventAssociation.Core.Domain.Common.Values;
@@ -77,13 +76,19 @@ public class CreatedAtType : ValueObject {
         if (string.IsNullOrWhiteSpace(dateString))
             return Error.BlankOrNullString;
 
-        if (DateTime.TryParse(dateString, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out DateTime dateTime)) {
-            unixTime = ((DateTimeOffset) dateTime).ToUnixTimeSeconds();
+        if (long.TryParse(dateString, out var parsedUnixTime)) {
+            // Check if the parsed Unix time is within a reasonable range
+            // Here, we assume any date from 01/01/1970 to a future date is valid
+            if (parsedUnixTime < 0)
+                return Error.InvalidDateFormat;
+
+            unixTime = parsedUnixTime;
             return Result.Success();
         }
 
         return Error.InvalidDateFormat;
     }
+
 
     /**
      * Converts the Unix timestamp to a DateTime object.

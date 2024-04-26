@@ -5,6 +5,9 @@ using W3TL.Core.Domain.Common.Values;
 namespace W3TL.Core.Domain.Agregates.User.Entity;
 
 public class Profile : Entity<UserID> {
+    // Required for Reflection
+    private Profile() : base(default!) { }
+
     private Profile(UserID userId) : base(userId) {
         Followers = Count.Zero;
         Following = Count.Zero;
@@ -17,6 +20,7 @@ public class Profile : Entity<UserID> {
     public Count Following { get; internal set; }
     public LocationType? Location { get; private set; }
     public WebsiteType? Website { get; private set; }
+    public bool Verified { get; private set; } = false;
 
     public static Result<Profile> Create(UserID userId) {
         var profile = new Profile(userId);

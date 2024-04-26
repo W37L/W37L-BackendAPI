@@ -8,6 +8,9 @@ using W3TL.Core.Domain.Common.Values;
 using W3TL.Core.Domain.Services;
 
 public class User : AggregateRoot<UserID> {
+    // Required for Reflection
+    private User() : base(default!) { }
+
     internal User(UserID userId) : base(userId) {
         Followers = new List<User>();
         Following = new List<User>();
@@ -15,6 +18,9 @@ public class User : AggregateRoot<UserID> {
         Muted = new List<User>();
         Posts = new List<Post>();
         Likes = new List<Content>();
+        Highlights = new List<Content>();
+        ReportedUsers = new List<User>();
+        RetweetedTweets = new List<Post>();
     }
 
     private User(
@@ -38,8 +44,11 @@ public class User : AggregateRoot<UserID> {
         Following = new List<User>();
         Blocked = new List<User>();
         Muted = new List<User>();
+        Highlights = new List<Content>();
         Posts = new List<Post>();
         Likes = new List<Content>();
+        ReportedUsers = new List<User>();
+        RetweetedTweets = new List<Post>();
     }
 
     public UserNameType UserName { get; internal set; }
@@ -49,6 +58,9 @@ public class User : AggregateRoot<UserID> {
     public PubType Pub { get; internal set; }
     public CreatedAtType CreatedAt { get; internal set; }
     public Profile Profile { get; internal set; }
+    public List<Content> Highlights { get; private set; }
+    public List<User> ReportedUsers { get; private set; }
+    public List<Post> RetweetedTweets { get; private set; }
 
     public List<User> Followers { get; private set; }
     public List<User> Following { get; private set; }
@@ -58,13 +70,15 @@ public class User : AggregateRoot<UserID> {
     public List<Post> Posts { get; private set; }
     public List<Content> Likes { get; private set; }
 
-    public static Result<User> Create(UserNameType userName, NameType firstName, LastNameType lastName, EmailType email, PubType pub) {
+    public static Result<User> Create(UserNameType userName, NameType firstName, LastNameType lastName, EmailType email,
+        PubType pub) {
         var result = UserID.Generate();
         if (result.IsFailure) return result.Error;
         return Create(result.Payload, userName, firstName, lastName, email, pub);
     }
 
-    public static Result<User> Create(UserID userId, UserNameType userName, NameType firstName, LastNameType lastName, EmailType email, PubType pub) {
+    public static Result<User> Create(UserID userId, UserNameType userName, NameType firstName, LastNameType lastName,
+        EmailType email, PubType pub) {
         if (userName == null) throw new ArgumentNullException(nameof(userName));
         if (firstName == null) throw new ArgumentNullException(nameof(firstName));
         if (lastName == null) throw new ArgumentNullException(nameof(lastName));
