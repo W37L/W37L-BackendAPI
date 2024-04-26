@@ -10,8 +10,9 @@ public class CommandDispatcher : ICommandDispatcher {
     }
 
     public async Task<Result> DispatchAsync(Command command) {
-        var handlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
+        var commandType = command.GetType();
+        var handlerType = typeof(ICommandHandler<>).MakeGenericType(commandType);
         dynamic handler = _serviceProvider.GetService(handlerType) ?? throw new InvalidOperationException();
-        return await handler.HandleAsync((dynamic) command);
+        return await handler.HandleAsync((dynamic)command);
     }
 }

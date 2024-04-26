@@ -9,7 +9,8 @@ public class Post : Content {
     internal Post(PostId postId) : base(postId) { }
 
 
-    private Post(PostId postId, CreatedAtType createdAt, TheString contentTweet, Count likes, User creator, Signature signature, PostType postType, MediaUrl mediaUrl, MediaType mediaType, Content? parentPost = null)
+    private Post(PostId postId, CreatedAtType createdAt, TheString contentTweet, Count likes, User creator,
+        Signature signature, PostType postType, MediaUrl mediaUrl, MediaType mediaType, Content? parentPost = null)
         : base(postId, createdAt, contentTweet, likes, creator, signature, parentPost) {
         MediaUrl = mediaUrl;
         MediaType = mediaType;
@@ -20,10 +21,22 @@ public class Post : Content {
     public MediaUrl MediaUrl { get; internal set; }
     public MediaType MediaType { get; internal set; }
     public PostType PostType { get; internal set; }
-    internal List<Comment>? Comments { get; set; }
-
+    public List<Comment>? Comments { get; set; }
 
     public static Result<Post> Create(
+        TheString contentTweet,
+        User creator,
+        Signature signature,
+        PostType postType,
+        MediaUrl? mediaUrl = null,
+        MediaType mediaType = MediaType.Text,
+        Content? parentPost = null
+    ) {
+        return Create(null, contentTweet, creator, signature, postType, mediaUrl, mediaType, parentPost);
+    }
+
+    public static Result<Post> Create(
+        PostId pId,
         TheString contentTweet,
         User creator,
         Signature signature,
@@ -40,10 +53,11 @@ public class Post : Content {
             if (postType == null) errors.Add(Error.NullPostType);
             if (errors.Any()) return Error.CompileErrors(errors);
 
-            var postId = PostId.Generate().Payload;
+            var postId = pId == null ? PostId.Generate().Payload : pId;
             var createdAt = CreatedAtType.Create().Payload;
             var likes = Count.Zero;
-            var post = new Post(postId, createdAt, contentTweet, likes, creator, signature, postType, mediaUrl!, mediaType, parentPost!);
+            var post = new Post(postId, createdAt, contentTweet, likes, creator, signature, postType, mediaUrl!,
+                mediaType, parentPost!);
             return post;
         }
         catch (Exception ex) {

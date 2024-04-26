@@ -48,11 +48,18 @@ public class Error {
     public static Error NegativeValue => new Error("The value cannot be negative.");
     public static Error UserBlocked => new Error("The user is blocked, and the operation cannot be performed.");
     public static Error UserMuted => new Error("The user is muted, and the operation cannot be performed.");
-    public static Error UserAlreadyFollowed => new Error("The user is already followed, and the operation cannot be performed.");
+
+    public static Error UserAlreadyFollowed =>
+        new("The user is already followed, and the operation cannot be performed.");
+
     public static Error CannotFollowSelf => new Error("A user cannot follow themselves.");
     public static Error NullUser => new Error("The user cannot be null.");
-    public static Error UserNotFollowed => new Error("The user is not followed, and the operation cannot be performed.");
-    public static Error InvalidSignature => new("The signature is invalid. It must be a 128-character hexadecimal or 88-character base64 string.");
+
+    public static Error UserNotFollowed => new("The user is not followed, and the operation cannot be performed.");
+
+    public static Error InvalidSignature =>
+        new("The signature is invalid. It must be a 128-character hexadecimal or 88-character base64 string.");
+
     public static Error NullContentTweet => new("The tweet content cannot be null.");
     public static Error NullCreator => new("The creator cannot be null.");
     public static Error NullSignature => new("The signature cannot be null.");
@@ -81,12 +88,23 @@ public class Error {
     public static Error WrongNumberOfParameters => new("The number of parameters is incorrect.");
 
 
+    public static Error FromString(string message) {
+        return new Error(message);
+    }
+
     public static Error TooLongString(int maxLength) => new Error($"The string cannot exceed {maxLength} characters.");
-    public static Error TooShortName(int minLength) => new Error($"The name must be at least {minLength} characters long.");
+
+    public static Error TooShortName(int minLength) {
+        return new Error($"The name must be at least {minLength} characters long.");
+    }
+
     public static Error TooLongName(int maxLength) => new Error($"The name cannot exceed {maxLength} characters.");
     public static Error FromException(Exception exception) => new Error(exception.Message);
     public static Error TooLongBio(int maxLength) => new Error($"The biography cannot exceed {maxLength} characters.");
-    public static Error TooLongLocation(int maxLength) => new Error($"The location cannot exceed {maxLength} characters.");
+
+    public static Error TooLongLocation(int maxLength) {
+        return new Error($"The location cannot exceed {maxLength} characters.");
+    }
 
 
     /**

@@ -6,14 +6,17 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.Post;
 
-public class CreatePostHandler(IContentRepository contentRepository, IUnitOfWork unitOfWork, IUserRepository userRepository) : ICommandHandler<CreatePostCommand> {
+public class CreatePostHandler(
+    IContentRepository contentRepository,
+    IUnitOfWork unitOfWork,
+    IUserRepository userRepository) : ICommandHandler<CreatePostCommand> {
     public async Task<Result> HandleAsync(CreatePostCommand command) {
         // Search for post by id
         var result = await contentRepository.GetByIdAsync(command.Id);
         if (result.IsSuccess)
             return Error.PostAlreadyRegistered;
 
-        // Search for user by id
+        //Search for user by id
         var creator = await userRepository.GetByIdAsync(command.CreatorId);
         if (creator.IsFailure)
             return Error.UserNotFound;
@@ -28,7 +31,10 @@ public class CreatePostHandler(IContentRepository contentRepository, IUnitOfWork
         }
 
         // Create post
-        var post = global::Post.Create(command.ContentTweet, creator.Payload, command.Signature, command.PostType, command.MediaUrl, command.MediaType, parent);
+        var post = global::Post.Create(command.Id, command.ContentTweet, creator.Payload, command.Signature,
+            command.PostType, command.MediaUrl, command.MediaType, parent);
+
+        // var post = global::Post.Create(command.ContentTweet, creator.Payload, command.Signature, command.PostType, command.MediaUrl, command.MediaType, parent);
 
         if (post.IsFailure)
             return post.Error;
