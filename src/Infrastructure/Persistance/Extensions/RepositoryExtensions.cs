@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Persistance.PostPersistance;
+using Persistance.UserPersistance;
 using Persistence.UserPersistence;
 using W3TL.Core.Domain.Agregates.Post.Repository;
 using W3TL.Core.Domain.Agregates.User.Repository;
@@ -12,6 +13,7 @@ public static class RepositoryExtensions {
         //Register Repositories
         services.AddScoped<IContentRepository, PostRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IInteractionRepository, InteractionRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
     }
 }

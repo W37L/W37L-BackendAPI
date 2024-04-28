@@ -9,10 +9,11 @@ public class LikeService {
         if (liker == null || content == null)
             return Error.NullUser;
 
-        if (liker.Likes.Contains(content))
+        if (liker.Interactions.Likes.Contains(content.Id))
             errors.Add(Error.UserAlreadyLiked);
 
-        if (content.Creator.Blocked.Contains(liker) || liker.Blocked.Contains(content.Creator))
+        if (content.Creator.Interactions.Blocked.Contains(liker.Id) ||
+            liker.Interactions.Blocked.Contains(content.Creator.Id))
             errors.Add(Error.UserBlocked);
 
         if (errors.Any())
@@ -20,7 +21,7 @@ public class LikeService {
 
         try {
             //Update the liker
-            liker.Likes.Add(content);
+            liker.Interactions.Likes.Add(content.Id as PostId);
 
             //Update the post
             content.Likes.Increment();

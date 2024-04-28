@@ -9,7 +9,7 @@ public class UnlikeService {
         if (unliker == null || content == null)
             return Error.NullUser;
 
-        if (!unliker.Likes.Contains(content))
+        if (!unliker.Interactions.Likes.Contains(content.Id))
             errors.Add(Error.UserNotLiked);
 
         if (errors.Any())
@@ -17,7 +17,7 @@ public class UnlikeService {
 
         try {
             //Update the unliker
-            unliker.Likes.Remove(content);
+            unliker.Interactions.Likes.Remove(content.Id as PostId);
 
             //Update the post
             content.Likes.Decrement();

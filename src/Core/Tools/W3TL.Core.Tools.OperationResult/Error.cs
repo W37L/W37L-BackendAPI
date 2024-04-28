@@ -86,6 +86,8 @@ public class Error {
     public static Error ContentNotFound => new("The content was not found.");
     public static Error PostNotFound => new("The post was not found.");
     public static Error WrongNumberOfParameters => new("The number of parameters is incorrect.");
+    public static Error InvalidFormat => new("The value format is invalid.");
+    public static Error NotVerified => new("The user is not verified.");
 
 
     public static Error FromString(string message) {

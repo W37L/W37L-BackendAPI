@@ -7,7 +7,8 @@ public class UpdateBioTest {
     // Success Scenarios
     [Theory]
     [InlineData("Valid bio within the character limit.")] // Short bio
-    [InlineData("This bio exactly hits the 500 character limit, filled to the brim but just fitting within the constraints set by the system. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")] // Max length bio
+    [InlineData(
+        "This bio exactly hits the 500 character limit, filled to the brim but just fitting within the constraints set by the system. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")] // Max length bio
     [InlineData("Bio with\nbreaks and\ttabs.")] // Bio with special characters
     public void UpdateBio_ValidInput_ShouldUpdateSuccessfully(string? bioText) {
         // Arrange

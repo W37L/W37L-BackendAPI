@@ -41,7 +41,8 @@ public class UpdateUserHandlerTests {
 
         await _userRepository.AddAsync(user);
 
-        var command = UpdateUserCommand.Create(userId.Value, validNameToChange, firstName.Value, lastName.Value, bio.Value, location.Value, website.Url).Payload;
+        var command = UpdateUserCommand.Create(userId.Value, validNameToChange, firstName.Value, lastName.Value,
+            bio.Value, location.Value, website.Url).Payload;
 
         // Act - Update the user
         var result = await _handler.HandleAsync(command);
@@ -71,7 +72,8 @@ public class UpdateUserHandlerTests {
             .WithValidEmail(ValidFields.VALID_EMAIL)
             .Build();
 
-        var command = UpdateUserCommand.Create(userId.Value, validNameToChange, firstName.Value, lastName.Value, bio.Value, location.Value, website.Url).Payload;
+        var command = UpdateUserCommand.Create(userId.Value, validNameToChange, firstName.Value, lastName.Value,
+            bio.Value, location.Value, website.Url).Payload;
 
         // Act - Attempt to update a non-existing user
         var result = await _handler.HandleAsync(command);

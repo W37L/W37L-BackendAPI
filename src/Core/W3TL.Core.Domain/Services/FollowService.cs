@@ -8,9 +8,9 @@ public static class FollowService {
             return Error.NullUser;
         if (follower == followee)
             errors.Add(Error.CannotFollowSelf);
-        if (follower.Blocked.Contains(followee) || followee.Blocked.Contains(follower))
+        if (follower!.Interactions!.Blocked!.Contains(followee.Id))
             errors.Add(Error.UserBlocked);
-        if (follower.Following.Contains(followee))
+        if (follower.Interactions!.Following!.Contains(followee.Id))
             errors.Add(Error.UserAlreadyFollowed);
 
         if (errors.Any())
@@ -18,11 +18,11 @@ public static class FollowService {
 
         try {
             //Update the follower
-            follower.Following.Add(followee);
+            follower.Interactions.Following.Add(followee.Id);
             follower.Profile.Following.Increment();
 
             //Update the followee
-            followee.Followers.Add(follower);
+            followee.Interactions.Followers.Add(follower.Id);
             followee.Profile.Followers.Increment();
 
             return Result.Ok;

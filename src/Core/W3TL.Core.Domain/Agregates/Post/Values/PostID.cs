@@ -1,5 +1,3 @@
-namespace W3TL.Core.Domain.Agregates.Post.Values;
-
 public class PostId : ContentIDBase {
     private const string Prefix = "PID";
 

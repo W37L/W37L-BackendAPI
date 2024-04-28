@@ -1,6 +1,5 @@
 using ViaEventAssociation.Core.Domain.Aggregates.Guests;
 using ViaEventAssociation.Core.Domain.Common.Values;
-using W3TL.Core.Domain.Agregates.Post;
 using W3TL.Core.Domain.Agregates.User.Entity;
 using W3TL.Core.Domain.Agregates.User.Values;
 using W3TL.Core.Domain.Common.Bases;
@@ -11,17 +10,7 @@ public class User : AggregateRoot<UserID> {
     // Required for Reflection
     private User() : base(default!) { }
 
-    internal User(UserID userId) : base(userId) {
-        Followers = new List<User>();
-        Following = new List<User>();
-        Blocked = new List<User>();
-        Muted = new List<User>();
-        Posts = new List<Post>();
-        Likes = new List<Content>();
-        Highlights = new List<Content>();
-        ReportedUsers = new List<User>();
-        RetweetedTweets = new List<Post>();
-    }
+    internal User(UserID userId) : base(userId) { }
 
     private User(
         UserID userId,
@@ -31,7 +20,8 @@ public class User : AggregateRoot<UserID> {
         EmailType email,
         PubType pub,
         CreatedAtType createdAt,
-        Profile profile
+        Profile profile,
+        Interactions interactions
     ) : base(userId) {
         UserName = userName;
         FirstName = firstName;
@@ -40,15 +30,7 @@ public class User : AggregateRoot<UserID> {
         Pub = pub;
         CreatedAt = createdAt;
         Profile = profile;
-        Followers = new List<User>();
-        Following = new List<User>();
-        Blocked = new List<User>();
-        Muted = new List<User>();
-        Highlights = new List<Content>();
-        Posts = new List<Post>();
-        Likes = new List<Content>();
-        ReportedUsers = new List<User>();
-        RetweetedTweets = new List<Post>();
+        Interactions = interactions;
     }
 
     public UserNameType UserName { get; internal set; }
@@ -58,36 +40,23 @@ public class User : AggregateRoot<UserID> {
     public PubType Pub { get; internal set; }
     public CreatedAtType CreatedAt { get; internal set; }
     public Profile Profile { get; internal set; }
-    public List<Content> Highlights { get; private set; }
-    public List<User> ReportedUsers { get; private set; }
-    public List<Post> RetweetedTweets { get; private set; }
+    public List<PostId> Posts { get; internal set; } = new();
+    public Interactions Interactions { get; internal set; } = new();
 
-    public List<User> Followers { get; private set; }
-    public List<User> Following { get; private set; }
-    public List<User> Blocked { get; private set; }
-    public List<User> Muted { get; private set; }
-
-    public List<Post> Posts { get; private set; }
-    public List<Content> Likes { get; private set; }
-
-    public static Result<User> Create(UserNameType userName, NameType firstName, LastNameType lastName, EmailType email,
-        PubType pub) {
-        var result = UserID.Generate();
-        if (result.IsFailure) return result.Error;
-        return Create(result.Payload, userName, firstName, lastName, email, pub);
-    }
 
     public static Result<User> Create(UserID userId, UserNameType userName, NameType firstName, LastNameType lastName,
         EmailType email, PubType pub) {
-        if (userName == null) throw new ArgumentNullException(nameof(userName));
-        if (firstName == null) throw new ArgumentNullException(nameof(firstName));
-        if (lastName == null) throw new ArgumentNullException(nameof(lastName));
-        if (email == null) throw new ArgumentNullException(nameof(email));
-        if (pub == null) throw new ArgumentNullException(nameof(pub));
+        ArgumentNullException.ThrowIfNull(userId);
+        ArgumentNullException.ThrowIfNull(userName);
+        ArgumentNullException.ThrowIfNull(firstName);
+        ArgumentNullException.ThrowIfNull(lastName);
+        ArgumentNullException.ThrowIfNull(email);
+        ArgumentNullException.ThrowIfNull(pub);
         try {
             var profile = Profile.Create(userId).Payload;
             var createdAt = CreatedAtType.Create().Payload!;
-            var user = new User(userId, userName, firstName, lastName, email, pub, createdAt, profile);
+            var interactions = Interactions.Create(userId).Payload;
+            var user = new User(userId, userName, firstName, lastName, email, pub, createdAt, profile, interactions);
             return user;
         }
         catch (Exception exception) {
@@ -148,57 +117,57 @@ public class User : AggregateRoot<UserID> {
         return UnFollowService.Handle(this, user);
     }
 
-    public Result Block(User user) {
-        try {
-            if (user == null) return Error.NullUser;
-            if (Blocked.Contains(user)) return Error.UserAlreadyBlocked;
-            Blocked.Add(user);
-            return Result.Ok;
-        }
-        catch (Exception exception) {
-            return Error.FromException(exception);
-        }
-    }
-
-    public Result Unblock(User user) {
-        try {
-            if (user == null) return Error.NullUser;
-            if (!Blocked.Contains(user)) return Error.UserNotBlocked;
-            Blocked.Remove(user);
-            return Result.Ok;
-        }
-        catch (Exception exception) {
-            return Error.FromException(exception);
-        }
-    }
-
-    public Result Mute(User user) {
-        try {
-            Muted.Add(user);
-            return Result.Ok;
-        }
-        catch (Exception exception) {
-            return Error.FromException(exception);
-        }
-    }
-
-    public Result Unmute(User user) {
-        try {
-            Muted.Remove(user);
-            return Result.Ok;
-        }
-        catch (Exception exception) {
-            return Error.FromException(exception);
-        }
-    }
-
-    public Result AddPost(Post post) {
-        try {
-            Posts.Add(post);
-            return Result.Ok;
-        }
-        catch (Exception exception) {
-            return Error.FromException(exception);
-        }
-    }
+    // public Result Block(User user) {
+    //     try {
+    //         if (user == null) return Error.NullUser;
+    //         if (Blocked.Contains(user.Id)) return Error.UserAlreadyBlocked;
+    //         Blocked.Add(user.Id);
+    //         return Result.Ok;
+    //     }
+    //     catch (Exception exception) {
+    //         return Error.FromException(exception);
+    //     }
+    // }
+    //
+    // public Result Unblock(User user) {
+    //     try {
+    //         if (user == null) return Error.NullUser;
+    //         if (!Blocked.Contains(user.Id)) return Error.UserNotBlocked;
+    //         Blocked.Remove(user.Id);
+    //         return Result.Ok;
+    //     }
+    //     catch (Exception exception) {
+    //         return Error.FromException(exception);
+    //     }
+    // }
+    //
+    // public Result Mute(User user) {
+    //     try {
+    //         Muted.Add(user.Id);
+    //         return Result.Ok;
+    //     }
+    //     catch (Exception exception) {
+    //         return Error.FromException(exception);
+    //     }
+    // }
+    //
+    // public Result Unmute(User user) {
+    //     try {
+    //         Muted.Remove(user.Id);
+    //         return Result.Ok;
+    //     }
+    //     catch (Exception exception) {
+    //         return Error.FromException(exception);
+    //     }
+    // }
+    //
+    // public Result AddPost(Post post) {
+    //     try {
+    //         Posts.Add(post.Id as PostId);
+    //         return Result.Ok;
+    //     }
+    //     catch (Exception exception) {
+    //         return Error.FromException(exception);
+    //     }
+    // }
 }

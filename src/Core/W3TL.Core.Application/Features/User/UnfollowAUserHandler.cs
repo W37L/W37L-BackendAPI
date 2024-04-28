@@ -3,7 +3,10 @@ using W3TL.Core.Application.CommandDispatching.Commands.User;
 using W3TL.Core.Domain.Agregates.User.Repository;
 using W3TL.Core.Domain.Common.UnitOfWork;
 
-public class UnfollowAUserHandler(IUserRepository userRepository, IUnitOfWork unitOfWork) : ICommandHandler<UnfollowAUserCommand> {
+public class UnfollowAUserHandler(
+    IInteractionRepository interactionRepository,
+    IUserRepository userRepository,
+    IUnitOfWork unitOfWork) : ICommandHandler<UnfollowAUserCommand> {
     public async Task<Result> HandleAsync(UnfollowAUserCommand command) {
         // Search for user by id
         var result = await userRepository.GetByIdAsync(command.UserId);
@@ -19,8 +22,16 @@ public class UnfollowAUserHandler(IUserRepository userRepository, IUnitOfWork un
         result.Payload.Unfollow(userToUnfollow.Payload);
 
         // Update user
-        await userRepository.UpdateAsync(result.Payload);
-        await unitOfWork.SaveChangesAsync();
+        var res = interactionRepository.UnfollowUserAsync(result.Payload.Id.Value, userToUnfollow.Payload.Id.Value)
+            .Result
+            .OnSuccess(() => {
+                userRepository.DecrementFollowingAsync(result.Payload.Id.Value);
+                userRepository.DecrementFollowersAsync(userToUnfollow.Payload.Id.Value);
+                unitOfWork.SaveChangesAsync();
+            });
+
+        if (res.IsFailure)
+            return res;
 
         return Result.Success();
     }

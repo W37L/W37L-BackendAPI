@@ -5,29 +5,28 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.User;
 
-public class
-    UpdateUser : ApiEndpoint.WithRequest<UpdateUser.UpdateUserRequest>.WithResponse<UpdateUser.UpdateUserResponse> {
+public class UpdateUser : ApiEndpoint.WithRequest<UpdateUser.UpdateUserRequest>.WithoutResponse {
     private readonly ICommandDispatcher dispatcher;
 
     public UpdateUser(ICommandDispatcher dispatcher) {
         this.dispatcher = dispatcher;
     }
 
-    [HttpPost("user/update")]
-    public override async Task<ActionResult<UpdateUserResponse>> HandleAsync(UpdateUserRequest request) {
+    [HttpPut("user/update")]
+    public override async Task<ActionResult> HandleAsync(UpdateUserRequest request) {
         var cmd = UpdateUserCommand.Create(
             request?.UserId,
             request.UserName,
             request.FirstName,
             request.LastName,
-            request.Bio,
-            request.Location,
-            request.Website
+            request?.Bio!,
+            request?.Location!,
+            request?.Website!
         ).Payload;
 
         var result = await dispatcher.DispatchAsync(cmd);
         return result.IsSuccess
-            ? Ok(new UpdateUserResponse(cmd.Id.Value))
+            ? Ok()
             : BadRequest(result.Error.Message);
     }
 
@@ -36,9 +35,7 @@ public class
         string UserName,
         string FirstName,
         string LastName,
-        string Bio,
-        string Location,
-        string Website);
-
-    public record UpdateUserResponse(string UserId);
+        string? Bio,
+        string? Location,
+        string? Website);
 }

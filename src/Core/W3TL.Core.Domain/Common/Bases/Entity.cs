@@ -1,5 +1,3 @@
-using ViaEventAssociation.Core.Domain.Common.Bases;
-
 namespace W3TL.Core.Domain.Common.Bases;
 
 /**

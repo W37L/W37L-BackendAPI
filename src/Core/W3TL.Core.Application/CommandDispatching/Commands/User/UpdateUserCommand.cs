@@ -6,7 +6,8 @@ using W3TL.Core.Domain.Common.Values;
 namespace W3TL.Core.Application.CommandDispatching.Commands.User;
 
 public class UpdateUserCommand : Command<UserID>, ICommand<UpdateUserCommand> {
-    private UpdateUserCommand(UserID userId, UserNameType userName, NameType firstName, LastNameType lastName, BioType bio, LocationType location, WebsiteType website) : base(userId) {
+    private UpdateUserCommand(UserID userId, UserNameType userName, NameType firstName, LastNameType lastName,
+        BioType? bio, LocationType? location, WebsiteType? website) : base(userId) {
         UserName = userName;
         FirstName = firstName;
         LastName = lastName;
@@ -18,9 +19,9 @@ public class UpdateUserCommand : Command<UserID>, ICommand<UpdateUserCommand> {
     public UserNameType UserName { get; }
     public NameType FirstName { get; }
     public LastNameType LastName { get; }
-    public BioType Bio { get; }
-    public LocationType Location { get; }
-    public WebsiteType Website { get; }
+    public BioType? Bio { get; }
+    public LocationType? Location { get; }
+    public WebsiteType? Website { get; }
 
     public static int ParametersCount { get; } = 7;
 
@@ -42,18 +43,27 @@ public class UpdateUserCommand : Command<UserID>, ICommand<UpdateUserCommand> {
         var lastName = LastNameType.Create(args[3].ToString())
             .OnFailure(error => errors.Add(error));
 
-        var bio = BioType.Create(args[4].ToString())
-            .OnFailure(error => errors.Add(error));
+        var bio = args[4] == null
+            ? null
+            : BioType.Create(args[4].ToString())
+                .OnFailure(error => errors.Add(error)).Payload;
 
-        var location = LocationType.Create(args[5].ToString())
-            .OnFailure(error => errors.Add(error));
 
-        var website = WebsiteType.Create(args[6].ToString())
-            .OnFailure(error => errors.Add(error));
+        var location = args[5] == null
+            ? null
+            : LocationType.Create(args[5].ToString())
+                .OnFailure(error => errors.Add(error)).Payload;
+
+        var website = args[6] == null
+            ? null
+            : WebsiteType.Create(args[6].ToString())
+                .OnFailure(error => errors.Add(error)).Payload;
+
 
         if (errors.Any())
             return Error.CompileErrors(errors);
 
-        return new UpdateUserCommand(userId.Payload, userName.Payload, firstName.Payload, lastName.Payload, bio.Payload, location.Payload, website.Payload);
+        return new UpdateUserCommand(userId.Payload, userName.Payload, firstName.Payload, lastName.Payload, bio,
+            location, website);
     }
 }

@@ -5,16 +5,16 @@ public static class UnFollowService {
         if (follower == null || followee == null)
             return Error.NullUser;
 
-        if (!follower.Following.Contains(followee))
+        if (!follower.Interactions.Following.Contains(followee.Id))
             return Result.Fail(Error.UserNotFollowed);
 
         try {
             //Update the follower
-            follower.Following.Remove(followee);
+            follower.Interactions.Following.Remove(followee.Id);
             follower.Profile.Following.Decrement();
 
             //Update the followee
-            followee.Followers.Remove(follower);
+            followee.Interactions.Followers.Remove(follower.Id);
             followee.Profile.Followers.Decrement();
 
             return Result.Ok;

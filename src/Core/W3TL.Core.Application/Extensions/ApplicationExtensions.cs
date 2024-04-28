@@ -14,5 +14,9 @@ public static class ApplicationExtensions {
         //User
         services.AddScoped<ICommandHandler<CreateUserCommand>, CreateUserHandler>();
         services.AddScoped<ICommandHandler<UpdateUserCommand>, UpdateUserHandler>();
+        services.AddScoped<ICommandHandler<UpdateAvatarUserCommand>, UpdateAvatarHandler>();
+        services.AddScoped<ICommandHandler<UpdateProfileBannerCommand>, UpdateProfileBannerHandler>();
+        services.AddScoped<ICommandHandler<FollowAUserCommand>, FollowAUserHanldler>();
+        services.AddScoped<ICommandHandler<UnfollowAUserCommand>, UnfollowAUserHandler>();
     }
 }

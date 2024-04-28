@@ -1,4 +1,5 @@
 using System.Reflection;
+using Persistence.UserPersistence.Firebase;
 using ViaEventAssociation.Core.Domain.Aggregates.Guests;
 using ViaEventAssociation.Core.Domain.Common.Values;
 using W3TL.Core.Domain.Agregates.User.Entity;
@@ -25,14 +26,49 @@ public class Mapper {
         firebaseUser.followersCount = user.Profile.Followers.Value;
         firebaseUser.followingCount = user.Profile.Following.Value;
         firebaseUser.background = user.Profile?.Banner?.Url;
-        firebaseUser.blockedUsers = user.Followers?.Select(f => f.Id.Value).ToList();
-        firebaseUser.followers = user.Followers?.Select(f => f.Id.Value).ToList();
-        firebaseUser.following = user.Following?.Select(f => f.Id.Value).ToList();
-        firebaseUser.highlightedTweetIds = user.Highlights?.Select(h => h.Id.Value).ToList();
-        firebaseUser.likedTweetIds = user.Likes?.Select(l => l.Id.Value).ToList();
-        firebaseUser.mutedUsers = user.Muted?.Select(m => m.Id.Value).ToList();
-        firebaseUser.reportedUsers = user.ReportedUsers?.Select(r => r.Id.Value).ToList();
         return firebaseUser;
+    }
+
+    public static Result<FirebaseInteractions> MapDomainInteractionToFirebaseInteraction(Interactions interactions) {
+        var FirebaseInteractions = new FirebaseInteractions();
+        FirebaseInteractions.blockedUsers = interactions.Blocked?.Select(b => b.Value).ToList();
+        FirebaseInteractions.followers = interactions.Followers?.Select(f => f.Value).ToList();
+        FirebaseInteractions.following = interactions.Following?.Select(f => f.Value).ToList();
+        FirebaseInteractions.highlightedTweetIds = interactions.Highlights?.Select(h => h.Value).ToList();
+        FirebaseInteractions.likedTweetIds = interactions.Likes?.Select(l => l.Value).ToList();
+        FirebaseInteractions.mutedUsers = interactions.Muted?.Select(m => m.Value).ToList();
+        FirebaseInteractions.reportedUsers = interactions.ReportedUsers?.Select(r => r.Value).ToList();
+        FirebaseInteractions.retweetedTweetIds = interactions.RetweetedTweets?.Select(r => r.Value).ToList();
+        return FirebaseInteractions;
+    }
+
+    public static Result<Interactions> MapFirebaseInteractionsToDomainInteractions(
+        FirebaseInteractions firebaseInteractions) {
+        var privateConstructor = typeof(Interactions).GetConstructor(
+            BindingFlags.Instance | BindingFlags.NonPublic,
+            null,
+            new Type[] { }, // Match the parameters of the private constructor
+            null);
+
+        var interactions = (Interactions)privateConstructor.Invoke(new object[] { });
+
+        SetProperty(interactions, "Blocked",
+            firebaseInteractions.blockedUsers.Select(b => UserID.Create(b).Payload).ToList());
+        SetProperty(interactions, "Followers",
+            firebaseInteractions.followers.Select(f => UserID.Create(f).Payload).ToList());
+        SetProperty(interactions, "Following",
+            firebaseInteractions.following.Select(f => UserID.Create(f).Payload).ToList());
+        SetProperty(interactions, "Highlights",
+            firebaseInteractions.highlightedTweetIds.Select(h => PostId.Create(h).Payload).ToList());
+        SetProperty(interactions, "Likes",
+            firebaseInteractions.likedTweetIds.Select(l => PostId.Create(l).Payload).ToList());
+        SetProperty(interactions, "Muted",
+            firebaseInteractions.mutedUsers.Select(m => UserID.Create(m).Payload).ToList());
+        SetProperty(interactions, "ReportedUsers",
+            firebaseInteractions.reportedUsers.Select(r => UserID.Create(r).Payload).ToList());
+        SetProperty(interactions, "RetweetedTweets",
+            firebaseInteractions.retweetedTweetIds.Select(r => PostId.Create(r).Payload).ToList());
+        return interactions;
     }
 
 
@@ -130,8 +166,21 @@ public class Mapper {
         // ser the profile to the user
         SetProperty(user, "Profile", profile);
 
+        // //map the lists
+        // SetProperty(user, "Followers", firebaseUser.followers.Select(f => UserID.Create(f).Payload).ToList());
+        // SetProperty(user, "Following", firebaseUser.following.Select(f => UserID.Create(f).Payload).ToList());
+        // SetProperty(user, "Blocked", firebaseUser.blockedUsers.Select(f => UserID.Create(f).Payload).ToList());
+        // SetProperty(user, "Muted", firebaseUser.mutedUsers.Select(f => UserID.Create(f).Payload).ToList());
+        // SetProperty(user, "Likes", firebaseUser.likedTweetIds.Select(f => PostId.Create(f).Payload).ToList());
+        // SetProperty(user, "Posts", firebaseUser.highlightedTweetIds.Select(f => PostId.Create(f).Payload).ToList());
+        // SetProperty(user, "Highlights", firebaseUser.highlightedTweetIds.Select(f => PostId.Create(f).Payload).ToList());
+        // SetProperty(user, "ReportedUsers", firebaseUser.reportedUsers.Select(f => UserID.Create(f).Payload).ToList());
+        // SetProperty(user, "RetweetedTweets", firebaseUser.retweetedTweetIds.Select(f => PostId.Create(f).Payload).ToList());
+        //
+
         return user;
     }
+
 
     private static void SetProperty(object obj, string propertyName, object value) {
         var propertyInfo = obj.GetType().GetProperty(

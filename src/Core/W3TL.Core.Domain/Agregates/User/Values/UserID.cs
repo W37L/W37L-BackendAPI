@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using W3TL.Core.Domain.Common.Bases;
 
 namespace W3TL.Core.Domain.Common.Values;
@@ -9,15 +10,15 @@ namespace W3TL.Core.Domain.Common.Values;
  * specific format and validation rules.
  */
 public class UserID : IdentityBase {
-    private const string? PREFIX = "UID";
-    private const int EXPECTED_LENGTH = 40; // Including PREFIX + GUID length.
+    private const string? PREFIX = "";
+    private const int EXPECTED_LENGTH = 28; // Including PREFIX + GUID length.
 
     /**
      * Private constructor to enforce factory method usage for UserId instantiation.
      *
      * @param value The unique identifier value for the UserId, including the PREFIX.
      */
-    private UserID(string? value) : base(PREFIX) { }
+    // private UserID(string? value) : base(PREFIX) { }
 
     /**
      * Private constructor to enforce factory method usage for UserId instantiation.
@@ -34,14 +35,14 @@ public class UserID : IdentityBase {
      *
      * @return A Result containing a new UserId instance or an error if generation fails.
      */
-    public static Result<UserID> Generate() {
-        try {
-            return new UserID(PREFIX);
-        }
-        catch (Exception exception) {
-            return Error.FromException(exception);
-        }
-    }
+    // public static Result<UserID> Generate() {
+    //     try {
+    //         return new UserID(PREFIX);
+    //     }
+    //     catch (Exception exception) {
+    //         return Error.FromException(exception);
+    //     }
+    // }
 
     /**
      * Validates and creates a UserId from a provided string value. This method
@@ -75,8 +76,9 @@ public class UserID : IdentityBase {
         if (value.Length != EXPECTED_LENGTH)
             errors.Add(Error.InvalidLength);
 
-        if (!value.StartsWith(PREFIX))
-            errors.Add(Error.InvalidPrefix);
+        // follow the regex pattern for the prefix ^[a-zA-Z0-9]{28}$
+        if (!Regex.IsMatch(value, @"^[a-zA-Z0-9]{28}$"))
+            errors.Add(Error.InvalidFormat);
 
         if (errors.Any())
             return Error.CompileErrors(errors);

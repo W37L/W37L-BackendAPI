@@ -25,6 +25,8 @@
 
     <ItemGroup>
       <Folder Include="Common\OperationResult\" />
+        <Folder Include="Features\Account_Management\UC2.UpdateUser\UpdateUserBanner\"/>
+        <Folder Include="Features\Account_Management\UC2.UpdateUser\UpdateUserFields\"/>
     </ItemGroup>
 
     <ItemGroup>

@@ -45,8 +45,77 @@ public class UserRepository : IUserRepository {
         }
     }
 
+    public async Task<Result> UpdateFieldAsync(string userId, string fieldName, string fieldValue) {
+        var docRef = db.Collection("users").Document(userId);
+
+        try {
+            // Create a dictionary to specify which field to update
+            var updates = new Dictionary<string, object> {
+                { fieldName, fieldValue }
+            };
+
+            // Update the specific field in the Firestore document
+            await docRef.UpdateAsync(updates);
+            return Result.Success();
+        }
+        catch (Exception ex) {
+            return Error.FromException(ex);
+        }
+    }
+
+    public Task<Result> IncrementFollowersAsync(string userId) {
+        var docRef = db.Collection("users").Document(userId);
+        var updates = new Dictionary<string, object> {
+            { "followersCount", FieldValue.Increment(1) }
+        };
+        return docRef.UpdateAsync(updates).ContinueWith(t => {
+            if (t.IsFaulted) return Error.FromException(t.Exception);
+            return Result.Success();
+        });
+    }
+
+    public Task<Result> DecrementFollowersAsync(string userId) {
+        var docRef = db.Collection("users").Document(userId);
+        var updates = new Dictionary<string, object> {
+            { "followersCount", FieldValue.Increment(-1) }
+        };
+        return docRef.UpdateAsync(updates).ContinueWith(t => {
+            if (t.IsFaulted) return Error.FromException(t.Exception);
+            return Result.Success();
+        });
+    }
+
+    public Task<Result> IncrementFollowingAsync(string userId) {
+        var docRef = db.Collection("users").Document(userId);
+        var updates = new Dictionary<string, object> {
+            { "followingCount", FieldValue.Increment(1) }
+        };
+        return docRef.UpdateAsync(updates).ContinueWith(t => {
+            if (t.IsFaulted) return Error.FromException(t.Exception);
+            return Result.Success();
+        });
+    }
+
+    public Task<Result> DecrementFollowingAsync(string userId) {
+        var docRef = db.Collection("users").Document(userId);
+        var updates = new Dictionary<string, object> {
+            { "followingCount", FieldValue.Increment(-1) }
+        };
+        return docRef.UpdateAsync(updates).ContinueWith(t => {
+            if (t.IsFaulted) return Error.FromException(t.Exception);
+            return Result.Success();
+        });
+    }
+
+
     public Task<Result> DeleteAsync(UserID id) {
         throw new NotImplementedException();
+    }
+
+    public async Task<Result> ExistsAsync(UserID id) {
+        var docRef = db.Collection("users").Document(id.Value);
+        var snapshot = await docRef.GetSnapshotAsync();
+        return snapshot.Exists ? Result.Success() : Error.UserNotFound;
     }
 
     public async Task<Result<User>> GetByIdAsync(UserID id) {
@@ -59,38 +128,6 @@ public class UserRepository : IUserRepository {
 
         return Error.UserNotFound;
     }
-
-    // public async Task<Result<User>> GetByIdAsync(UserID id) {
-    //     DocumentReference docRef = db.Collection("users").Document(id.Value);
-    //     DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
-    //     if (snapshot.Exists) {
-    //         Dictionary<string, object> user = snapshot.ToDictionary();
-    //         Console.WriteLine(user);
-    //         return Result.Success(User.Create(id, user["Name"].ToString(), user["Email"].ToString()));
-    //         ));
-    //     }
-    //
-    // }
-
-    // public async Task<Result<User>> GetByIdAsync(UserID id) {
-    //     // create mock with this values
-    //     // public static Result<User> Create(UserID userId, UserNameType userName, NameType firstName, LastNameType lastName, EmailType email, PubType pub
-    //     var docRef = db.Collection("users").Document(id.Value);
-    //     var snapshot = await docRef.GetSnapshotAsync();
-    //     if (snapshot.Exists) {
-    //         Dictionary<string, object> user = snapshot.ToDictionary();
-    //         Console.WriteLine(user);
-    //         var userId = id;
-    //         var userName = UserNameType.Create(user["username"].ToString()).Payload;
-    //         var firstName = NameType.Create(user["name"].ToString()).Payload;
-    //         var lastName = LastNameType.Create(user["lastname"].ToString()).Payload;
-    //         var email = EmailType.Create(user["email"].ToString()).Payload;
-    //         var pub = PubType.Create(user["pub"].ToString()).Payload;
-    //         return User.Create(userId, userName, firstName, lastName, email, pub).Payload;
-    //     }
-    //
-    //     return Error.ExampleError;
-    // }
 
 
     public Task<Result<List<User>>> GetAllAsync() {

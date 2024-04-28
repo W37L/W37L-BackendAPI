@@ -5,7 +5,8 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.User;
 
-public class UnblockUserHandler(IUserRepository userRepository, IUnitOfWork unitOfWork) : ICommandHandler<UnblockUserCommand> {
+public class UnblockUserHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+    : ICommandHandler<UnblockUserCommand> {
     public async Task<Result> HandleAsync(UnblockUserCommand command) {
         // Search for user by id
         var result = await userRepository.GetByIdAsync(command.Id);
@@ -18,10 +19,10 @@ public class UnblockUserHandler(IUserRepository userRepository, IUnitOfWork unit
             return Error.UserNotFound;
 
         // Unblock user
-        var unblock = result.Payload.Unblock(blockedUser.Payload);
+        // var unblock = result.Payload.Unblock(blockedUser.Payload);
 
-        if (unblock.IsFailure)
-            return unblock.Error;
+        // if (unblock.IsFailure)
+        //     return unblock.Error;
 
         // Add unblock to repository
         await userRepository.UpdateAsync(result.Payload);
