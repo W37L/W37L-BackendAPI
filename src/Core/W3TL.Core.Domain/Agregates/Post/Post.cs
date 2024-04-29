@@ -5,6 +5,8 @@ using W3TL.Core.Domain.Agregates.Post.Values;
 using W3TL.Core.Domain.Agregates.User.Entity.Values;
 
 public class Post : Content {
+    private Post() : base(default) { } //EF Core
+
     //Constructor for the Test Factory
     internal Post(PostId postId) : base(postId) { }
 

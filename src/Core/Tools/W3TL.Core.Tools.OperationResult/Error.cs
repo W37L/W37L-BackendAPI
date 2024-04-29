@@ -88,6 +88,8 @@ public class Error {
     public static Error WrongNumberOfParameters => new("The number of parameters is incorrect.");
     public static Error InvalidFormat => new("The value format is invalid.");
     public static Error NotVerified => new("The user is not verified.");
+    public static Error TweetAlreadyLiked => new("The tweet is already liked.");
+    public static Error TweetNotLiked => new("The tweet is not liked.");
 
 
     public static Error FromString(string message) {

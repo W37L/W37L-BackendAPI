@@ -6,20 +6,23 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.Post;
 
-public class UnlikeContentHandler(IContentRepository contentRepository, IUnitOfWork unitOfWork, IUserRepository userRepository) : ICommandHandler<UnlikeContentCommand> {
+public class UnlikeContentHandler(
+    IContentRepository contentRepository,
+    IUnitOfWork unitOfWork,
+    IUserRepository userRepository,
+    IInteractionRepository interactionRepository) : ICommandHandler<UnlikeContentCommand> {
     public async Task<Result> HandleAsync(UnlikeContentCommand command) {
         // Search for post by id
-        var result = await contentRepository.GetByIdAsync(command.Id);
+        var unliker = await userRepository.GetByIdAsync(command.UnlikerId);
+        if (unliker.IsFailure)
+            return Error.UserNotFound;
+
+        var result = await contentRepository.GetByFullIdAsync(command.Id, unliker.Payload);
 
         if (result.IsFailure)
             return Error.PostNotFound;
 
         if (result.Payload is global::Post post) {
-            // Search for user by id
-            var unliker = await userRepository.GetByIdAsync(command.UnlikerId);
-            if (unliker.IsFailure)
-                return Error.UserNotFound;
-
             // Unlike post
             var unlike = post.Unlike(unliker.Payload);
 
@@ -28,7 +31,7 @@ public class UnlikeContentHandler(IContentRepository contentRepository, IUnitOfW
 
             // Add unlike to repository
             await contentRepository.UpdateAsync(post);
-            await userRepository.UpdateAsync(unliker.Payload);
+            await interactionRepository.UnlikeTweetAsync(unliker.Payload.Id.Value, post.Id.Value);
             await unitOfWork.SaveChangesAsync();
 
             return Result.Success();

@@ -10,7 +10,9 @@ public class User : AggregateRoot<UserID> {
     // Required for Reflection
     private User() : base(default!) { }
 
-    internal User(UserID userId) : base(userId) { }
+    internal User(UserID userId) : base(userId) {
+        Interactions = Interactions.Create(userId).Payload;
+    }
 
     private User(
         UserID userId,
@@ -41,7 +43,7 @@ public class User : AggregateRoot<UserID> {
     public CreatedAtType CreatedAt { get; internal set; }
     public Profile Profile { get; internal set; }
     public List<PostId> Posts { get; internal set; } = new();
-    public Interactions Interactions { get; internal set; } = new();
+    public Interactions Interactions { get; internal set; }
 
 
     public static Result<User> Create(UserID userId, UserNameType userName, NameType firstName, LastNameType lastName,

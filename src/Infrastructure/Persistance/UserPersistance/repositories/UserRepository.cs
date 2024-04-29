@@ -1,5 +1,6 @@
 using Google.Apis.Util;
 using Google.Cloud.Firestore;
+using Persistence.UserPersistence.Firebase;
 using W3TL.Core.Domain.Agregates.User.Repository;
 using W3TL.Core.Domain.Common.Values;
 
@@ -119,14 +120,20 @@ public class UserRepository : IUserRepository {
     }
 
     public async Task<Result<User>> GetByIdAsync(UserID id) {
-        var docRef = db.Collection("users").Document(id.Value);
-        var snapshot = await docRef.GetSnapshotAsync();
-        if (snapshot.Exists) {
-            var firebaseUser = snapshot.ConvertTo<FirebaseUser>();
-            return Mapper.MapFirebaseUserToDomainUser(firebaseUser);
-        }
+        var userDocRef = db.Collection("users").Document(id.Value);
+        var userSnapshot = await userDocRef.GetSnapshotAsync();
+        if (!userSnapshot.Exists) return Error.UserNotFound;
 
-        return Error.UserNotFound;
+        var firebaseUser = userSnapshot.ConvertTo<FirebaseUser>();
+        var interactionsDocRef = userDocRef.Collection("interactions").Document("data");
+        var interactionsSnapshot = await interactionsDocRef.GetSnapshotAsync();
+        if (interactionsSnapshot.Exists)
+            firebaseUser.Interactions = interactionsSnapshot.ConvertTo<FirebaseInteractions>();
+        else
+            // Handle the case where no interactions are found, could initialize to default or handle as an error
+            firebaseUser.Interactions = new FirebaseInteractions(); // Initialize with empty or default values
+
+        return Mapper.MapFirebaseUserToDomainUser(firebaseUser);
     }
 
 

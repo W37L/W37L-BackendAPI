@@ -1,4 +1,5 @@
 using Google.Cloud.Firestore;
+using Persistence.UserPersistence.Firebase;
 
 namespace Persistence.UserPersistence;
 
@@ -33,4 +34,6 @@ public class FirebaseUser {
     [FirestoreProperty("background")] public string? background { get; set; }
 
     [FirestoreProperty("pub")] public string? pub { get; set; }
+
+    public FirebaseInteractions Interactions { get; set; } // Add this line
 }

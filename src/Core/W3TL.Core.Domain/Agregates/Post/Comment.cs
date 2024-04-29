@@ -4,9 +4,12 @@ using W3TL.Core.Domain.Agregates.Post.Values;
 using W3TL.Core.Domain.Agregates.User.Entity.Values;
 
 public class Comment : Content {
+    private Comment() : base(default!) { } //EF Core
+
     internal Comment(PostId postId) : base(postId) { }
 
-    private protected Comment(PostId postId, CreatedAtType createdAt, TheString contentTweet, Count likes, User creator, Signature signature, Content parentPost)
+    private protected Comment(PostId postId, CreatedAtType createdAt, TheString contentTweet, Count likes, User creator,
+        Signature signature, Content parentPost)
         : base(postId, createdAt, contentTweet, likes, creator, signature, parentPost) { }
 
     public static Result<Comment> Create(
@@ -32,7 +35,8 @@ public class Comment : Content {
         if (errors.Any())
             return Error.CompileErrors(errors);
 
-        var comment = new Comment(postId.Payload, createdAt.Payload, contentTweet, likes!, creator, signature, parentPost);
+        var comment = new Comment(postId.Payload, createdAt.Payload, contentTweet, likes!, creator, signature,
+            parentPost);
         return comment;
     }
 }

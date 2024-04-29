@@ -1,6 +1,5 @@
 using Google.Cloud.Firestore;
 using Persistence.UserPersistence.Firebase;
-using W3TL.Core.Domain.Agregates.User.Entity;
 using W3TL.Core.Domain.Agregates.User.Repository;
 
 namespace Persistance.UserPersistance;
@@ -148,13 +147,59 @@ public class InteractionRepository : IInteractionRepository {
         throw new NotImplementedException();
     }
 
-    public Task<Result> LikeTweetAsync(string userId, string tweetId) {
-        throw new NotImplementedException();
+    public async Task<Result> LikeTweetAsync(string userId, string tweetId) {
+        var interactionRef = db.Collection("users").Document(userId).Collection("interactions").Document("data");
+
+        return await db.RunTransactionAsync<Result>(async transaction => {
+            var snapshot = await transaction.GetSnapshotAsync(interactionRef);
+
+            FirebaseInteractions interactions;
+            if (snapshot.Exists) {
+                interactions = snapshot.ConvertTo<FirebaseInteractions>();
+
+                // Initialize the list if it's null (e.g., due to data corruption or partial updates)
+                if (interactions.likedTweetIds == null) interactions.likedTweetIds = new List<string>();
+
+                if (!interactions.likedTweetIds.Contains(tweetId)) {
+                    interactions.likedTweetIds.Add(tweetId);
+                    transaction.Update(interactionRef, "likedTweetIds", interactions.likedTweetIds);
+                    return Result.Ok;
+                }
+
+                return Error.TweetAlreadyLiked;
+            }
+
+            // Here the document does not exist, so we create it with the tweetId in the list
+            interactions = new FirebaseInteractions {
+                likedTweetIds = new List<string> { tweetId }
+            };
+            transaction.Set(interactionRef, interactions);
+            return Result.Ok;
+        });
     }
 
-    public Task<Result> UnlikeTweetAsync(string userId, string tweetId) {
-        throw new NotImplementedException();
+
+    public async Task<Result> UnlikeTweetAsync(string userId, string tweetId) {
+        var interactionRef = db.Collection("users").Document(userId).Collection("interactions").Document("data");
+
+        return await db.RunTransactionAsync<Result>(async transaction => {
+            var snapshot = await transaction.GetSnapshotAsync(interactionRef);
+
+            if (snapshot.Exists) {
+                var interactions = snapshot.ConvertTo<FirebaseInteractions>();
+                if (interactions.likedTweetIds.Contains(tweetId)) {
+                    interactions.likedTweetIds.Remove(tweetId);
+                    transaction.Update(interactionRef, "likedTweetIds", interactions.likedTweetIds);
+                    return Result.Ok;
+                }
+
+                return Error.TweetNotLiked;
+            }
+
+            return Error.UserNotFound;
+        });
     }
+
 
     public Task<Result> RetweetAsync(string userId, string tweetId) {
         throw new NotImplementedException();
@@ -169,14 +214,6 @@ public class InteractionRepository : IInteractionRepository {
     }
 
     public Task<Result> UnhighlightTweetAsync(string userId, string tweetId) {
-        throw new NotImplementedException();
-    }
-
-    public Task<Result> ExistsAsync(string userId) {
-        throw new NotImplementedException();
-    }
-
-    public Task<Result<Interactions>> GetInteractionsAsync(string userId) {
         throw new NotImplementedException();
     }
 }

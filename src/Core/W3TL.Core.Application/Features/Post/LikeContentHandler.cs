@@ -6,29 +6,32 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.Post;
 
-public class LikeContentHandler(IContentRepository contentRepository, IUnitOfWork unitOfWork, IUserRepository userRepository) : ICommandHandler<LikeContentCommand> {
+public class LikeContentHandler(
+    IContentRepository contentRepository,
+    IUnitOfWork unitOfWork,
+    IUserRepository userRepository,
+    IInteractionRepository interactionRepository) : ICommandHandler<LikeContentCommand> {
     public async Task<Result> HandleAsync(LikeContentCommand command) {
         // Search for post by id
-        var result = await contentRepository.GetByIdAsync(command.Id);
+        var userResult = await userRepository.GetByIdAsync(command.LikerId);
+        if (userResult.IsFailure)
+            return Error.UserNotFound;
+
+        var result = await contentRepository.GetByFullIdAsync(command.Id, userResult.Payload);
 
         if (result.IsFailure)
             return Error.PostNotFound;
 
         if (result.Payload is global::Post post) {
-            // Search for user by id
-            var liker = await userRepository.GetByIdAsync(command.LikerId);
-            if (liker.IsFailure)
-                return Error.UserNotFound;
-
             // Like post
-            var like = post.Like(liker.Payload);
+            var like = post.Like(userResult.Payload);
 
             if (like.IsFailure)
                 return like.Error;
 
             // Add like to repository
             await contentRepository.UpdateAsync(post);
-            await userRepository.UpdateAsync(liker.Payload);
+            await interactionRepository.LikeTweetAsync(userResult.Payload.Id.Value, post.Id.Value);
             await unitOfWork.SaveChangesAsync();
 
             return Result.Success();

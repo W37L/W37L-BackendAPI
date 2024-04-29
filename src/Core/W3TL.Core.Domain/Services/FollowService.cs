@@ -10,7 +10,7 @@ public static class FollowService {
             errors.Add(Error.CannotFollowSelf);
         if (follower!.Interactions!.Blocked!.Contains(followee.Id))
             errors.Add(Error.UserBlocked);
-        if (follower.Interactions!.Following!.Contains(followee.Id))
+        if (follower!.Interactions!.Following!.Contains(followee.Id))
             errors.Add(Error.UserAlreadyFollowed);
 
         if (errors.Any())

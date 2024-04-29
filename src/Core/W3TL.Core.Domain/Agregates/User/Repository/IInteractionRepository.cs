@@ -1,5 +1,3 @@
-using W3TL.Core.Domain.Agregates.User.Entity;
-
 namespace W3TL.Core.Domain.Agregates.User.Repository;
 
 public interface IInteractionRepository {
@@ -17,6 +15,4 @@ public interface IInteractionRepository {
     Task<Result> UnretweetAsync(string userId, string tweetId);
     Task<Result> HighlightTweetAsync(string userId, string tweetId);
     Task<Result> UnhighlightTweetAsync(string userId, string tweetId);
-    Task<Result> ExistsAsync(string userId);
-    Task<Result<Interactions>> GetInteractionsAsync(string userId);
 }
