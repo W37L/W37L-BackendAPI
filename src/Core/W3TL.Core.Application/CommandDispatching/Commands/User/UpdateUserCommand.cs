@@ -43,18 +43,18 @@ public class UpdateUserCommand : Command<UserID>, ICommand<UpdateUserCommand> {
         var lastName = LastNameType.Create(args[3].ToString())
             .OnFailure(error => errors.Add(error));
 
-        var bio = args[4] == null
+        var bio = args[4] == null || args[4].ToString() == string.Empty
             ? null
             : BioType.Create(args[4].ToString())
                 .OnFailure(error => errors.Add(error)).Payload;
 
 
-        var location = args[5] == null
+        var location = args[5] == null || args[5].ToString() == string.Empty
             ? null
             : LocationType.Create(args[5].ToString())
                 .OnFailure(error => errors.Add(error)).Payload;
 
-        var website = args[6] == null
+        var website = args[6] == null || args[6].ToString() == string.Empty
             ? null
             : WebsiteType.Create(args[6].ToString())
                 .OnFailure(error => errors.Add(error)).Payload;

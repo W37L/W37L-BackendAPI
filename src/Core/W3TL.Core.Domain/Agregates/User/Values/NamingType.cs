@@ -40,7 +40,7 @@ public abstract class NamingType : ValueObject {
         else {
             if (string.IsNullOrWhiteSpace(name))
                 errors.Add(Error.BlankOrNullString);
-            if (!Regex.IsMatch(name, @"^[a-zA-Z]+$"))
+            if (!Regex.IsMatch(name, @"^\W*[a-zA-Z]+(?: \W*[a-zA-Z]+)*\W*$"))
                 errors.Add(Error.InvalidName);
             if (name.Length < MIN_LENGTH)
                 errors.Add(Error.TooShortName(MIN_LENGTH));

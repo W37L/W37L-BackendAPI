@@ -29,14 +29,14 @@ public class InteractionRepository : IInteractionRepository {
             var userASnapshot = await transaction.GetSnapshotAsync(userAInteractionRef);
             var userBSnapshot = await transaction.GetSnapshotAsync(userBInteractionRef);
 
-            FirebaseInteractions userAInteractions;
-            FirebaseInteractions userBInteractions;
+            InteractionsDTO userAInteractions;
+            InteractionsDTO userBInteractions;
 
             // Initialize or convert user A interactions
             if (userASnapshot.Exists)
-                userAInteractions = userASnapshot.ConvertTo<FirebaseInteractions>();
+                userAInteractions = userASnapshot.ConvertTo<InteractionsDTO>();
             else
-                userAInteractions = new FirebaseInteractions {
+                userAInteractions = new InteractionsDTO {
                     following = new List<string>(),
                     followers = new List<string>(),
                     blockedUsers = new List<string>()
@@ -44,9 +44,9 @@ public class InteractionRepository : IInteractionRepository {
 
             // Initialize or convert user B interactions
             if (userBSnapshot.Exists)
-                userBInteractions = userBSnapshot.ConvertTo<FirebaseInteractions>();
+                userBInteractions = userBSnapshot.ConvertTo<InteractionsDTO>();
             else
-                userBInteractions = new FirebaseInteractions {
+                userBInteractions = new InteractionsDTO {
                     following = new List<string>(),
                     followers = new List<string>(),
                     blockedUsers = new List<string>()
@@ -94,18 +94,18 @@ public class InteractionRepository : IInteractionRepository {
             var userASnapshot = await transaction.GetSnapshotAsync(userAInteractionRef);
             var userBSnapshot = await transaction.GetSnapshotAsync(userBInteractionRef);
 
-            FirebaseInteractions userAInteractions;
-            FirebaseInteractions userBInteractions;
+            InteractionsDTO userAInteractions;
+            InteractionsDTO userBInteractions;
 
             // Initialize or convert user A interactions
             if (userASnapshot.Exists)
-                userAInteractions = userASnapshot.ConvertTo<FirebaseInteractions>();
+                userAInteractions = userASnapshot.ConvertTo<InteractionsDTO>();
             else
                 return Error.UserNotFound;
 
             // Initialize or convert user B interactions
             if (userBSnapshot.Exists)
-                userBInteractions = userBSnapshot.ConvertTo<FirebaseInteractions>();
+                userBInteractions = userBSnapshot.ConvertTo<InteractionsDTO>();
             else
                 return Error.UserNotFound;
 
@@ -153,9 +153,9 @@ public class InteractionRepository : IInteractionRepository {
         return await db.RunTransactionAsync<Result>(async transaction => {
             var snapshot = await transaction.GetSnapshotAsync(interactionRef);
 
-            FirebaseInteractions interactions;
+            InteractionsDTO interactions;
             if (snapshot.Exists) {
-                interactions = snapshot.ConvertTo<FirebaseInteractions>();
+                interactions = snapshot.ConvertTo<InteractionsDTO>();
 
                 // Initialize the list if it's null (e.g., due to data corruption or partial updates)
                 if (interactions.likedTweetIds == null) interactions.likedTweetIds = new List<string>();
@@ -170,7 +170,7 @@ public class InteractionRepository : IInteractionRepository {
             }
 
             // Here the document does not exist, so we create it with the tweetId in the list
-            interactions = new FirebaseInteractions {
+            interactions = new InteractionsDTO {
                 likedTweetIds = new List<string> { tweetId }
             };
             transaction.Set(interactionRef, interactions);
@@ -186,7 +186,7 @@ public class InteractionRepository : IInteractionRepository {
             var snapshot = await transaction.GetSnapshotAsync(interactionRef);
 
             if (snapshot.Exists) {
-                var interactions = snapshot.ConvertTo<FirebaseInteractions>();
+                var interactions = snapshot.ConvertTo<InteractionsDTO>();
                 if (interactions.likedTweetIds.Contains(tweetId)) {
                     interactions.likedTweetIds.Remove(tweetId);
                     transaction.Update(interactionRef, "likedTweetIds", interactions.likedTweetIds);

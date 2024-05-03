@@ -1,7 +1,7 @@
 public class PostId : ContentIDBase {
     private const string Prefix = "PID";
 
-    private PostId(string? value) : base(Prefix) { }
+    private PostId(string? prefix) : base(Prefix) { }
 
     private PostId(string? prefix, string? value) : base(prefix, value) { }
 

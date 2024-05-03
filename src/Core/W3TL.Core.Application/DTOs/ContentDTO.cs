@@ -1,3 +1,5 @@
+namespace ObjectMapper.DTO;
+
 public class ContentDTO {
     public string PostId { get; set; }
     public string UserId { get; set; }
@@ -14,4 +16,5 @@ public class ContentDTO {
     public string UserPub { get; set; }
     public string Signature { get; set; }
     public bool IsDeleted { get; set; }
+    List<ContentDTO> Comms { get; set; }
 }

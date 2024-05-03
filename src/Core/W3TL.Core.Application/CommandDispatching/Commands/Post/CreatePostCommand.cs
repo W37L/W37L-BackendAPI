@@ -4,7 +4,8 @@ using W3TL.Core.Domain.Agregates.Post.Values;
 using W3TL.Core.Domain.Common.Values;
 
 public class CreatePostCommand : Command<PostId>, ICommand<CreatePostCommand> {
-    private CreatePostCommand(PostId postId, TheString contentTweet, UserID creatorId, Signature signature, PostType postType, MediaUrl? mediaUrl, MediaType mediaType, PostId? parentPostId) : base(postId) {
+    private CreatePostCommand(PostId postId, TheString contentTweet, UserID creatorId, Signature signature,
+        PostType postType, MediaUrl? mediaUrl, MediaType mediaType, PostId? parentPostId) : base(postId) {
         ContentTweet = contentTweet;
         CreatorId = creatorId;
         Signature = signature;
@@ -32,7 +33,10 @@ public class CreatePostCommand : Command<PostId>, ICommand<CreatePostCommand> {
 
         var errors = new HashSet<Error>();
 
-        var postIdResult = PostId.Create(args[0].ToString());
+        var postIdResult = (args[0] == null) || string.IsNullOrWhiteSpace(args[0]?.ToString())
+            ? PostId.Generate()
+            : PostId.Create(args[0].ToString());
+
         if (postIdResult.IsFailure) errors.Add(postIdResult.Error);
 
         var contentTweetResult = TheString.Create(args[1].ToString());
@@ -95,6 +99,7 @@ public class CreatePostCommand : Command<PostId>, ICommand<CreatePostCommand> {
         }
 
         // Assuming creator creation/fetching is handled correctly and you pass it to the constructor.
-        return new CreatePostCommand(postIdResult.Payload, contentTweetResult.Payload, creatorIdResult.Payload, signatureResult.Payload, postType, mediaUrl, mediaType, parentPostId);
+        return new CreatePostCommand(postIdResult.Payload, contentTweetResult.Payload, creatorIdResult.Payload,
+            signatureResult.Payload, postType, mediaUrl, mediaType, parentPostId);
     }
 }

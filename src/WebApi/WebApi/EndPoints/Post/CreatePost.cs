@@ -1,9 +1,12 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using W3TL.Core.Application.CommandDispatching.Dispatcher;
 using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.Post;
 
+[Authorize]
 public class
     CreatePost : ApiEndpoint.WithRequest<CreatePost.CreatePostRequest>.WithResponse<CreatePost.CreatePostResponse> {
     private readonly ICommandDispatcher _dispatcher;
@@ -14,25 +17,28 @@ public class
 
     [HttpPost("post/create")]
     public override async Task<ActionResult<CreatePostResponse>> HandleAsync(CreatePostRequest request) {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized(Error.UnAuthorized);
+
         var cmd = CreatePostCommand.Create(
             request?.PostId,
             request.Content,
-            request.UserId,
+            userId,
             request.Signature,
             request.Type,
             request.MediaUrl!,
             request.MediaType!,
             request.ParentPostId!
-        );
-
-        if (cmd.IsFailure)
-            return BadRequest(cmd.Error);
+        ).OnFailure(error => BadRequest(error));
 
 
         var result = await _dispatcher.DispatchAsync(cmd.Payload);
+
         return result.IsSuccess
-            ? Ok(new CreatePostResponse(cmd.Payload.Id.Value))
-            : BadRequest(result.Error.Message);
+            ? Ok(new CreatePostResponse(cmd.Payload.Id.Value, true, null))
+            : BadRequest(new CreatePostResponse(null, false, result.Error));
     }
 
     public record CreatePostRequest(
@@ -45,5 +51,5 @@ public class
         string? MediaType,
         string? ParentPostId);
 
-    public record CreatePostResponse(string Id);
+    public record CreatePostResponse(string Id, bool Success, Error error);
 }

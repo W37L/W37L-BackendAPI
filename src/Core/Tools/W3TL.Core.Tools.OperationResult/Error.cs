@@ -90,10 +90,21 @@ public class Error {
     public static Error NotVerified => new("The user is not verified.");
     public static Error TweetAlreadyLiked => new("The tweet is already liked.");
     public static Error TweetNotLiked => new("The tweet is not liked.");
+    public static Error EmailAlreadyRegistered => new("The email is already registered.");
+    public static Error UserNameAlreadyRegistered => new("The username is already registered.");
+    public static Error UnAuthorized { get; set; } = new Error("Unauthorized, please login.");
 
 
     public static Error FromString(string message) {
         return new Error(message);
+    }
+
+    public static Error PropertyDoesNotHaveSetter(string propertyName) {
+        return new Error($"Property '{propertyName}' does not have a setter.");
+    }
+
+    public static Error PropertyDoesNotExist(string propertyName) {
+        return new Error($"Property '{propertyName}' not found on type.");
     }
 
     public static Error TooLongString(int maxLength) => new Error($"The string cannot exceed {maxLength} characters.");

@@ -19,18 +19,20 @@ public class Unfollow :
     [HttpPost("interaction/unfollow/{userToUnfollowId}")]
     public override async Task<ActionResult> HandleAsync() {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (string.IsNullOrEmpty(userId)) return Unauthorized(Error.NotVerified.Message);
+
+        if (string.IsNullOrEmpty(userId)) return Unauthorized(Error.NotVerified);
 
         var userToUnfollowId = RouteData.Values["userToUnfollowId"]?.ToString();
-        if (string.IsNullOrEmpty(userToUnfollowId)) return BadRequest(Error.UserNotFound.Message);
+
+        if (string.IsNullOrEmpty(userToUnfollowId)) return BadRequest(Error.UserNotFound);
 
         var cmdResult = UnfollowAUserCommand.Create(
             userId,
-            userToUnfollowId);
+            userToUnfollowId).OnFailure(error => BadRequest(error));
 
-        if (cmdResult.IsFailure) return BadRequest(cmdResult.Error.Message);
 
         var result = await dispatcher.DispatchAsync(cmdResult.Payload);
+
         if (result.IsSuccess)
             return Ok();
         return BadRequest(result.Error.Message);

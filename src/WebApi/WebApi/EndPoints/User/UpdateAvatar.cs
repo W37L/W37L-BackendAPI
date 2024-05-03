@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using W3TL.Core.Application.CommandDispatching.Commands.User;
 using W3TL.Core.Application.CommandDispatching.Dispatcher;
@@ -5,7 +7,11 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.User;
 
-public class UpdateAvatar : ApiEndpoint.WithRequest<UpdateAvatar.UpdateAvatarRequest>.WithoutResponse {
+[Authorize]
+public class UpdateAvatar
+    : ApiEndpoint
+        .WithRequest<UpdateAvatar.UpdateAvatarRequest>
+        .WithResponse<UpdateAvatar.UpdateAvatarResponse> {
     private readonly ICommandDispatcher dispatcher;
 
     public UpdateAvatar(ICommandDispatcher dispatcher) {
@@ -13,19 +19,26 @@ public class UpdateAvatar : ApiEndpoint.WithRequest<UpdateAvatar.UpdateAvatarReq
     }
 
     [HttpPatch("user/update/avatar")]
-    public override async Task<ActionResult> HandleAsync(UpdateAvatarRequest request) {
+    public override async Task<ActionResult<UpdateAvatarResponse>> HandleAsync(UpdateAvatarRequest request) {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userId) || userId != request.UserId)
+            return Unauthorized(Error.UnAuthorized);
+
         var cmd = UpdateAvatarUserCommand.Create(
             request?.UserId,
             request.Avatar
-        ).Payload;
+        ).OnFailure(error => BadRequest(new UpdateAvatarResponse(false, error)));
 
-        var result = await dispatcher.DispatchAsync(cmd);
+        var result = await dispatcher.DispatchAsync(cmd.Payload);
         return result.IsSuccess
-            ? Ok()
-            : BadRequest(result.Error.Message);
+            ? Ok(new UpdateAvatarResponse(true, null))
+            : BadRequest(new UpdateAvatarResponse(false, result.Error));
     }
 
     public record UpdateAvatarRequest(
         string UserId,
         string Avatar);
+
+    public record UpdateAvatarResponse(bool Success, Error error);
 }

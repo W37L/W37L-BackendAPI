@@ -10,4 +10,7 @@ public interface IUserRepository : IRepository<global::User, UserID> {
     Task<Result> IncrementFollowingAsync(string userId);
     Task<Result> DecrementFollowingAsync(string userId);
     Task<Result> ExistsAsync(UserID id);
+    Task<Result<global::User>> GetIdByUsernameAsync(string username);
+    Task<Result<global::User>> GetByEmailAsync(string email);
+    Task<Result<global::User>> GetByUserNameAsync(string userName);
 }

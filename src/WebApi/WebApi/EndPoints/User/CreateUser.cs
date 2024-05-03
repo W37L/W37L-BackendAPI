@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using W3TL.Core.Application.CommandDispatching.Commands.User;
 using W3TL.Core.Application.CommandDispatching.Dispatcher;
@@ -6,9 +7,11 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.User;
 
-// [Authorize]
-public class
-    CreateUser : ApiEndpoint.WithRequest<CreateUser.CreateUserRequest>.WithResponse<CreateUser.CreateUserResponse> {
+[Authorize]
+public class CreateUser
+    : ApiEndpoint
+        .WithRequest<CreateUser.CreateUserRequest>
+        .WithResponse<CreateUser.CreateUserResponse> {
     private readonly ICommandDispatcher dispatcher;
 
     public CreateUser(ICommandDispatcher dispatcher) {
@@ -18,11 +21,10 @@ public class
     [HttpPost("user/create")]
     public override async Task<ActionResult<CreateUserResponse>> HandleAsync(CreateUserRequest request) {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        //TODO: Validate the user ID
-        // Console.WriteLine($"User ID: {userId}");
-        // if (string.IsNullOrEmpty(userId)) {
-        //     return Unauthorized("User ID could not be verified.");
-        // }
+
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized(Error.UnAuthorized);
+
         var cmd = CreateUserCommand.Create(
             request?.UserId,
             request.UserName,
@@ -30,12 +32,12 @@ public class
             request.LastName,
             request.Email,
             request.Pub
-        ).Payload;
+        ).OnFailure(error => BadRequest(error));
 
-        var result = await dispatcher.DispatchAsync(cmd);
+        var result = await dispatcher.DispatchAsync(cmd.Payload);
         return result.IsSuccess
-            ? Ok(new CreateUserResponse(cmd.UserId.Value))
-            : BadRequest(result.Error.Message);
+            ? Ok(new CreateUserResponse(cmd.Payload.UserId.Value))
+            : BadRequest(result.Error);
     }
 
     public record CreateUserRequest(

@@ -21,23 +21,23 @@ public class Follow :
     public override async Task<ActionResult> HandleAsync() {
         // Extract the user ID from the JWT token claims
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (string.IsNullOrEmpty(userId)) return Unauthorized(Error.NotVerified.Message);
+
+        if (string.IsNullOrEmpty(userId)) return Unauthorized(Error.NotVerified);
 
         var userToFollowId = RouteData.Values["userToFollowId"]?.ToString();
-        if (string.IsNullOrEmpty(userToFollowId)) return BadRequest(Error.UserNotFound.Message);
+
+        if (string.IsNullOrEmpty(userToFollowId)) return BadRequest(Error.UserNotFound);
 
         // Create the command to handle the follow action
         var cmdResult = FollowAUserCommand.Create(
             userId,
-            userToFollowId);
-
-        if (cmdResult.IsFailure)
-            return BadRequest(cmdResult.Error.Message);
+            userToFollowId).OnFailure(error => BadRequest(error));
 
 
         var result = await dispatcher.DispatchAsync(cmdResult.Payload);
+
         if (result.IsSuccess)
             return Ok();
-        return BadRequest(result.Error.Message);
+        return BadRequest(result.Error);
     }
 }

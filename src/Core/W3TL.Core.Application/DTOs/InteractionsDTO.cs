@@ -3,7 +3,7 @@ using Google.Cloud.Firestore;
 namespace Persistence.UserPersistence.Firebase;
 
 [FirestoreData]
-public class FirebaseInteractions {
+public class InteractionsDTO {
     [FirestoreProperty("blockedUsers")] public List<string> blockedUsers { get; set; }
 
     [FirestoreProperty("followers")] public List<string> followers { get; set; }

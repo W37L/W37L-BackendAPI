@@ -19,21 +19,22 @@ public class UnLikeContent :
     [HttpPost("interaction/unlike/{contentId}")]
     public override async Task<ActionResult> HandleAsync() {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (string.IsNullOrEmpty(userId)) return Unauthorized(Error.NotVerified.Message);
+
+        if (string.IsNullOrEmpty(userId)) return Unauthorized(Error.NotVerified);
 
         var contentId = RouteData.Values["contentId"]?.ToString();
-        if (string.IsNullOrEmpty(contentId)) return BadRequest(Error.ContentNotFound.Message);
+
+        if (string.IsNullOrEmpty(contentId)) return BadRequest(Error.ContentNotFound);
 
         var cmdResult = UnlikeContentCommand.Create(
             contentId,
-            userId);
-
-        if (cmdResult.IsFailure)
-            return BadRequest(cmdResult.Error.Message);
+            userId).OnFailure(error => BadRequest(error));
 
         var result = await dispatcher.DispatchAsync(cmdResult.Payload);
+
         if (result.IsSuccess)
             return Ok();
+
         return BadRequest(result.Error.Message);
     }
 }

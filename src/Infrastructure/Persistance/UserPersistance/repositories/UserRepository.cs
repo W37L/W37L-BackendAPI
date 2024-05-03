@@ -1,22 +1,27 @@
 using Google.Apis.Util;
 using Google.Cloud.Firestore;
+using ObjectMapper;
 using Persistence.UserPersistence.Firebase;
 using W3TL.Core.Domain.Agregates.User.Repository;
 using W3TL.Core.Domain.Common.Values;
 
 namespace Persistence.UserPersistence;
 
-public class UserRepository : IUserRepository {
+public class UserRepository(IMapper mapper) : IUserRepository {
+    private readonly IMapper _mapper = mapper;
+
+
     private readonly FirestoreDb db = FirebaseInitializer.FirestoreDb;
 
     public async Task<Result> AddAsync(User aggregate) {
-        // Use the Mapper to convert domain User to FirebaseUser
-        var firebaseUserResult = Mapper.MapDomainUserToFirebaseUser(aggregate);
+        UserDTO firebaseUser;
 
-        // Check for mapping success
-        if (firebaseUserResult.IsFailure) return firebaseUserResult.Error;
-
-        var firebaseUser = firebaseUserResult.Payload;
+        try {
+            firebaseUser = _mapper.Map<UserDTO>(aggregate);
+        }
+        catch (Exception ex) {
+            return Error.FromException(ex);
+        }
 
         // Convert FirebaseUser to a dictionary for Firestore upload
         var userDict = ConvertToDictionary(firebaseUser);
@@ -28,10 +33,15 @@ public class UserRepository : IUserRepository {
 
 
     public async Task<Result> UpdateAsync(User user) {
-        var firebaseUser = Mapper.MapDomainUserToFirebaseUser(user);
-        if (firebaseUser.IsFailure) return firebaseUser.Error;
+        UserDTO firebaseUser;
+        try {
+            firebaseUser = _mapper.Map<UserDTO>(user);
+        }
+        catch (Exception ex) {
+            return Error.FromException(ex);
+        }
 
-        var userDict = ConvertToDictionary(firebaseUser.Payload);
+        var userDict = ConvertToDictionary(firebaseUser);
 
         // Get Firestore document reference
         var docRef = db.Collection("users").Document(user.Id.Value);
@@ -119,32 +129,73 @@ public class UserRepository : IUserRepository {
         return snapshot.Exists ? Result.Success() : Error.UserNotFound;
     }
 
+    public async Task<Result<User>> GetIdByUsernameAsync(string username) {
+        var query = db.Collection("users").WhereEqualTo("username", username);
+        var querySnapshot = await query.GetSnapshotAsync();
+        if (querySnapshot.Count == 0)
+            return Error.UserNotFound;
+
+
+        var userSnapshot = querySnapshot.Documents.First();
+        var userDto = userSnapshot.ConvertTo<UserDTO>();
+        var user = _mapper.Map<User>(userDto);
+        return user;
+    }
+
+    public async Task<Result<User>> GetByEmailAsync(string email) {
+        var query = db.Collection("users").WhereEqualTo("email", email);
+        var querySnapshot = await query.GetSnapshotAsync();
+        if (querySnapshot.Count == 0)
+            return Error.UserNotFound;
+
+        var userSnapshot = querySnapshot.Documents.First();
+        var userDto = userSnapshot.ConvertTo<UserDTO>();
+        var user = _mapper.Map<User>(userDto);
+        return user;
+    }
+
+    public async Task<Result<User>> GetByUserNameAsync(string userName) {
+        var query = db.Collection("users").WhereEqualTo("username", userName);
+        var querySnapshot = await query.GetSnapshotAsync();
+        if (querySnapshot.Count == 0)
+            return Error.UserNotFound;
+
+        var userSnapshot = querySnapshot.Documents.First();
+
+        var userDto = userSnapshot.ConvertTo<UserDTO>();
+        var user = _mapper.Map<User>(userDto);
+        return user;
+    }
+
+
     public async Task<Result<User>> GetByIdAsync(UserID id) {
         var userDocRef = db.Collection("users").Document(id.Value);
         var userSnapshot = await userDocRef.GetSnapshotAsync();
         if (!userSnapshot.Exists) return Error.UserNotFound;
 
-        var firebaseUser = userSnapshot.ConvertTo<FirebaseUser>();
+        var firebaseUser = userSnapshot.ConvertTo<UserDTO>();
         var interactionsDocRef = userDocRef.Collection("interactions").Document("data");
         var interactionsSnapshot = await interactionsDocRef.GetSnapshotAsync();
         if (interactionsSnapshot.Exists)
-            firebaseUser.Interactions = interactionsSnapshot.ConvertTo<FirebaseInteractions>();
+            firebaseUser.Interactions = interactionsSnapshot.ConvertTo<InteractionsDTO>();
         else
             // Handle the case where no interactions are found, could initialize to default or handle as an error
-            firebaseUser.Interactions = new FirebaseInteractions(); // Initialize with empty or default values
+            firebaseUser.Interactions = new InteractionsDTO();
 
-        return Mapper.MapFirebaseUserToDomainUser(firebaseUser);
+        return _mapper.Map<User>(firebaseUser);
     }
 
 
-    public Task<Result<List<User>>> GetAllAsync() {
-        throw new NotImplementedException();
+    public async Task<Result<List<User>>> GetAllAsync() {
+        var querySnapshot = await db.Collection("users").GetSnapshotAsync();
+        var users = querySnapshot.Documents.Select(doc => _mapper.Map<User>(doc.ConvertTo<UserDTO>())).ToList();
+        return users;
     }
 
 // Helper method to convert an object to a dictionary using reflection and Firestore attributes
-    private static IDictionary<string, object> ConvertToDictionary(FirebaseUser firebaseUser) {
+    private static IDictionary<string, object> ConvertToDictionary(UserDTO firebaseUser) {
         var dict = new Dictionary<string, object>();
-        foreach (var prop in typeof(FirebaseUser).GetProperties()) {
+        foreach (var prop in typeof(UserDTO).GetProperties()) {
             var attr = prop.GetCustomAttribute<FirestorePropertyAttribute>();
             if (attr != null) {
                 var value = prop.GetValue(firebaseUser);

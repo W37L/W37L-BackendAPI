@@ -4,7 +4,7 @@ using Persistence.UserPersistence.Firebase;
 namespace Persistence.UserPersistence;
 
 [FirestoreData]
-public class FirebaseUser {
+public class UserDTO {
     [FirestoreProperty("userId")] public string userId { get; set; }
 
     [FirestoreProperty("username")] public string username { get; set; }
@@ -35,5 +35,5 @@ public class FirebaseUser {
 
     [FirestoreProperty("pub")] public string? pub { get; set; }
 
-    public FirebaseInteractions Interactions { get; set; } // Add this line
+    public InteractionsDTO Interactions { get; set; } // Add this line
 }
