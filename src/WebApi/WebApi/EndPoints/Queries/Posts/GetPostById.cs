@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using ObjectMapper.DTO;
 using QueryContracts.Queries;
 using QueryContracts.QueryDispatching;
-using W3TL.Core.Domain.Common.Values;
 using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.Queries;
@@ -17,22 +16,27 @@ public class GetPostById :
         _dispatcher = dispatcher;
     }
 
-    [HttpGet("posts/user/id/{PostId}")]
+    [HttpGet("posts/{PostId}")]
     public override async Task<ActionResult<GetPostByIdResponse>> HandleAsync() {
         var fromRoute = RouteData.Values["PostId"];
 
-        var uId = UserID.Create(fromRoute.ToString())
+        var pId = PostId.Create(fromRoute.ToString())
             .OnFailure(error => BadRequest(error));
 
-        var query = new GetPostsByUserIdQuery.Query(uId.Payload);
+        var query = new GetPostByIdQuery.Query(pId.Payload);
 
-        var answer = await _dispatcher.DispatchAsync<GetPostsByUserIdQuery.Answer>(query);
+        try {
+            var answer = await _dispatcher.DispatchAsync<GetPostByIdQuery.Answer>(query);
 
-        if (answer.Posts is null)
-            return NotFound();
+            if (answer.Post is null)
+                return NotFound();
 
-        return new GetPostByIdResponse(answer.Posts);
+            return new GetPostByIdResponse(answer.Post);
+        }
+        catch (Exception e) {
+            return BadRequest(e.Message);
+        }
     }
 
-    public record GetPostByIdResponse(List<ContentDTO> Post);
+    public record GetPostByIdResponse(ContentDTO Post);
 }

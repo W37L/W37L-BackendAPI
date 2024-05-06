@@ -108,8 +108,12 @@ public class UserDomainMapper : IMappingConfig<UserDTO, User> {
 
         //TODO: Add the rest of the properties
         // // Map interactions
-        // Reflexion.SetProperty(user, "Interactions",
-        //     MapFirebaseInteractionsToDomainInteractions(input.Interactions).Payload);
+        if (input.Interactions != null) {
+            InteractionsDomainMapper interactionsMapper = new InteractionsDomainMapper();
+            var interactions = interactionsMapper.Map(input.Interactions);
+            Reflexion.SetProperty(user, "Interactions", interactions);
+        }
+
 
         return user;
     }

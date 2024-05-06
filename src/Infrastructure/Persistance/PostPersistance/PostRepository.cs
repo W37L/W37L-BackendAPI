@@ -5,6 +5,7 @@ using ObjectMapper.DTO;
 using ObjectMapper.Tools;
 using W3TL.Core.Domain.Agregates.Post;
 using W3TL.Core.Domain.Agregates.Post.Repository;
+using W3TL.Core.Domain.Agregates.Post.Values;
 using W3TL.Core.Domain.Common.Values;
 
 namespace Persistance.PostPersistance;
@@ -74,7 +75,15 @@ public class PostRepository : IContentRepository {
 
 
     public async Task<Result<UserID>> GetAuthorIdAsync(ContentIDBase id) {
-        var response = await _httpClient.GetAsync($"{BaseUrl}/getPostById/{id.Value}");
+        // if conteent ID start with PID, it is a post, if start with CID, it is a comment
+        var response = new HttpResponseMessage();
+        if (id.Value.StartsWith("PID")) {
+            response = await _httpClient.GetAsync($"{BaseUrl}/getPostById/{id.Value}");
+        }
+        else {
+            response = await _httpClient.GetAsync($"{BaseUrl}/getCommentById/{id.Value}");
+        }
+
         if (response.IsSuccessStatusCode) {
             var content = await response.Content.ReadAsStringAsync();
             var post = JsonConvert.DeserializeObject<ContentDTO>(content);
@@ -94,6 +103,47 @@ public class PostRepository : IContentRepository {
     public async Task<Result<List<Content>>> GetPostsByUserIdAsync(UserID userId) {
         var response = await _httpClient.GetAsync($"{BaseUrl}/getPostsByUserId/{userId.Value}");
         return await ProcessContentResponse(response);
+    }
+
+    public async Task<Result<PostId>> GetParentPostIdAsync(CommentId commentId) {
+        var response = await _httpClient.GetAsync($"{BaseUrl}/getCommentById/{commentId.Value}");
+        if (response.IsSuccessStatusCode) {
+            var content = await response.Content.ReadAsStringAsync();
+            var post = JsonConvert.DeserializeObject<ContentDTO>(content);
+            var postId = PostId.Create(post.ParentPostId)
+                .OnFailure(error => throw new ArgumentException(error.Message));
+            return postId;
+        }
+
+        return Error.PostNotFound;
+    }
+
+    public async Task<Result<List<Content>>> GetCommentsByUserIdAsync(UserID queryUserId) {
+        var response = await _httpClient.GetAsync($"{BaseUrl}/getCommentsByUserId/{queryUserId.Value}");
+        return await ProcessContentResponse(response);
+    }
+
+    public async Task<Result<List<Content>>> GetCommentsByPostIdAsync(ContentIDBase postId) {
+        var response = await _httpClient.GetAsync($"{BaseUrl}/getCommentsByPostId/{postId.Value}");
+        return await ProcessContentResponse(response);
+    }
+
+    public async Task<Result<Content>> GetCommentByIdAsync(CommentId queryCommentId) {
+        var response = await _httpClient.GetAsync($"{BaseUrl}/getCommentById/{queryCommentId.Value}");
+        if (response.IsSuccessStatusCode) {
+            var content = await response.Content.ReadAsStringAsync();
+            var post = JsonConvert.DeserializeObject<ContentDTO>(content);
+            var domainPost = _mapper.Map<Content>(post);
+            return domainPost;
+        }
+
+        var error = await response.Content.ReadAsStringAsync();
+        return Result<Content>.Fail(Error.FromString(error));
+    }
+
+    public async Task<Result<Content>> GetCommentByIdWithAuthorAsync(CommentId queryCommentId, User user) {
+        var content = await GetCommentByIdAsync(queryCommentId);
+        return content.IsFailure ? content : Concatenate.Append(user, content.Payload);
     }
 
     private async Task<Result<List<Content>>> ProcessContentResponse(HttpResponseMessage response) {

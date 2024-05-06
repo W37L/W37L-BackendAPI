@@ -21,7 +21,10 @@ public class FollowAUserHanldler(
             return Error.UserNotFound;
 
         // Follow user Local
-        result.Payload.Follow(userToFollow.Payload);
+        var followResult = result.Payload.Follow(userToFollow.Payload);
+
+        if (followResult.IsFailure)
+            return followResult;
 
         // Update user in the database
         var res = interactionRepository.FollowUserAsync(result.Payload.Id.Value, userToFollow.Payload.Id.Value).Result

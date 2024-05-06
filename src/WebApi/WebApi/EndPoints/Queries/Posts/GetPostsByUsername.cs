@@ -24,13 +24,18 @@ public class GetPostsByUsername :
 
         var query = new GetPostsByUsernameQuery.Query(username.Payload.Value);
 
-        var answer = await _dispatcher.DispatchAsync<GetPostsByUsernameQuery.Answer>(query);
+        try {
+            var answer = await _dispatcher.DispatchAsync<GetPostsByUsernameQuery.Answer>(query);
 
-        if (answer.Posts is null) {
-            return NotFound();
+            if (answer.Posts is null) {
+                return NotFound();
+            }
+
+            return new GetPostsByUsernameResponse(answer.Posts);
         }
-
-        return new GetPostsByUsernameResponse(answer.Posts);
+        catch (Exception e) {
+            return BadRequest(e.Message);
+        }
     }
 
     public record GetPostsByUsernameResponse(List<ContentDTO> Posts);

@@ -1,8 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
+using Queries.Queries.Comments;
 using Queries.Queries.Post;
 using Queries.Queries.User;
 using QueryContracts.Contracts;
 using QueryContracts.Queries;
+using QueryContracts.Queries.Comments;
 using QueryContracts.Queries.Users;
 
 namespace Queries.Extensions;
@@ -21,6 +23,18 @@ public static class ApplicationExtensions {
         services
             .AddScoped<IQueryHandler<GetUserByUsernameQuery.Query, GetUserByUsernameQuery.Answer>,
                 GetUserByUsernameHandler>();
-        services.AddScoped<IQueryHandler<GetAllUsersQuery.Query, GetAllUsersQuery.Answer>, GetAllUsersHandler>();
+
+        // Comments
+        services
+            .AddScoped<IQueryHandler<GetAllCommentsByPostIdQuery.Query, GetAllCommentsByPostIdQuery.Answer>,
+                GetAllCommentsByPostIdHandler>();
+        services
+            .AddScoped<IQueryHandler<GetHowManyCommentsByPostIdQuery.Query, GetHowManyCommentsByPostIdQuery.Answer>,
+                GetHowManyCommentsByPostIdHandler>();
+        services
+            .AddScoped<IQueryHandler<GetCommentByIdQuery.Query, GetCommentByIdQuery.Answer>, GetCommentByIdHandler>();
+        services
+            .AddScoped<IQueryHandler<GetAllCommentsByUserIdQuery.Query, GetAllCommentsByUserIdQuery.Answer>,
+                GetAllCommentByUserIdHandler>();
     }
 }

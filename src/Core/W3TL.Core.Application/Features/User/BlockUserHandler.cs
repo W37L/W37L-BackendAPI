@@ -5,7 +5,10 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.User;
 
-public class BlockUserHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+public class BlockUserHandler(
+    IUserRepository userRepository,
+    IUnitOfWork unitOfWork,
+    IInteractionRepository interactionRepository)
     : ICommandHandler<BlockUserCommand> {
     public async Task<Result> HandleAsync(BlockUserCommand command) {
         // Search for user by id
@@ -19,13 +22,13 @@ public class BlockUserHandler(IUserRepository userRepository, IUnitOfWork unitOf
             return Error.UserNotFound;
 
         // Block user
-        // var block = result.Payload.Block(blockedUser.Payload);
+        var block = result.Payload.Block(blockedUser.Payload);
 
-        // if (block.IsFailure)
-        //     return block.Error;
+        if (block.IsFailure)
+            return block.Error;
 
         // Add block to repository
-        await userRepository.UpdateAsync(result.Payload);
+        await interactionRepository.BlockUserAsync(result.Payload.Id.Value, blockedUser.Payload.Id.Value);
         await unitOfWork.SaveChangesAsync();
 
         return Result.Success();

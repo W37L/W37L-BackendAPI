@@ -1,4 +1,5 @@
 using W3TL.Core.Domain.Agregates.Post;
+using W3TL.Core.Domain.Agregates.User.Entity;
 
 namespace W3TL.Core.Domain.Services;
 
@@ -8,6 +9,9 @@ public class LikeService {
 
         if (liker == null || content == null)
             return Error.NullUser;
+
+        if (liker.Interactions == null)
+            liker.Interactions = Interactions.Create(liker.Id).Payload;
 
         if (liker.Interactions.Likes.Contains(content.Id))
             errors.Add(Error.UserAlreadyLiked);

@@ -20,13 +20,13 @@ public class GetAllPost :
 
         var answer = await _dispatcher.DispatchAsync<GetAllPostQuery.Answer>(query);
 
-        var response = new GetAllPostResponse(answer.Posts);
-
-        foreach (var VARIABLE in answer.Posts) {
-            Console.WriteLine(VARIABLE.UserId);
+        try {
+            var response = new GetAllPostResponse(answer.Posts);
+            return Ok(response);
         }
-
-        return Ok(response);
+        catch (Exception e) {
+            return BadRequest(e.Message);
+        }
     }
 
     public record GetAllPostResponse(List<ContentDTO> Posts);

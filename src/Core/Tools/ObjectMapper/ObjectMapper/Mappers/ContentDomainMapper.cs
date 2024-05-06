@@ -1,5 +1,6 @@
 using ObjectMapper.DTO;
 using W3TL.Core.Domain.Agregates.Post;
+using W3TL.Core.Domain.Agregates.Post.Enum;
 
 namespace ObjectMapper.Mappers;
 
@@ -13,7 +14,7 @@ public class ContentDomainMapper : IMappingConfig<ContentDTO, Content> {
     }
 
     public Content Map(ContentDTO input) {
-        if (input is Comment) {
+        if (input.Type == PostType.Comment.ToString()) {
             return _commentDomainMapper.Map(input);
         }
 

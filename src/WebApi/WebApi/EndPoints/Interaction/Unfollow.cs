@@ -26,6 +26,9 @@ public class Unfollow :
 
         if (string.IsNullOrEmpty(userToUnfollowId)) return BadRequest(Error.UserNotFound);
 
+        // Ensure the user is not trying to unfollow themselves
+        if (userId == userToUnfollowId) return BadRequest(Error.CannotUnfollowYourself);
+
         var cmdResult = UnfollowAUserCommand.Create(
             userId,
             userToUnfollowId).OnFailure(error => BadRequest(error));

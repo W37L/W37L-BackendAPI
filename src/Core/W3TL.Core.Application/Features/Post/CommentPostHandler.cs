@@ -6,10 +6,13 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.User;
 
-public class CommentPostHandler(IContentRepository contentRepository, IUnitOfWork unitOfWork, IUserRepository userRepository) : ICommandHandler<CommentPostCommand> {
+public class CommentPostHandler(
+    IContentRepository contentRepository,
+    IUnitOfWork unitOfWork,
+    IUserRepository userRepository) : ICommandHandler<CommentPostCommand> {
     public async Task<Result> HandleAsync(CommentPostCommand command) {
         // Search for post by id
-        var result = await contentRepository.GetByIdAsync(command.Id);
+        var result = await contentRepository.GetByIdAsync(command.ParentPostId);
 
         if (result.IsFailure)
             return Error.ParentPostNotFound;

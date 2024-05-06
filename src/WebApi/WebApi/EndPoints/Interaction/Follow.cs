@@ -28,6 +28,9 @@ public class Follow :
 
         if (string.IsNullOrEmpty(userToFollowId)) return BadRequest(Error.UserNotFound);
 
+        // Ensure the user is not trying to follow themselves
+        if (userId == userToFollowId) return BadRequest(Error.CannotFollowYourself);
+
         // Create the command to handle the follow action
         var cmdResult = FollowAUserCommand.Create(
             userId,

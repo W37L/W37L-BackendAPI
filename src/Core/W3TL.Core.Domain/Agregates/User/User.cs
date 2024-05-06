@@ -43,7 +43,7 @@ public class User : AggregateRoot<UserID> {
     public CreatedAtType CreatedAt { get; internal set; }
     public Profile Profile { get; internal set; }
     public List<PostId> Posts { get; internal set; } = new();
-    public Interactions Interactions { get; internal set; }
+    public Interactions Interactions { get; set; }
 
 
     public static Result<User> Create(UserID userId, UserNameType userName, NameType firstName, LastNameType lastName,
@@ -119,57 +119,67 @@ public class User : AggregateRoot<UserID> {
         return UnFollowService.Handle(this, user);
     }
 
-    // public Result Block(User user) {
-    //     try {
-    //         if (user == null) return Error.NullUser;
-    //         if (Blocked.Contains(user.Id)) return Error.UserAlreadyBlocked;
-    //         Blocked.Add(user.Id);
-    //         return Result.Ok;
-    //     }
-    //     catch (Exception exception) {
-    //         return Error.FromException(exception);
-    //     }
-    // }
-    //
-    // public Result Unblock(User user) {
-    //     try {
-    //         if (user == null) return Error.NullUser;
-    //         if (!Blocked.Contains(user.Id)) return Error.UserNotBlocked;
-    //         Blocked.Remove(user.Id);
-    //         return Result.Ok;
-    //     }
-    //     catch (Exception exception) {
-    //         return Error.FromException(exception);
-    //     }
-    // }
-    //
-    // public Result Mute(User user) {
-    //     try {
-    //         Muted.Add(user.Id);
-    //         return Result.Ok;
-    //     }
-    //     catch (Exception exception) {
-    //         return Error.FromException(exception);
-    //     }
-    // }
-    //
-    // public Result Unmute(User user) {
-    //     try {
-    //         Muted.Remove(user.Id);
-    //         return Result.Ok;
-    //     }
-    //     catch (Exception exception) {
-    //         return Error.FromException(exception);
-    //     }
-    // }
-    //
-    // public Result AddPost(Post post) {
-    //     try {
-    //         Posts.Add(post.Id as PostId);
-    //         return Result.Ok;
-    //     }
-    //     catch (Exception exception) {
-    //         return Error.FromException(exception);
-    //     }
-    // }
+    public Result Block(User user) {
+        try {
+            if (user == null) return Error.NullUser;
+            if (Interactions.Blocked.Contains(user.Id)) return Error.UserAlreadyBlocked;
+            Interactions.Blocked.Add(user.Id);
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
+
+    public Result Unblock(User user) {
+        try {
+            if (user == null) return Error.NullUser;
+            if (!Interactions.Blocked.Contains(user.Id)) return Error.UserNotBlocked;
+            Interactions.Blocked.Remove(user.Id);
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
+
+    public Result Mute(User user) {
+        try {
+            Interactions.Muted.Add(user.Id);
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
+
+    public Result Unmute(User user) {
+        try {
+            Interactions.Muted.Remove(user.Id);
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
+
+    public Result Report(User user) {
+        try {
+            Interactions.ReportedUsers.Add(user.Id);
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
+
+    public Result Unreport(User user) {
+        try {
+            Interactions.ReportedUsers.Remove(user.Id);
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
 }

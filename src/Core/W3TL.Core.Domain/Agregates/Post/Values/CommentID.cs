@@ -3,7 +3,7 @@ namespace W3TL.Core.Domain.Agregates.Post.Values;
 public class CommentId : ContentIDBase {
     private const string Prefix = "CID";
 
-    private CommentId(string? value) : base(Prefix, value) { }
+    private CommentId(string? value) : base(Prefix) { }
 
     private CommentId(string? prefix, string? value) : base(prefix, value) { }
 

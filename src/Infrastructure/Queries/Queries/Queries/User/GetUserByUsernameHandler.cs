@@ -17,6 +17,10 @@ public class GetUserByUsernameHandler : IQueryHandler<GetUserByUsernameQuery.Que
 
     public async Task<GetUserByUsernameQuery.Answer> HandleAsync(GetUserByUsernameQuery.Query query) {
         var user = await _userRepository.GetByUserNameAsync(query.username.Value);
+
+        if (user.IsFailure)
+            return new GetUserByUsernameQuery.Answer(null);
+
         var dto = _mapper.Map<UserDTO>(user.Payload);
         return new GetUserByUsernameQuery.Answer(dto);
     }

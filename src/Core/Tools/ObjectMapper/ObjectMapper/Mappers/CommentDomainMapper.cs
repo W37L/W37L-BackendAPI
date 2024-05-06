@@ -19,7 +19,7 @@ public class CommentDomainMapper : IMappingConfig<ContentDTO, Comment> {
 
         var comment = (Comment)privateConstructor.Invoke(new object[] { });
 
-        var postId = PostId.Create(contentDto.PostId)
+        var postId = CommentId.Create(contentDto.PostId)
             .OnFailure(error => throw new ArgumentException(error.Message));
         var userId = UserID.Create(contentDto.UserId)
             .OnFailure(error => throw new ArgumentException(error.Message));
@@ -43,7 +43,7 @@ public class CommentDomainMapper : IMappingConfig<ContentDTO, Comment> {
         Reflexion.SetProperty(comment, "ContentTweet", contentTweet.Payload);
         Reflexion.SetProperty(comment, "Likes", likes.Payload);
         Reflexion.SetProperty(comment, "Signature", signature.Payload);
-        Reflexion.SetProperty(comment, "ParentPost", parentPostId.Payload);
+        // Reflexion.SetProperty(comment, "ParentPost", parentPostId.Payload);
         Reflexion.SetProperty(comment, "PostType", postType);
 
         return comment;

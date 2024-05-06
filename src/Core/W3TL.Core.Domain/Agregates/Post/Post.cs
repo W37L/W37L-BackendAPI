@@ -92,6 +92,7 @@ public class Post : Content {
     public Result AddComment(Comment comment) {
         if (comment is null) return Error.NullComment;
         try {
+            if (Comments is null) Comments = new List<Comment>();
             Comments.Add(comment);
             return Result.Ok;
         }
@@ -104,6 +105,50 @@ public class Post : Content {
         if (comment is null) return Error.NullComment;
         try {
             Comments.Remove(comment);
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
+
+    public Result Highlight(User user) {
+        if (user is null) return Error.NullUser;
+        try {
+            user.Interactions.Highlights.Add(this.Id as PostId);
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
+
+    public Result Unhighlight(User user) {
+        if (user is null) return Error.NullUser;
+        try {
+            user.Interactions.Highlights.Remove(this.Id as PostId);
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
+
+    public Result Retweet(User user) {
+        if (user is null) return Error.NullUser;
+        try {
+            user.Interactions.RetweetedTweets.Add(this.Id as PostId);
+            return Result.Ok;
+        }
+        catch (Exception exception) {
+            return Error.FromException(exception);
+        }
+    }
+
+    public Result Unretweet(User user) {
+        if (user is null) return Error.NullUser;
+        try {
+            user.Interactions.RetweetedTweets.Remove(this.Id as PostId);
             return Result.Ok;
         }
         catch (Exception exception) {

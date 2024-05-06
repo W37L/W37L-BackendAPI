@@ -54,7 +54,6 @@ public class Error {
 
     public static Error CannotFollowSelf => new Error("A user cannot follow themselves.");
     public static Error NullUser => new Error("The user cannot be null.");
-
     public static Error UserNotFollowed => new("The user is not followed, and the operation cannot be performed.");
 
     public static Error InvalidSignature =>
@@ -92,34 +91,45 @@ public class Error {
     public static Error TweetNotLiked => new("The tweet is not liked.");
     public static Error EmailAlreadyRegistered => new("The email is already registered.");
     public static Error UserNameAlreadyRegistered => new("The username is already registered.");
-    public static Error UnAuthorized { get; set; } = new Error("Unauthorized, please login.");
+    public static Error UnAuthorized => new("Unauthorized, please login.");
+    public static Error TweetAlreadyHighlighted => new("The tweet is already highlighted.");
+    public static Error TweetNotHighlighted => new("The tweet is not highlighted.");
+    public static Error TweetAlreadyRetweeted => new("The tweet is already retweeted.");
+    public static Error TweetNotRetweeted => new("The tweet is not retweeted.");
+    public static Error UserNotReported => new("The user is not reported.");
+    public static Error UserAlreadyReported => new("The user is already reported.");
+    public static Error UserNotMuted => new("The user is not muted.");
+    public static Error UserAlreadyMuted => new("The user is already muted.");
+    public static Error CannotFollowYourself => new("A user cannot follow themselves.");
+    public static Error CannotBlockYourself => new("A user cannot block themselves.");
+    public static Error CannotMuteYourself => new("A user cannot mute themselves.");
+    public static Error CannotReportYourself => new("A user cannot report themselves.");
+    public static Error CannotUnblockYourself => new("A user cannot unblock themselves.");
+    public static Error CannotUnfollowYourself => new("A user cannot unfollow themselves.");
+    public static Error CannotUnmuteYourself => new("A user cannot unmute themselves.");
+    public static Error CannotUnreportYourself => new("A user cannot unreport themselves.");
 
+    public static Error UserAlreadyInList(string listName) => new($"The user is already in the {listName} list.");
+    public static Error UserNotActioned(string listName) => new($"The user is not in the {listName} list.");
+    public static Error FromString(string message) => new Error(message);
 
-    public static Error FromString(string message) {
-        return new Error(message);
-    }
+    public static Error PropertyDoesNotHaveSetter(string propertyName) =>
+        new Error($"Property '{propertyName}' does not have a setter.");
 
-    public static Error PropertyDoesNotHaveSetter(string propertyName) {
-        return new Error($"Property '{propertyName}' does not have a setter.");
-    }
-
-    public static Error PropertyDoesNotExist(string propertyName) {
-        return new Error($"Property '{propertyName}' not found on type.");
-    }
+    public static Error PropertyDoesNotExist(string propertyName) =>
+        new Error($"Property '{propertyName}' does not exist.");
 
     public static Error TooLongString(int maxLength) => new Error($"The string cannot exceed {maxLength} characters.");
 
-    public static Error TooShortName(int minLength) {
-        return new Error($"The name must be at least {minLength} characters long.");
-    }
+    public static Error TooShortName(int minLength) =>
+        new Error($"The name must be at least {minLength} characters long.");
 
     public static Error TooLongName(int maxLength) => new Error($"The name cannot exceed {maxLength} characters.");
     public static Error FromException(Exception exception) => new Error(exception.Message);
     public static Error TooLongBio(int maxLength) => new Error($"The biography cannot exceed {maxLength} characters.");
 
-    public static Error TooLongLocation(int maxLength) {
-        return new Error($"The location cannot exceed {maxLength} characters.");
-    }
+    public static Error TooLongLocation(int maxLength) =>
+        new Error($"The location cannot exceed {maxLength} characters.");
 
 
     /**

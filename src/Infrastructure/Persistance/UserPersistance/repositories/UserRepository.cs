@@ -23,12 +23,39 @@ public class UserRepository(IMapper mapper) : IUserRepository {
             return Error.FromException(ex);
         }
 
-        // Convert FirebaseUser to a dictionary for Firestore upload
         var userDict = ConvertToDictionary(firebaseUser);
-
         var docRef = db.Collection("users").Document(aggregate.Id.Value);
-        await docRef.SetAsync(userDict);
-        return Result.Success();
+
+        try {
+            // Start a Firestore batch to handle multiple write operations atomically.
+            var batch = db.StartBatch();
+
+            // Set the user document
+            batch.Set(docRef, userDict);
+
+            // Create an interactions document with initial empty lists
+            var interactionsDict = new Dictionary<string, object> {
+                { "blockedUsers", new List<string>() },
+                { "followers", new List<string>() },
+                { "following", new List<string>() },
+                { "highlightedTweetIds", new List<string>() },
+                { "likedTweetIds", new List<string>() },
+                { "mutedUsers", new List<string>() },
+                { "reportedUsers", new List<string>() },
+                { "retweetedTweetIds", new List<string>() }
+            };
+            // Add the interactions subdocument
+            var interactionsRef = docRef.Collection("interactions").Document("data");
+            batch.Set(interactionsRef, interactionsDict);
+
+            // Commit the batch
+            await batch.CommitAsync();
+
+            return Result.Success();
+        }
+        catch (Exception ex) {
+            return Error.FromException(ex);
+        }
     }
 
 

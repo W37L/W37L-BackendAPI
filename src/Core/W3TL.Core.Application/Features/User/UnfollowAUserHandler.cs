@@ -19,7 +19,10 @@ public class UnfollowAUserHandler(
             return Error.UserNotFound;
 
         // Unfollow user
-        result.Payload.Unfollow(userToUnfollow.Payload);
+        var unfollow = result.Payload.Unfollow(userToUnfollow.Payload);
+
+        if (unfollow.IsFailure)
+            return unfollow;
 
         // Update user
         var res = interactionRepository.UnfollowUserAsync(result.Payload.Id.Value, userToUnfollow.Payload.Id.Value)

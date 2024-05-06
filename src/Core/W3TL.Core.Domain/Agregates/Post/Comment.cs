@@ -8,9 +8,10 @@ public class Comment : Content {
 
     internal Comment(PostId postId) : base(postId) { }
 
-    private protected Comment(PostId postId, CreatedAtType createdAt, TheString contentTweet, Count likes, User creator,
+    private protected Comment(CommentId commentId, CreatedAtType createdAt, TheString contentTweet, Count likes,
+        User creator,
         Signature signature, Content parentPost)
-        : base(postId, createdAt, contentTweet, likes, creator, signature, parentPost) { }
+        : base(commentId, createdAt, contentTweet, likes, creator, signature, parentPost) { }
 
     public static Result<Comment> Create(
         TheString contentTweet,
@@ -24,7 +25,7 @@ public class Comment : Content {
         ArgumentNullException.ThrowIfNull(parentPost);
 
         HashSet<Error> errors = new();
-        var postId = PostId.Generate()
+        var commentId = CommentId.Generate()
             .OnFailure(error => errors.Add(error));
 
         var createdAt = CreatedAtType.Create()
@@ -35,7 +36,7 @@ public class Comment : Content {
         if (errors.Any())
             return Error.CompileErrors(errors);
 
-        var comment = new Comment(postId.Payload, createdAt.Payload, contentTweet, likes!, creator, signature,
+        var comment = new Comment(commentId.Payload, createdAt.Payload, contentTweet, likes!, creator, signature,
             parentPost);
         return comment;
     }

@@ -3,8 +3,9 @@ using W3TL.Core.Domain.Common.Values;
 
 namespace W3TL.Core.Application.CommandDispatching.Commands.Post;
 
-public class CommentPostCommand : Command<PostId>, ICommand<CommentPostCommand> {
-    private CommentPostCommand(PostId postId, TheString content, UserID creatorId, Signature signature, PostId parentPostId) : base(postId) {
+public class CommentPostCommand : Command<CommentId>, ICommand<CommentPostCommand> {
+    private CommentPostCommand(CommentId postId, TheString content, UserID creatorId, Signature signature,
+        PostId parentPostId) : base(postId) {
         Content = content;
         CreatorId = creatorId;
         Signature = signature;
@@ -24,8 +25,10 @@ public class CommentPostCommand : Command<PostId>, ICommand<CommentPostCommand> 
 
         var errors = new HashSet<Error>();
 
-        var postIdResult = PostId.Create(args[0].ToString())
-            .OnFailure(error => errors.Add(error));
+        var commentIdResult = (args[0] == null) || string.IsNullOrWhiteSpace(args[0]?.ToString())
+            ? CommentId.Generate()
+            : CommentId.Create(args[0].ToString())
+                .OnFailure(error => errors.Add(error));
 
         var contentResult = TheString.Create(args[1].ToString())
             .OnFailure(error => errors.Add(error));
@@ -43,6 +46,7 @@ public class CommentPostCommand : Command<PostId>, ICommand<CommentPostCommand> 
         if (errors.Any())
             return Error.CompileErrors(errors);
 
-        return new CommentPostCommand(postIdResult.Payload, contentResult.Payload, creatorIdResult.Payload, signatureResult.Payload, parentPostIdResult.Payload);
+        return new CommentPostCommand(commentIdResult.Payload, contentResult.Payload, creatorIdResult.Payload,
+            signatureResult.Payload, parentPostIdResult.Payload);
     }
 }

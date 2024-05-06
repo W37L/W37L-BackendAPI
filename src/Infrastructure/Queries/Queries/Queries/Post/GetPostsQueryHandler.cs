@@ -21,10 +21,19 @@ public class GetPostsQueryHandler : IQueryHandler<GetPostByIdQuery.Query, GetPos
 
     public async Task<GetPostByIdQuery.Answer> HandleAsync(GetPostByIdQuery.Query byIdQuery) {
         var post = await _contentRepository.GetByIdAsync(byIdQuery.PostId);
+        if (post.IsFailure)
+            return new GetPostByIdQuery.Answer(null);
+
         var authorId = await _contentRepository.GetAuthorIdAsync(post.Payload.Id);
+        if (authorId.IsFailure)
+            throw new Exception(authorId.Error.Message);
+
         var author = await _userRepository.GetByIdAsync(authorId.Payload);
+        if (author.IsFailure)
+            throw new Exception(author.Error.Message);
 
         var concatenated = Concatenate.Append(author.Payload, post.Payload as global::Post);
+
 
         return new GetPostByIdQuery.Answer(_mapper.Map<ContentDTO>(concatenated));
     }

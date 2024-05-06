@@ -9,15 +9,17 @@ namespace W3TL.Core.Domain.Agregates.Post;
 
 public abstract class Content : AggregateRoot<ContentIDBase> {
     //Constructor for the Test Factory
-    internal Content(PostId postId) : base(postId) { }
+    internal Content(ContentIDBase contentId) : base(contentId) { }
 
     //Posible not used constructor
-    protected Content(PostId postId, CreatedAtType createdAt, TheString contentTweet, Count likes, global::User creator, Signature signature, Content? parentPost = null) : base(postId) {
+    protected Content(ContentIDBase postId, CreatedAtType createdAt, TheString contentTweet, Count likes,
+        global::User creator, Signature signature, Content? parentPost = null) : base(postId) {
         CreatedAt = createdAt;
         ContentTweet = contentTweet;
         Likes = likes;
         Creator = creator;
         Signature = signature;
+        PostType = PostType.Comment;
         ParentPost = parentPost;
     }
 

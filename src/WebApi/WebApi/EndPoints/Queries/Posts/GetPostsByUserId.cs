@@ -17,20 +17,25 @@ public class GetPostsByUserId :
         _dispatcher = dispatcher;
     }
 
-    [HttpGet("posts/{UserId}")]
+    [HttpGet("posts/user/id/{UserId}")]
     public override async Task<ActionResult<GetPostsByUserIdResponse>> HandleAsync() {
         var uId = UserID.Create(RouteData.Values["UserId"].ToString())
             .OnFailure(error => BadRequest(error));
 
         var query = new GetPostsByUserIdQuery.Query(uId.Payload);
 
-        var answer = await _dispatcher.DispatchAsync<GetPostsByUserIdQuery.Answer>(query);
+        try {
+            var answer = await _dispatcher.DispatchAsync<GetPostsByUserIdQuery.Answer>(query);
 
-        if (answer.Posts is null)
-            return NotFound();
+            if (answer.Posts is null)
+                return NotFound();
 
 
-        return new GetPostsByUserIdResponse(answer.Posts);
+            return new GetPostsByUserIdResponse(answer.Posts);
+        }
+        catch (Exception e) {
+            return BadRequest(e.Message);
+        }
     }
 
     public record GetPostsByUserIdResponse(List<ContentDTO> Posts);
