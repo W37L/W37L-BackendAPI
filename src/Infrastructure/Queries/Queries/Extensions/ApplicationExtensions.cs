@@ -36,5 +36,13 @@ public static class ApplicationExtensions {
         services
             .AddScoped<IQueryHandler<GetAllCommentsByUserIdQuery.Query, GetAllCommentsByUserIdQuery.Answer>,
                 GetAllCommentByUserIdHandler>();
+
+        // UserRelationships
+        services
+            .AddScoped<IQueryHandler<GetFollowingQuery.Query, GetFollowingQuery.Answer>, GetFollowingHandler>();
+        services
+            .AddScoped<IQueryHandler<GetFollowersQuery.Query, GetFollowersQuery.Answer>, GetFollowersHandler>();
+        services
+            .AddScoped<IQueryHandler<GetRelationsQuery.Query, GetRelationsQuery.Answer>, GetRelationsHandler>();
     }
 }

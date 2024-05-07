@@ -7,17 +7,14 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.Queries.User;
 
-public class GetUserById :
-    ApiEndpoint
-    .WithoutRequest
-    .WithResponse<GetUserById.GetUserByIdResponse> {
+public class GetUserById : ApiEndpoint.WithoutRequest.WithResponse<GetUserById.GetUserByIdResponse> {
     private readonly IQueryDispatcher _dispatcher;
 
     public GetUserById(IQueryDispatcher dispatcher) {
         _dispatcher = dispatcher;
     }
 
-    [HttpGet("users/uid/{UserId}")]
+    [HttpGet("user/uid/{UserId}")]
     public override async Task<ActionResult<GetUserByIdResponse>> HandleAsync() {
         var uId = UserID.Create(RouteData.Values["UserId"].ToString())
             .OnFailure(error => BadRequest(error));
