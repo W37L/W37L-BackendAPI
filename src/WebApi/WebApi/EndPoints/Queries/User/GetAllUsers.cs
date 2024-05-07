@@ -6,10 +6,7 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.Queries.User;
 
-public class GetAllUsers :
-    ApiEndpoint
-    .WithoutRequest
-    .WithResponse<GetAllUsers.GetAllUsersResponse> {
+public class GetAllUsers : ApiEndpoint.WithoutRequest.WithResponse<GetAllUsers.GetAllUsersResponse> {
     private readonly IQueryDispatcher _dispatcher;
 
     public GetAllUsers(IQueryDispatcher dispatcher) {
@@ -18,15 +15,21 @@ public class GetAllUsers :
 
     [HttpGet("users")]
     public override async Task<ActionResult<GetAllUsersResponse>> HandleAsync() {
-        var query = new GetAllUsersQuery.Query();
-        var answer = await _dispatcher.DispatchAsync<GetAllUsersQuery.Answer>(query);
+        try {
+            var query = new GetAllUsersQuery.Query();
+            var answer = await _dispatcher.DispatchAsync(query);
 
-        if (answer.Users is null) {
-            return NotFound();
+            if (answer.Users is null)
+                return NotFound();
+
+            var users = answer.Users;
+            return new GetAllUsersResponse(answer.Users);
         }
-
-        return new GetAllUsersResponse(answer.Users);
+        catch (Exception ex) {
+            return StatusCode(500);
+        }
     }
+
 
     public record GetAllUsersResponse(List<UserDTO> Users);
 }

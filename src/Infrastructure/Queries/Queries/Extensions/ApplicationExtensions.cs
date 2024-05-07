@@ -11,6 +11,7 @@ namespace Queries.Extensions;
 
 public static class ApplicationExtensions {
     public static void RegisterQueries(this IServiceCollection services) {
+        // Posts
         services.AddScoped<IQueryHandler<GetAllPostQuery.Query, GetAllPostQuery.Answer>, GetAllPostHandler>();
         services.AddScoped<IQueryHandler<GetPostByIdQuery.Query, GetPostByIdQuery.Answer>, GetPostsQueryHandler>();
         services
@@ -19,10 +20,6 @@ public static class ApplicationExtensions {
         services
             .AddScoped<IQueryHandler<GetPostsByUsernameQuery.Query, GetPostsByUsernameQuery.Answer>,
                 GetPostsByUsernameHandler>();
-        services.AddScoped<IQueryHandler<GetUserByIdQuery.Query, GetUserByIdQuery.Answer>, GetUserByIdHandler>();
-        services
-            .AddScoped<IQueryHandler<GetUserByUsernameQuery.Query, GetUserByUsernameQuery.Answer>,
-                GetUserByUsernameHandler>();
 
         // Comments
         services
@@ -38,11 +35,15 @@ public static class ApplicationExtensions {
                 GetAllCommentByUserIdHandler>();
 
         // UserRelationships
+        services.AddScoped<IQueryHandler<GetFollowingQuery.Query, GetFollowingQuery.Answer>, GetFollowingHandler>();
+        services.AddScoped<IQueryHandler<GetFollowersQuery.Query, GetFollowersQuery.Answer>, GetFollowersHandler>();
+        services.AddScoped<IQueryHandler<GetRelationsQuery.Query, GetRelationsQuery.Answer>, GetRelationsHandler>();
+
+        //users
+        services.AddScoped<IQueryHandler<GetAllUsersQuery.Query, GetAllUsersQuery.Answer>, GetAllUsersHandler>();
+        services.AddScoped<IQueryHandler<GetUserByIdQuery.Query, GetUserByIdQuery.Answer>, GetUserByIdHandler>();
         services
-            .AddScoped<IQueryHandler<GetFollowingQuery.Query, GetFollowingQuery.Answer>, GetFollowingHandler>();
-        services
-            .AddScoped<IQueryHandler<GetFollowersQuery.Query, GetFollowersQuery.Answer>, GetFollowersHandler>();
-        services
-            .AddScoped<IQueryHandler<GetRelationsQuery.Query, GetRelationsQuery.Answer>, GetRelationsHandler>();
+            .AddScoped<IQueryHandler<GetUserByUsernameQuery.Query, GetUserByUsernameQuery.Answer>,
+                GetUserByUsernameHandler>();
     }
 }

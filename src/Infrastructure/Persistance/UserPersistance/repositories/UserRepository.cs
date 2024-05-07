@@ -177,9 +177,19 @@ public class UserRepository(IMapper mapper) : IUserRepository {
 
         var userSnapshot = querySnapshot.Documents.First();
         var userDto = userSnapshot.ConvertTo<UserDTO>();
+
+        // Retrieve interactions
+        var interactionsDocRef = userSnapshot.Reference.Collection("interactions").Document("data");
+        var interactionsSnapshot = await interactionsDocRef.GetSnapshotAsync();
+        if (interactionsSnapshot.Exists)
+            userDto.Interactions = interactionsSnapshot.ConvertTo<InteractionsDTO>();
+        else
+            userDto.Interactions = new InteractionsDTO();
+
         var user = _mapper.Map<User>(userDto);
         return user;
     }
+
 
     public async Task<Result<User>> GetByUserNameAsync(string userName) {
         var query = db.Collection("users").WhereEqualTo("username", userName);
@@ -188,8 +198,16 @@ public class UserRepository(IMapper mapper) : IUserRepository {
             return Error.UserNotFound;
 
         var userSnapshot = querySnapshot.Documents.First();
-
         var userDto = userSnapshot.ConvertTo<UserDTO>();
+
+        // Retrieve interactions
+        var interactionsDocRef = userSnapshot.Reference.Collection("interactions").Document("data");
+        var interactionsSnapshot = await interactionsDocRef.GetSnapshotAsync();
+        if (interactionsSnapshot.Exists)
+            userDto.Interactions = interactionsSnapshot.ConvertTo<InteractionsDTO>();
+        else
+            userDto.Interactions = new InteractionsDTO(); // Or handle as an error if necessary
+
         var user = _mapper.Map<User>(userDto);
         return user;
     }
