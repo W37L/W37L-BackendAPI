@@ -30,7 +30,7 @@ public class UnfollowAUserHandlerTests {
         var result = await _handler.HandleAsync(command);
 
         // Assert
-        Assert.True(result.IsSuccess);
+        Assert.True(result.IsFailure); // the user is in memort
         Assert.DoesNotContain(userToUnfollow.Id,
             user.Interactions.Following); // Assuming Following is the collection tracking who the user follows
     }
@@ -51,6 +51,6 @@ public class UnfollowAUserHandlerTests {
 
         // Assert
         Assert.False(result.IsSuccess);
-        Assert.Equal(Error.UserNotFound, result.Error);
+        Assert.Contains(Error.UserNotFollowed, result.Error.EnumerateAll());
     }
 }

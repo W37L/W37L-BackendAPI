@@ -31,7 +31,7 @@ public class UpdateAvatarHandlerTests {
         // Assert - Verify the update was successful
         Assert.True(result.IsSuccess);
         var updatedUserResult = await _userRepository.GetByIdAsync(user.Id);
-        Assert.Equal(avatarUrl, updatedUserResult.Payload.Profile.Avatar.Url);
+        Assert.Equal(avatarUrl, updatedUserResult.Payload.Profile?.Avatar?.Url);
     }
 
     [Fact]

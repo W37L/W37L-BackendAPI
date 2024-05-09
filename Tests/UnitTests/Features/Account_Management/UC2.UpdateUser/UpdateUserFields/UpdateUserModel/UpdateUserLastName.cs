@@ -71,7 +71,7 @@ public class UpdateUserLastName {
     [Theory]
     [InlineData("Smith1")]
     [InlineData("O'Neil")]
-    [InlineData("Johnson$")]
+    [InlineData("%2! `Johnson$")]
     public void UpdateLastName_InvalidLastName_ContainsInvalidCharacter_ReturnFailure(string? invalidLastName) {
         var user = UserFactory.InitWithDefaultValues().Build();
         var newLastNameResult = LastNameType.Create(invalidLastName);

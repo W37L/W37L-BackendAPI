@@ -22,7 +22,8 @@ public class CommentPostHandlerTests {
         var user = UserFactory.InitWithDefaultValues().Build();
         await _userRepository.AddAsync(user);
 
-        var command = CommentPostCommand.Create(post.Id.Value, "New comment", user.Id.Value, ValidFields.VALID_SIGNATURE, post.Id.Value).Payload;
+        var command = CommentPostCommand.Create(ValidFields.VALID_COMMENT_ID, "New comment", user.Id.Value,
+            ValidFields.VALID_SIGNATURE, post.Id.Value).Payload;
 
         // Act
         var result = await _handler.HandleAsync(command);
@@ -38,7 +39,8 @@ public class CommentPostHandlerTests {
         var nonExistentPostId = PostFactory.InitWithDefaultValues().Build().Id; // Not added to repository
         var nonExistentUserId = UserFactory.InitWithDefaultValues().Build().Id; // Not added to repository
 
-        var command = CommentPostCommand.Create(nonExistentPostId.Value, "New comment", nonExistentUserId.Value, ValidFields.VALID_SIGNATURE, nonExistentPostId.Value).Payload;
+        var command = CommentPostCommand.Create(ValidFields.VALID_COMMENT_ID, "New comment", nonExistentUserId.Value,
+            ValidFields.VALID_SIGNATURE, nonExistentPostId.Value).Payload;
 
         // Act
         var result = await _handler.HandleAsync(command);

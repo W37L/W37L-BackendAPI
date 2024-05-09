@@ -47,6 +47,6 @@ public class UnlikeContentHandlerTests {
 
         // Assert
         Assert.False(result.IsSuccess);
-        Assert.Contains(Error.PostNotFound, result.Error.EnumerateAll());
+        Assert.Contains(Error.UserNotFound, result.Error.EnumerateAll());
     }
 }

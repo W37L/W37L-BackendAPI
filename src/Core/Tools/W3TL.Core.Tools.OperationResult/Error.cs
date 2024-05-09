@@ -108,6 +108,10 @@ public class Error {
     public static Error CannotUnfollowYourself => new("A user cannot unfollow themselves.");
     public static Error CannotUnmuteYourself => new("A user cannot unmute themselves.");
     public static Error CannotUnreportYourself => new("A user cannot unreport themselves.");
+    public static Error InvalidField => new("The field is invalid.");
+    public static Error ContentNotLiked => new("The content is not liked.");
+    public static Error ContentNotRetweeted => new("The content is not retweeted.");
+    public static Error ContentNotHighlighted => new("The content is not highlighted.");
 
     public static Error UserAlreadyInList(string listName) => new($"The user is already in the {listName} list.");
     public static Error UserNotActioned(string listName) => new($"The user is not in the {listName} list.");

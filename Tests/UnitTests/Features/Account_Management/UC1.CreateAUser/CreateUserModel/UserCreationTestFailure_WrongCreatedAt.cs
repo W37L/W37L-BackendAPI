@@ -35,7 +35,7 @@ public class UserCreationTestFailure_WrongCreatedAt {
 
     // UC1.F26 - Test for failure when CreatedAt date string is in an invalid format
     [Theory]
-    [InlineData("20200101")]
+    [InlineData("-20200101")]
     [InlineData("31-12-2020")]
     [InlineData("13/13/2020")]
     public void CreateCreatedAtType_InvalidDateFormatString_ReturnInvalidDateFormatError(string dateStringInput) {

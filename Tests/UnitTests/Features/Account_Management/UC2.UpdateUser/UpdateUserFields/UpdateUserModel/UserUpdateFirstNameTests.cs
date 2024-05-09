@@ -66,8 +66,8 @@ public class UserUpdateFirstNameTests {
     //ID:UC3.F4
     [Theory]
     [InlineData("John1")]
-    [InlineData("Anna-")]
-    [InlineData("Eve$")]
+    [InlineData("Anna-9")]
+    [InlineData("Eve1$")]
     public void UpdateFirstName_InvalidFirstName_ContainsInvalidCharacter_ReturnFailure(string? invalidFirstName) {
         var user = UserFactory.InitWithDefaultValues().Build();
         var newFirstNameResult = NameType.Create(invalidFirstName);

@@ -5,14 +5,14 @@ public class CommentPostCommandTests {
     [Fact]
     public void Create_ValidArguments_ReturnsSuccess() {
         // Arrange
-        var postId = PostFactory.InitWithDefaultValues().Build().Id.Value;
+        var commentId = ValidFields.VALID_COMMENT_ID;
         var content = "This is a comment";
         var creatorId = UserFactory.InitWithDefaultValues().Build().Id.Value;
         var signature = ValidFields.VALID_SIGNATURE;
-        var parentPostId = postId; // Assuming the comment is on the original post itself for simplicity
+        var parentPostId = ValidFields.VALID_POST_ID;
 
         // Act
-        var result = CommentPostCommand.Create(postId, content, creatorId, signature, parentPostId);
+        var result = CommentPostCommand.Create(commentId, content, creatorId, signature, parentPostId);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -29,7 +29,8 @@ public class CommentPostCommandTests {
         var invalidParentPostId = "";
 
         // Act
-        var result = CommentPostCommand.Create(invalidPostId, invalidContent, invalidCreatorId, invalidSignature, invalidParentPostId);
+        var result = CommentPostCommand.Create(invalidPostId, invalidContent, invalidCreatorId, invalidSignature,
+            invalidParentPostId);
 
         // Assert
         Assert.False(result.IsSuccess);

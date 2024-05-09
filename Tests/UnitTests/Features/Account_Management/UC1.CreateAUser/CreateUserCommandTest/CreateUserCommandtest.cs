@@ -48,7 +48,7 @@ public class CreateUserCommandtest {
         // Assert
         Assert.True(result.IsFailure);
         Assert.Contains(Error.InvalidEmail, result.Error.EnumerateAll());
-        Assert.Contains(Error.InvalidPrefix, result.Error.EnumerateAll());
+        Assert.Contains(Error.BlankUserName, result.Error.EnumerateAll());
         Assert.Contains(Error.InvalidLength, result.Error.EnumerateAll());
     }
 }

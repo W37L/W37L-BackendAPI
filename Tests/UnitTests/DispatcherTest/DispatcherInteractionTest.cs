@@ -16,13 +16,27 @@ public class DispatcherInteractionTest {
     public DispatcherInteractionTest() {
         // Set up the DI container
         var serviceCollection = new ServiceCollection();
-        serviceCollection.AddScoped<ICommandHandler<CommentPostCommand>, GenericFakeHandler<CommentPostCommand>.CommentPostFakeHandler>();
-        serviceCollection.AddScoped<ICommandHandler<CreatePostCommand>, GenericFakeHandler<CreatePostCommand>.CreatePostFakeHandler>();
-        serviceCollection.AddScoped<ICommandHandler<LikeContentCommand>, GenericFakeHandler<LikeContentCommand>.LikeContentFakeHandler>();
-        serviceCollection.AddScoped<ICommandHandler<UnlikeContentCommand>, GenericFakeHandler<UnlikeContentCommand>.UnlikeContentFakeHandler>();
-        serviceCollection.AddScoped<ICommandHandler<UpdateContentCommand>, GenericFakeHandler<UpdateContentCommand>.UpdateContentFakeHandler>();
-        serviceCollection.AddScoped<ICommandHandler<UpdateContentTypeCommand>, GenericFakeHandler<UpdateContentTypeCommand>.UpdateContentTypeFakeHandler>();
-        serviceCollection.AddScoped<ICommandHandler<UpdateMediaUrlCommand>, GenericFakeHandler<UpdateMediaUrlCommand>.UpdateMediaUrlFakeHandler>();
+        serviceCollection
+            .AddScoped<ICommandHandler<CommentPostCommand>,
+                GenericFakeHandler<CommentPostCommand>.CommentPostFakeHandler>();
+        serviceCollection
+            .AddScoped<ICommandHandler<CreatePostCommand>,
+                GenericFakeHandler<CreatePostCommand>.CreatePostFakeHandler>();
+        serviceCollection
+            .AddScoped<ICommandHandler<LikeContentCommand>,
+                GenericFakeHandler<LikeContentCommand>.LikeContentFakeHandler>();
+        serviceCollection
+            .AddScoped<ICommandHandler<UnlikeContentCommand>,
+                GenericFakeHandler<UnlikeContentCommand>.UnlikeContentFakeHandler>();
+        serviceCollection
+            .AddScoped<ICommandHandler<UpdateContentCommand>,
+                GenericFakeHandler<UpdateContentCommand>.UpdateContentFakeHandler>();
+        serviceCollection
+            .AddScoped<ICommandHandler<UpdateContentTypeCommand>,
+                GenericFakeHandler<UpdateContentTypeCommand>.UpdateContentTypeFakeHandler>();
+        serviceCollection
+            .AddScoped<ICommandHandler<UpdateMediaUrlCommand>,
+                GenericFakeHandler<UpdateMediaUrlCommand>.UpdateMediaUrlFakeHandler>();
 
         _serviceProvider = serviceCollection.BuildServiceProvider();
         _commandDispatcher = new CommandDispatcher(_serviceProvider);
@@ -31,19 +45,21 @@ public class DispatcherInteractionTest {
     [Fact]
     public async Task Dispatch_CommentPostCommand_HandlerIsCalled() {
         // Arrange
-        var postId = PostFactory.InitWithDefaultValues().Build().Id.Value;
+        var commentId = CommentFactory.InitWithDefaultValues().Build().Id.Value;
         var content = ValidFields.VALID_POST_CONTENT;
         var creatorId = UserFactory.InitWithDefaultValues().Build().Id.Value;
         var signature = ValidFields.VALID_SIGNATURE;
-        var parentPostId = postId; // Assuming the comment is on the original post itself for simplicity
+        var parentPostId = PostFactory.InitWithDefaultValues().Build().Id.Value;
 
         // Act
-        var command = CommentPostCommand.Create(postId, content, creatorId, signature, parentPostId).Payload;
+        var command = CommentPostCommand.Create(commentId, content, creatorId, signature, parentPostId).Payload;
         // Act
         await _commandDispatcher.DispatchAsync(command);
 
         // Assert
-        var handler = _serviceProvider.GetRequiredService<ICommandHandler<CommentPostCommand>>() as GenericFakeHandler<CommentPostCommand>.CommentPostFakeHandler;
+        var handler =
+            _serviceProvider.GetRequiredService<ICommandHandler<CommentPostCommand>>() as
+                GenericFakeHandler<CommentPostCommand>.CommentPostFakeHandler;
         Assert.NotNull(handler);
         Assert.True(handler.WasCalled);
         Assert.Equal(command, handler.HandledCommand);
@@ -63,7 +79,9 @@ public class DispatcherInteractionTest {
         await _commandDispatcher.DispatchAsync(command);
 
         // Assert
-        var handler = _serviceProvider.GetRequiredService<ICommandHandler<CommentPostCommand>>() as GenericFakeHandler<CommentPostCommand>.CommentPostFakeHandler;
+        var handler =
+            _serviceProvider.GetRequiredService<ICommandHandler<CommentPostCommand>>() as
+                GenericFakeHandler<CommentPostCommand>.CommentPostFakeHandler;
         Assert.NotNull(handler);
         Assert.False(handler.WasCalled);
     }
@@ -83,7 +101,9 @@ public class DispatcherInteractionTest {
         await _commandDispatcher.DispatchAsync(command);
 
         // Assert
-        var handler = _serviceProvider.GetRequiredService<ICommandHandler<CreatePostCommand>>() as GenericFakeHandler<CreatePostCommand>.CreatePostFakeHandler;
+        var handler =
+            _serviceProvider.GetRequiredService<ICommandHandler<CreatePostCommand>>() as
+                GenericFakeHandler<CreatePostCommand>.CreatePostFakeHandler;
         Assert.NotNull(handler);
         Assert.True(handler.WasCalled);
         Assert.Equal(command, handler.HandledCommand);
@@ -101,7 +121,9 @@ public class DispatcherInteractionTest {
         await _commandDispatcher.DispatchAsync(command);
 
         // Assert
-        var handler = _serviceProvider.GetRequiredService<ICommandHandler<LikeContentCommand>>() as GenericFakeHandler<LikeContentCommand>.LikeContentFakeHandler;
+        var handler =
+            _serviceProvider.GetRequiredService<ICommandHandler<LikeContentCommand>>() as
+                GenericFakeHandler<LikeContentCommand>.LikeContentFakeHandler;
         Assert.NotNull(handler);
         Assert.True(handler.WasCalled);
         Assert.Equal(command, handler.HandledCommand);
@@ -119,7 +141,9 @@ public class DispatcherInteractionTest {
         await _commandDispatcher.DispatchAsync(command);
 
         // Assert
-        var handler = _serviceProvider.GetRequiredService<ICommandHandler<UnlikeContentCommand>>() as GenericFakeHandler<UnlikeContentCommand>.UnlikeContentFakeHandler;
+        var handler =
+            _serviceProvider.GetRequiredService<ICommandHandler<UnlikeContentCommand>>() as
+                GenericFakeHandler<UnlikeContentCommand>.UnlikeContentFakeHandler;
         Assert.NotNull(handler);
         Assert.True(handler.WasCalled);
         Assert.Equal(command, handler.HandledCommand);
@@ -138,7 +162,9 @@ public class DispatcherInteractionTest {
         await _commandDispatcher.DispatchAsync(command);
 
         // Assert
-        var handler = _serviceProvider.GetRequiredService<ICommandHandler<UpdateContentCommand>>() as GenericFakeHandler<UpdateContentCommand>.UpdateContentFakeHandler;
+        var handler =
+            _serviceProvider.GetRequiredService<ICommandHandler<UpdateContentCommand>>() as
+                GenericFakeHandler<UpdateContentCommand>.UpdateContentFakeHandler;
         Assert.NotNull(handler);
         Assert.True(handler.WasCalled);
         Assert.Equal(command, handler.HandledCommand);
@@ -156,7 +182,9 @@ public class DispatcherInteractionTest {
         await _commandDispatcher.DispatchAsync(command);
 
         // Assert
-        var handler = _serviceProvider.GetRequiredService<ICommandHandler<UpdateContentTypeCommand>>() as GenericFakeHandler<UpdateContentTypeCommand>.UpdateContentTypeFakeHandler;
+        var handler =
+            _serviceProvider.GetRequiredService<ICommandHandler<UpdateContentTypeCommand>>() as
+                GenericFakeHandler<UpdateContentTypeCommand>.UpdateContentTypeFakeHandler;
         Assert.NotNull(handler);
         Assert.True(handler.WasCalled);
         Assert.Equal(command, handler.HandledCommand);
@@ -174,7 +202,9 @@ public class DispatcherInteractionTest {
         await _commandDispatcher.DispatchAsync(command);
 
         // Assert
-        var handler = _serviceProvider.GetRequiredService<ICommandHandler<UpdateMediaUrlCommand>>() as GenericFakeHandler<UpdateMediaUrlCommand>.UpdateMediaUrlFakeHandler;
+        var handler =
+            _serviceProvider.GetRequiredService<ICommandHandler<UpdateMediaUrlCommand>>() as
+                GenericFakeHandler<UpdateMediaUrlCommand>.UpdateMediaUrlFakeHandler;
         Assert.NotNull(handler);
         Assert.True(handler.WasCalled);
         Assert.Equal(command, handler.HandledCommand);

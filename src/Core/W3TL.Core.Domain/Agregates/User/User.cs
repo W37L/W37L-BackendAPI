@@ -10,7 +10,9 @@ public class User : AggregateRoot<UserID> {
     // Required for Reflection
     private User() : base(default!) { }
 
+    // Required for Factory
     internal User(UserID userId) : base(userId) {
+        Profile = Profile.Create(userId).Payload;
         Interactions = Interactions.Create(userId).Payload;
     }
 

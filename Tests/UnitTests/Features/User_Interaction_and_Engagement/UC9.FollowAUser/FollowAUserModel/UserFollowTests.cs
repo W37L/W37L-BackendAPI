@@ -9,8 +9,9 @@ public class UserFollowTests {
 
     public UserFollowTests() {
         _follower = UserFactory.InitWithDefaultValues().Build();
+
         _followee = UserFactory.InitWithDefaultValues()
-            .WitValidId("UID-123456789012345678901234567890123456")
+            .WitValidId("xwwAkOZRG9W1Kk9xN9dwuTALrmE3")
             .WithValidUserName("username")
             .WithValidEmail("email@example.com")
             .Build();
@@ -31,17 +32,21 @@ public class UserFollowTests {
     public void Follow_ValidUser_ShouldFollowSuccessfully() {
         // Arrange
         ResetFollowState();
+
+        var f = _follower.Interactions.Following;
+        var fl = _followee.Interactions.Followers;
+
         var initialValueFollower = _follower.Profile.Following.Value;
         var initialValueFollowee = _followee.Profile.Followers.Value;
-
 
         // Act
         var result = _follower.Follow(_followee);
 
         // Assert
         Assert.True(result.IsSuccess);
-        Assert.Contains(_followee.Id, _follower.Interactions.Followers);
-        Assert.Contains(_follower.Id, _followee.Interactions.Followers);
+        Assert.Contains(_followee.Id, f);
+        Assert.Contains(_follower.Id, fl);
+
         Assert.Equal(initialValueFollower + 1, _follower.Profile.Following.Value);
         Assert.Equal(initialValueFollowee + 1, _followee.Profile.Followers.Value);
     }
@@ -114,19 +119,24 @@ public class UserFollowTests {
     public void Follow_AlreadyFollowedUser_ShouldReturnUserAlreadyFollowedError() {
         // Arrange
         ResetFollowState();
-        _follower.Follow(_followee); // First follow attempt
+
+        var f = _follower.Interactions.Following;
+        var fl = _followee.Interactions.Followers;
+
         var initialValueFollower = _follower.Profile.Following.Value;
         var initialValueFollowee = _followee.Profile.Followers.Value;
 
+        _follower.Follow(_followee);
+
         // Act
-        var result = _follower.Follow(_followee); // Second follow attempt
+        var result = _follower.Follow(_followee);
 
         // Assert
         Assert.False(result.IsSuccess);
         Assert.Equal(Error.UserAlreadyFollowed, result.Error);
-        Assert.Contains(_followee.Id, _follower.Interactions.Followers);
-        Assert.Contains(_follower.Id, _followee.Interactions.Followers);
-        Assert.Equal(initialValueFollower, _follower.Profile.Following.Value);
-        Assert.Equal(initialValueFollowee, _followee.Profile.Followers.Value);
+        Assert.Contains(_followee.Id, f);
+        Assert.Contains(_follower.Id, fl);
+        Assert.Equal(initialValueFollower + 1, _follower.Profile.Following.Value);
+        Assert.Equal(initialValueFollowee + 1, _followee.Profile.Followers.Value);
     }
 }

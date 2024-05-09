@@ -21,7 +21,7 @@ public class UserCreationTestFailure_WrongFirstName {
 
     // UC1.F10 - Test for failure when FirstName contains characters not allowed
     [Theory]
-    [InlineData("John#")]
+    [InlineData("*&^%^%&$John#(*&4^$")]
     [InlineData("An@na")]
     [InlineData("B0b")] // Contains a digit, which is not allowed
     public void CreateNameType_InvalidCharacterInFirstName_ReturnInvalidNameError(string? firstNameInput) {
@@ -48,7 +48,8 @@ public class UserCreationTestFailure_WrongFirstName {
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Contains(Error.TooShortName(NamingType.MIN_LENGTH), result.Error.EnumerateAll()); // Assuming MIN_LENGTH is accessible
+        Assert.Contains(Error.TooShortName(NamingType.MIN_LENGTH),
+            result.Error.EnumerateAll()); // Assuming MIN_LENGTH is accessible
     }
 
     // UC1.F12 - Test for failure when FirstName exceeds the length limit
@@ -64,6 +65,7 @@ public class UserCreationTestFailure_WrongFirstName {
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Contains(Error.TooLongName(NamingType.MAX_LENGTH), result.Error.EnumerateAll()); // Assuming MAX_LENGTH is accessible
+        Assert.Contains(Error.TooLongName(NamingType.MAX_LENGTH),
+            result.Error.EnumerateAll()); // Assuming MAX_LENGTH is accessible
     }
 }

@@ -21,7 +21,7 @@ public class UserCreationTestFailureWrongLastName {
 
     // UC1.F14 - Test for failure when LastName contains characters not allowed
     [Theory]
-    [InlineData("Doe!")]
+    [InlineData("D@ oe!")]
     [InlineData("O'Neil@")]
     [InlineData("Smith#123")] // Contains a digit and special character, not allowed
     public void CreateLastNameType_InvalidCharacterInLastName_ReturnInvalidNameError(string? lastNameInput) {

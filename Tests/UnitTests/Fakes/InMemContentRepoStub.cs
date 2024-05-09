@@ -6,8 +6,7 @@ using W3TL.Core.Domain.Common.Values;
 namespace UnitTests.Fakes;
 
 public class InMemContentRepoStub : IContentRepository {
-    // set up the in-memory database
-    public readonly List<Content> _contents = new();
+    private readonly List<Content> _contents = new();
 
     public Task<Result> AddAsync(Content aggregate) {
         _contents.Add(aggregate);
@@ -15,25 +14,28 @@ public class InMemContentRepoStub : IContentRepository {
     }
 
     public Task<Result> UpdateAsync(Content aggregate) {
-        // find the content in the list
         var existingContent = _contents.FirstOrDefault(e => e.Id == aggregate.Id);
         if (existingContent == null) return Task.FromResult(Result.Fail(Error.ContentNotFound));
 
-        // update the content
-        existingContent = aggregate;
+        // Replace existing content with the updated version
+        var index = _contents.IndexOf(existingContent);
+        _contents[index] = aggregate;
         return Task.FromResult(Result.Success());
     }
 
     public Task<Result> DeleteAsync(ContentIDBase id) {
-        throw new NotImplementedException();
+        var contentToRemove = _contents.FirstOrDefault(e => e.Id == id);
+        if (contentToRemove == null) return Task.FromResult(Result.Fail(Error.ContentNotFound));
+
+        _contents.Remove(contentToRemove);
+        return Task.FromResult(Result.Success());
     }
 
     public Task<Result<Content>> GetByIdAsync(ContentIDBase id) {
-        // find the content in the list
         var existingContent = _contents.FirstOrDefault(e => e.Id == id);
-        if (existingContent == null) return Task.FromResult(Result<Content>.Fail(Error.ContentNotFound));
-
-        return Task.FromResult(Result<Content>.Success(existingContent));
+        return Task.FromResult(existingContent != null
+            ? Result<Content>.Success(existingContent)
+            : Result<Content>.Fail(Error.ContentNotFound));
     }
 
     public Task<Result<List<Content>>> GetAllAsync() {
@@ -41,56 +43,61 @@ public class InMemContentRepoStub : IContentRepository {
     }
 
     public Task<Result<UserID>> GetAuthorIdAsync(ContentIDBase id) {
-        throw new NotImplementedException();
+        var content = _contents.FirstOrDefault(e => e.Id == id);
+        if (content == null) return Task.FromResult(Result<UserID>.Fail(Error.ContentNotFound));
+
+        return Task.FromResult(Result<UserID>.Success(content.Creator.Id));
     }
 
     public Task<Result<Content>> GetByFullIdAsync(ContentIDBase id, User user) {
-        throw new NotImplementedException();
+        var content = _contents.FirstOrDefault(e => e.Id == id && e.Creator.Id == user.Id);
+        return Task.FromResult(content != null
+            ? Result<Content>.Success(content)
+            : Result<Content>.Fail(Error.ContentNotFound));
     }
 
     public Task<Result<List<Content>>> GetPostsByUserIdAsync(UserID userId) {
-        throw new NotImplementedException();
+        var userPosts = _contents.Where(c => c.Creator.Id == userId).ToList();
+        return Task.FromResult(Result<List<Content>>.Success(userPosts));
     }
 
     public Task<Result<PostId>> GetParentPostIdAsync(CommentId commentId) {
-        throw new NotImplementedException();
+        var comment = _contents.OfType<Comment>().FirstOrDefault(c => c.Id == commentId);
+        if (comment == null) return Task.FromResult(Result<PostId>.Fail(Error.ContentNotFound));
+
+        return Task.FromResult(Result<PostId>.Success((comment.ParentPost.Id as PostId)!));
     }
 
-    public Task<Result<List<Content>>> GetCommentsByUserIdAsync(UserID queryUserId) {
-        throw new NotImplementedException();
+    public Task<Result<List<Content>>> GetCommentsByUserIdAsync(UserID userId) {
+        var userComments =
+            _contents.OfType<Comment>().Where(c => c.Creator.Id == userId).Cast<Content>().ToList();
+        return Task.FromResult(Result<List<Content>>.Success(userComments));
     }
 
     public Task<Result<List<Content>>> GetCommentsByPostIdAsync(ContentIDBase postId) {
-        throw new NotImplementedException();
+        var comments = _contents.OfType<Comment>().Where(c => c.ParentPost.Id == postId).ToList();
+        var commentCastedList = comments.Cast<Content>().ToList();
+        return Task.FromResult(Result<List<Content>>.Success(commentCastedList));
     }
 
     public Task<Result<Content>> GetCommentByIdAsync(CommentId queryCommentId) {
-        throw new NotImplementedException();
+        var comment = _contents.OfType<Comment>().FirstOrDefault(c => c.Id == queryCommentId);
+        return Task.FromResult(comment != null
+            ? Result<Content>.Success(comment)
+            : Result<Content>.Fail(Error.ContentNotFound));
     }
 
     public Task<Result<Content>> GetCommentByIdWithAuthorAsync(CommentId queryCommentId, User user) {
-        throw new NotImplementedException();
+        var comment = _contents.OfType<Comment>()
+            .FirstOrDefault(c => c.Id == queryCommentId && c.Creator.Id == user.Id);
+        return Task.FromResult(comment != null
+            ? Result<Content>.Success(comment)
+            : Result<Content>.Fail(Error.ContentNotFound));
     }
 
     public Task<Result<List<Content>>> GetAllPostThatUserCommentAsync(UserID userId) {
-        throw new NotImplementedException();
-    }
-
-    public Task<Result> DeleteAsync(PostId id) {
-        // find the content in the list
-        var existingContent = _contents.FirstOrDefault(e => e.Id == id);
-        if (existingContent == null) return Task.FromResult(Result.Fail(Error.ContentNotFound));
-
-        // delete the content
-        _contents.Remove(existingContent);
-        return Task.FromResult(Result.Success());
-    }
-
-    public Task<Result<Content>> GetByIdAsync(PostId id) {
-        // find the content in the list
-        var existingContent = _contents.FirstOrDefault(e => e.Id == id);
-        if (existingContent == null) return Task.FromResult(Result<Content>.Fail(Error.ContentNotFound));
-
-        return Task.FromResult(Result<Content>.Success(existingContent));
+        var postsCommented = _contents.OfType<Comment>().Where(c => c.Creator.Id == userId).Select(c => c.ParentPost)
+            .Distinct().ToList();
+        return Task.FromResult(Result<List<Content>>.Success(postsCommented));
     }
 }

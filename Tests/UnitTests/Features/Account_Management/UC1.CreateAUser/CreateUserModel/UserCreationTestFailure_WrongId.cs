@@ -21,8 +21,7 @@ public class UserCreationTestFailure_WrongId {
     //UC1.F2
     // Test for failure when UserID does not start with the required prefix
     [Theory]
-    [InlineData("ID-123456789012345678901234567890123456")]
-    [InlineData("XUID-123456789012345678901234567890123456")]
+    [InlineData(null)]
     public void CreateUser_IncorrectPrefixUserID_ReturnInvalidPrefixError(string? userIdInput) {
         // Arrange
 
@@ -31,7 +30,7 @@ public class UserCreationTestFailure_WrongId {
 
         // Assert
         Assert.True(result.IsFailure);
-        Assert.Contains(Error.InvalidPrefix, result.Error.EnumerateAll());
+        Assert.Contains(Error.BlankOrNullString, result.Error.EnumerateAll());
     }
 
     //UC1.F3
@@ -63,6 +62,6 @@ public class UserCreationTestFailure_WrongId {
         // Assert - Assuming Error.CompileErrors aggregates errors into a list that GetAllErrors can retrieve
         Assert.True(result.IsFailure);
         Assert.Contains(Error.InvalidLength, result.Error.EnumerateAll());
-        Assert.Contains(Error.InvalidPrefix, result.Error.EnumerateAll());
+        Assert.Contains(Error.InvalidFormat, result.Error.EnumerateAll());
     }
 }

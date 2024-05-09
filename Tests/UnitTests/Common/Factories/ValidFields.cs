@@ -30,7 +30,7 @@ public static class ValidFields {
         "6fCA1f58Ada8fa3e219b87dEc0Cebd98C4B4ac314AD227377Ec6E581F060F46e1f0B58f7e4C23efD6fEa34eCdd6bDf6B74eB233a089AA0a67c412Cc8c7deAc0c";
 
     // Comment
-    public static readonly string VALID_COMMENT_ID = "PID-123456789012345678901234567890123456";
+    public static readonly string VALID_COMMENT_ID = "CID-123456789012345678901234567890123456";
     public static readonly string? VALID_COMMENT_CONTENT = "This is a valid comment content";
 
     public static readonly string? VALID_COMMENT_SIGNATURE =
