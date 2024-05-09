@@ -15,4 +15,5 @@ public interface IContentRepository : IRepository<Content, ContentIDBase> {
     Task<Result<List<Content>>> GetCommentsByPostIdAsync(ContentIDBase postId);
     Task<Result<Content>> GetCommentByIdAsync(CommentId queryCommentId);
     Task<Result<Content>> GetCommentByIdWithAuthorAsync(CommentId queryCommentId, global::User user);
+    Task<Result<List<Content>>> GetAllPostThatUserCommentAsync(UserID userId);
 }

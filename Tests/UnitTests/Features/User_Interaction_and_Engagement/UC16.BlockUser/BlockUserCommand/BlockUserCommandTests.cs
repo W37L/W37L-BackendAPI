@@ -28,6 +28,6 @@ public class BlockUserCommandTests {
 
         // Assert
         Assert.False(result.IsSuccess);
-        Assert.Contains(Error.InvalidPrefix, result.Error.EnumerateAll());
+        Assert.Contains(Error.InvalidFormat, result.Error.EnumerateAll());
     }
 }

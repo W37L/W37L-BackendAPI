@@ -4,11 +4,12 @@ using W3TL.Core.Application.CommandDispatching.Commands.User;
 
 public class UnfollowAUserHandlerTests {
     private readonly UnfollowAUserHandler _handler;
+    private readonly InMemInteractionRepoStub _interactionRepository = new();
     private readonly FakeUoW _unitOfWork = new();
     private readonly InMemUserRepoStub _userRepository = new();
 
     public UnfollowAUserHandlerTests() {
-        _handler = new UnfollowAUserHandler(_userRepository, _unitOfWork);
+        _handler = new UnfollowAUserHandler(_interactionRepository, _userRepository, _unitOfWork);
     }
 
     [Fact]
@@ -30,7 +31,8 @@ public class UnfollowAUserHandlerTests {
 
         // Assert
         Assert.True(result.IsSuccess);
-        Assert.DoesNotContain(userToUnfollow, user.Following); // Assuming Following is the collection tracking who the user follows
+        Assert.DoesNotContain(userToUnfollow.Id,
+            user.Interactions.Following); // Assuming Following is the collection tracking who the user follows
     }
 
     [Fact]

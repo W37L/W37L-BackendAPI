@@ -10,13 +10,13 @@ public class UnlikeServiceTests {
         var content = PostFactory.InitWithDefaultValues().Build();
 
         // Simulate like before unlike
-        unliker.Likes.Add(content);
+        unliker.Interactions.Likes.Add(content.Id as PostId);
         content.Likes.Increment();
 
         var result = content.Unlike(unliker);
 
         Assert.True(result.IsSuccess);
-        Assert.DoesNotContain(content, unliker.Likes);
+        Assert.DoesNotContain(content.Id, unliker.Interactions.Likes);
         Assert.Equal(0, content.Likes.Value);
     }
 

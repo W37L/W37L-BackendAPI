@@ -15,7 +15,7 @@ public class BlockUserTest {
 
         // Assert
         Assert.True(result.IsSuccess);
-        Assert.Contains(userToBlock, user.Blocked);
+        Assert.Contains(userToBlock.Id, user.Interactions.Blocked);
     }
 
 

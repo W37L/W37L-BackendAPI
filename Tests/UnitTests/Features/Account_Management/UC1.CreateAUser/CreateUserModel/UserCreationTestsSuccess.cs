@@ -25,7 +25,7 @@ public class UserCreationTestsSuccess {
         var createdAt = CreatedAtType.Create(VALID_CREATED_AT_UNIX).Payload;
 
         //Act
-        var result = User.Create(userName, firstName, lastName, email, pub);
+        var result = User.Create(userId, userName, firstName, lastName, email, pub);
 
         //Assert
         Assert.True(result.IsSuccess);
@@ -67,7 +67,9 @@ public class UserCreationTestsSuccess {
         var userName = UserNameType.Create(username).Payload;
 
         //Act
-        var result = User.Create(userName, NameType.Create(VALID_FIRST_NAME).Payload, LastNameType.Create(VALID_LAST_NAME).Payload, EmailType.Create(VALID_EMAIL).Payload, PubType.Create(VALID_PUB_KEY).Payload);
+        var result = User.Create(UserID.Create(VALID_USER_ID).Payload,
+            userName, NameType.Create(VALID_FIRST_NAME).Payload, LastNameType.Create(VALID_LAST_NAME).Payload,
+            EmailType.Create(VALID_EMAIL).Payload, PubType.Create(VALID_PUB_KEY).Payload);
 
         // Verification
         Assert.True(result.IsSuccess);
@@ -85,7 +87,9 @@ public class UserCreationTestsSuccess {
         var email = EmailType.Create(emailInput).Payload;
 
         //Act
-        var result = User.Create(UserNameType.Create(VALID_USERNAME).Payload, NameType.Create(VALID_FIRST_NAME).Payload, LastNameType.Create(VALID_LAST_NAME).Payload, email, PubType.Create(VALID_PUB_KEY).Payload);
+        var result = User.Create(UserID.Create(VALID_USER_ID).Payload, UserNameType.Create(VALID_USERNAME).Payload,
+            NameType.Create(VALID_FIRST_NAME).Payload, LastNameType.Create(VALID_LAST_NAME).Payload, email,
+            PubType.Create(VALID_PUB_KEY).Payload);
 
         // Verification
         Assert.True(result.IsSuccess);
@@ -103,7 +107,9 @@ public class UserCreationTestsSuccess {
         var name = NameType.Create(firstName).Payload;
 
         //Act
-        var result = User.Create(UserNameType.Create(VALID_USERNAME).Payload, name, LastNameType.Create(VALID_LAST_NAME).Payload, EmailType.Create(VALID_EMAIL).Payload, PubType.Create(VALID_PUB_KEY).Payload);
+        var result = User.Create(UserID.Create(VALID_USER_ID).Payload, UserNameType.Create(VALID_USERNAME).Payload,
+            name, LastNameType.Create(VALID_LAST_NAME).Payload, EmailType.Create(VALID_EMAIL).Payload,
+            PubType.Create(VALID_PUB_KEY).Payload);
         // Verification
         Assert.True(result.IsSuccess);
         Assert.NotNull(result.Payload);
@@ -120,7 +126,9 @@ public class UserCreationTestsSuccess {
         var name = LastNameType.Create(lastName).Payload;
 
         //Act
-        var result = User.Create(UserNameType.Create(VALID_USERNAME).Payload, NameType.Create(VALID_FIRST_NAME).Payload, name, EmailType.Create(VALID_EMAIL).Payload, PubType.Create(VALID_PUB_KEY).Payload);
+        var result = User.Create(UserID.Create(VALID_USER_ID).Payload,
+            UserNameType.Create(VALID_USERNAME).Payload, NameType.Create(VALID_FIRST_NAME).Payload, name,
+            EmailType.Create(VALID_EMAIL).Payload, PubType.Create(VALID_PUB_KEY).Payload);
         // Verification
         Assert.True(result.IsSuccess);
         Assert.NotNull(result.Payload);
@@ -137,7 +145,9 @@ public class UserCreationTestsSuccess {
         var pub = PubType.Create(pubKey).Payload;
 
         //Act
-        var result = User.Create(UserNameType.Create(VALID_USERNAME).Payload, NameType.Create(VALID_FIRST_NAME).Payload, LastNameType.Create(VALID_LAST_NAME).Payload, EmailType.Create(VALID_EMAIL).Payload, pub);
+        var result = User.Create(UserID.Create(VALID_USER_ID).Payload,
+            UserNameType.Create(VALID_USERNAME).Payload, NameType.Create(VALID_FIRST_NAME).Payload,
+            LastNameType.Create(VALID_LAST_NAME).Payload, EmailType.Create(VALID_EMAIL).Payload, pub);
         // Verification
         Assert.True(result.IsSuccess);
         Assert.NotNull(result.Payload);

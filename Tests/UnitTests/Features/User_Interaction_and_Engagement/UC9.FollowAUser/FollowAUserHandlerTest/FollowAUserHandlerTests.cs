@@ -5,11 +5,12 @@ using W3TL.Core.Application.Features.User;
 
 public class FollowAUserHandlerTests {
     private readonly FollowAUserHanldler _handler;
+    private readonly InMemInteractionRepoStub _interactionRepository = new();
     private readonly FakeUoW _unitOfWork = new();
     private readonly InMemUserRepoStub _userRepository = new();
 
     public FollowAUserHandlerTests() {
-        _handler = new FollowAUserHanldler(_userRepository, _unitOfWork);
+        _handler = new FollowAUserHanldler(_interactionRepository, _userRepository, _unitOfWork);
     }
 
     [Fact]
@@ -34,8 +35,8 @@ public class FollowAUserHandlerTests {
 
         // Assert
         Assert.True(result.IsSuccess);
-        Assert.Contains(userToFollow, user.Following);
-        Assert.Contains(user, userToFollow.Followers);
+        Assert.Contains(userToFollow.Id, user.Interactions.Following);
+        Assert.Contains(user.Id, userToFollow.Interactions.Followers);
     }
 
     [Fact]

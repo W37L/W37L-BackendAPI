@@ -146,6 +146,11 @@ public class PostRepository : IContentRepository {
         return content.IsFailure ? content : Concatenate.Append(user, content.Payload);
     }
 
+    public async Task<Result<List<Content>>> GetAllPostThatUserCommentAsync(UserID userId) {
+        var response = await _httpClient.GetAsync($"{BaseUrl}/getPostsCommentedByUser/{userId.Value}");
+        return await ProcessContentResponse(response);
+    }
+
     private async Task<Result<List<Content>>> ProcessContentResponse(HttpResponseMessage response) {
         if (!response.IsSuccessStatusCode) {
             var error = await response.Content.ReadAsStringAsync();

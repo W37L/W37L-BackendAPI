@@ -1,6 +1,7 @@
 using W3TL.Core.Domain.Agregates.Post;
 using W3TL.Core.Domain.Agregates.Post.Repository;
 using W3TL.Core.Domain.Agregates.Post.Values;
+using W3TL.Core.Domain.Common.Values;
 
 namespace UnitTests.Fakes;
 
@@ -37,6 +38,42 @@ public class InMemContentRepoStub : IContentRepository {
 
     public Task<Result<List<Content>>> GetAllAsync() {
         return Task.FromResult(Result<List<Content>>.Success(_contents));
+    }
+
+    public Task<Result<UserID>> GetAuthorIdAsync(ContentIDBase id) {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result<Content>> GetByFullIdAsync(ContentIDBase id, User user) {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result<List<Content>>> GetPostsByUserIdAsync(UserID userId) {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result<PostId>> GetParentPostIdAsync(CommentId commentId) {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result<List<Content>>> GetCommentsByUserIdAsync(UserID queryUserId) {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result<List<Content>>> GetCommentsByPostIdAsync(ContentIDBase postId) {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result<Content>> GetCommentByIdAsync(CommentId queryCommentId) {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result<Content>> GetCommentByIdWithAuthorAsync(CommentId queryCommentId, User user) {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result<List<Content>>> GetAllPostThatUserCommentAsync(UserID userId) {
+        throw new NotImplementedException();
     }
 
     public Task<Result> DeleteAsync(PostId id) {

@@ -17,10 +17,10 @@ public class UserFollowTests {
     }
 
     private void ResetFollowState() {
-        _follower.Following.Clear();
-        _followee.Followers.Clear();
-        _follower.Blocked.Clear();
-        _followee.Blocked.Clear();
+        _follower.Interactions.Following.Clear();
+        _followee.Interactions.Followers.Clear();
+        _follower.Interactions.Blocked.Clear();
+        _followee.Interactions.Blocked.Clear();
         // Additional reset logic if necessary
     }
 
@@ -40,8 +40,8 @@ public class UserFollowTests {
 
         // Assert
         Assert.True(result.IsSuccess);
-        Assert.Contains(_followee, _follower.Following);
-        Assert.Contains(_follower, _followee.Followers);
+        Assert.Contains(_followee.Id, _follower.Interactions.Followers);
+        Assert.Contains(_follower.Id, _followee.Interactions.Followers);
         Assert.Equal(initialValueFollower + 1, _follower.Profile.Following.Value);
         Assert.Equal(initialValueFollowee + 1, _followee.Profile.Followers.Value);
     }
@@ -62,8 +62,8 @@ public class UserFollowTests {
         // Assert
         Assert.False(result.IsSuccess);
         Assert.Equal(Error.CannotFollowSelf, result.Error);
-        Assert.DoesNotContain(_follower, _follower.Following);
-        Assert.DoesNotContain(_follower, _followee.Followers);
+        Assert.DoesNotContain(_follower.Id, _follower.Interactions.Followers);
+        Assert.DoesNotContain(_follower.Id, _followee.Interactions.Followers);
         Assert.Equal(initialValueFollower, _follower.Profile.Following.Value);
         Assert.Equal(initialValueFollowee, _followee.Profile.Followers.Value);
     }
@@ -82,8 +82,8 @@ public class UserFollowTests {
         // Assert
         Assert.False(result.IsSuccess);
         Assert.Equal(Error.NullUser, result.Error);
-        Assert.DoesNotContain(_follower, _follower.Following);
-        Assert.DoesNotContain(_follower, _followee.Followers);
+        Assert.DoesNotContain(_follower.Id, _follower.Interactions.Followers);
+        Assert.DoesNotContain(_follower.Id, _followee.Interactions.Followers);
         Assert.Equal(initialValueFollower, _follower.Profile.Following.Value);
         Assert.Equal(initialValueFollowee, _followee.Profile.Followers.Value);
     }
@@ -103,8 +103,8 @@ public class UserFollowTests {
         // Assert
         Assert.False(result.IsSuccess);
         Assert.Equal(Error.UserBlocked, result.Error);
-        Assert.DoesNotContain(_follower, _follower.Following);
-        Assert.DoesNotContain(_follower, _followee.Followers);
+        Assert.DoesNotContain(_follower.Id, _follower.Interactions.Followers);
+        Assert.DoesNotContain(_follower.Id, _followee.Interactions.Followers);
         Assert.Equal(initialValueFollower, _follower.Profile.Following.Value);
         Assert.Equal(initialValueFollowee, _followee.Profile.Followers.Value);
     }
@@ -124,8 +124,8 @@ public class UserFollowTests {
         // Assert
         Assert.False(result.IsSuccess);
         Assert.Equal(Error.UserAlreadyFollowed, result.Error);
-        Assert.Contains(_followee, _follower.Following);
-        Assert.Contains(_follower, _followee.Followers);
+        Assert.Contains(_followee.Id, _follower.Interactions.Followers);
+        Assert.Contains(_follower.Id, _followee.Interactions.Followers);
         Assert.Equal(initialValueFollower, _follower.Profile.Following.Value);
         Assert.Equal(initialValueFollowee, _followee.Profile.Followers.Value);
     }

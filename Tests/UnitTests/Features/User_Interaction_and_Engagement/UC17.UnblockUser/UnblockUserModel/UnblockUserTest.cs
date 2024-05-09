@@ -16,7 +16,7 @@ public class UnblockUserTest {
 
         // Assert
         Assert.True(result.IsSuccess);
-        Assert.DoesNotContain(userToUnblock, user.Blocked);
+        Assert.DoesNotContain(userToUnblock.Id, user.Interactions.Blocked);
     }
 
 

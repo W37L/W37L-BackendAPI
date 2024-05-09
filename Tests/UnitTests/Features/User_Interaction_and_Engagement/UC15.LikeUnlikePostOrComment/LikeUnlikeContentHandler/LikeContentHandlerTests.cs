@@ -6,11 +6,12 @@ using W3TL.Core.Application.Features.Post;
 public class LikeContentHandlerTests {
     private readonly InMemContentRepoStub _contentRepository = new();
     private readonly LikeContentHandler _handler;
+    private readonly InMemInteractionRepoStub _interactionRepository = new();
     private readonly FakeUoW _unitOfWork = new();
     private readonly InMemUserRepoStub _userRepository = new();
 
     public LikeContentHandlerTests() {
-        _handler = new LikeContentHandler(_contentRepository, _unitOfWork, _userRepository);
+        _handler = new LikeContentHandler(_contentRepository, _unitOfWork, _userRepository, _interactionRepository);
     }
 
     [Fact]

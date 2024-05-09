@@ -41,4 +41,40 @@ class InMemUserRepoStub : IUserRepository {
     public Task<Result<List<User>>> GetAllAsync() {
         return Task.FromResult(Result<List<User>>.Success(_users));
     }
+
+    public Task<Result> UpdateFieldAsync(string userId, string fieldName, string fieldValue) {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result> IncrementFollowersAsync(string userId) {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result> DecrementFollowersAsync(string userId) {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result> IncrementFollowingAsync(string userId) {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result> DecrementFollowingAsync(string userId) {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result> ExistsAsync(UserID id) {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result<User>> GetIdByUsernameAsync(string username) {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result<User>> GetByEmailAsync(string email) {
+        throw new NotImplementedException();
+    }
+
+    public Task<Result<User>> GetByUserNameAsync(string userName) {
+        throw new NotImplementedException();
+    }
 }

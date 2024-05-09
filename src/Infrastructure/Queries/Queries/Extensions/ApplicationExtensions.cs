@@ -20,6 +20,9 @@ public static class ApplicationExtensions {
         services
             .AddScoped<IQueryHandler<GetPostsByUsernameQuery.Query, GetPostsByUsernameQuery.Answer>,
                 GetPostsByUsernameHandler>();
+        services
+            .AddScoped<IQueryHandler<GetAllPostThatUserCommentQuery.Query, GetAllPostThatUserCommentQuery.Answer>,
+                GetAllPostThatUserCommentHandler>();
 
         // Comments
         services

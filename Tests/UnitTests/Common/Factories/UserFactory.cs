@@ -19,13 +19,14 @@ public class UserFactory {
 
     public static UserFactory InitWithDefaultValues() {
         var factory = new UserFactory();
+        var userId = UserID.Create(VALID_USER_ID).Payload;
         var userName = UserNameType.Create(VALID_USERNAME).Payload;
         var firstName = NameType.Create(VALID_FIRST_NAME).Payload;
         var lastName = LastNameType.Create(VALID_LAST_NAME).Payload;
         var email = EmailType.Create(VALID_EMAIL).Payload;
         var pub = PubType.Create(VALID_PUB_KEY).Payload;
 
-        var result = User.Create(userName, firstName, lastName, email, pub);
+        var result = User.Create(userId, userName, firstName, lastName, email, pub);
 
         factory._user = result.Payload;
         return factory;

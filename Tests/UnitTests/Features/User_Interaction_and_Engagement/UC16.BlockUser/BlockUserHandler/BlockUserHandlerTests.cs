@@ -5,11 +5,12 @@ using W3TL.Core.Application.Features.User;
 
 public class BlockUserHandlerTests {
     private readonly BlockUserHandler _handler;
+    private readonly InMemInteractionRepoStub _interactionRepository = new();
     private readonly FakeUoW _unitOfWork = new();
     private readonly InMemUserRepoStub _userRepository = new();
 
     public BlockUserHandlerTests() {
-        _handler = new BlockUserHandler(_userRepository, _unitOfWork);
+        _handler = new BlockUserHandler(_userRepository, _unitOfWork, _interactionRepository);
     }
 
     [Fact]

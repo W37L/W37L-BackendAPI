@@ -12,8 +12,8 @@ public class UserUnfollowTests {
     private readonly global::User _follower = UserFactory.InitWithDefaultValues().Build();
 
     private void ResetFollowState() {
-        _follower.Following.Clear();
-        _followee.Followers.Clear();
+        _follower.Interactions.Following.Clear();
+        _followee.Interactions.Followers.Clear();
     }
 
     // Success Scenario
@@ -32,8 +32,8 @@ public class UserUnfollowTests {
 
         // Assert
         Assert.True(result.IsSuccess);
-        Assert.DoesNotContain(_followee, _follower.Following);
-        Assert.DoesNotContain(_follower, _followee.Followers);
+        Assert.DoesNotContain(_followee.Id, _follower.Interactions.Following);
+        Assert.DoesNotContain(_follower.Id, _followee.Interactions.Followers);
         Assert.Equal(initialValueFollower - 1, _follower.Profile.Following.Value);
         Assert.Equal(initialValueFollowee - 1, _followee.Profile.Followers.Value);
     }
@@ -54,8 +54,8 @@ public class UserUnfollowTests {
         // Assert
         Assert.False(result.IsSuccess);
         Assert.Equal(Error.UserNotFollowed, result.Error);
-        Assert.DoesNotContain(_followee, _follower.Following);
-        Assert.DoesNotContain(_follower, _followee.Followers);
+        Assert.DoesNotContain(_followee.Id, _follower.Interactions.Following);
+        Assert.DoesNotContain(_follower.Id, _followee.Interactions.Followers);
         Assert.Equal(initialValueFollower, _follower.Profile.Following.Value);
         Assert.Equal(initialValueFollowee, _followee.Profile.Followers.Value);
     }
@@ -74,8 +74,8 @@ public class UserUnfollowTests {
         // Assert
         Assert.False(result.IsSuccess);
         Assert.Equal(Error.NullUser, result.Error);
-        Assert.DoesNotContain(_followee, _follower.Following);
-        Assert.DoesNotContain(_follower, _followee.Followers);
+        Assert.DoesNotContain(_followee.Id, _follower.Interactions.Following);
+        Assert.DoesNotContain(_follower.Id, _followee.Interactions.Followers);
         Assert.Equal(initialValueFollower, _follower.Profile.Following.Value);
         Assert.Equal(initialValueFollowee, _followee.Profile.Followers.Value);
     }

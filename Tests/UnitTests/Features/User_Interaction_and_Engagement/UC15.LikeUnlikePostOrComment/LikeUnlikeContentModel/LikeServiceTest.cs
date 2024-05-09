@@ -16,7 +16,7 @@ public class LikeServiceTests {
         var result = content.Like(liker);
 
         Assert.True(result.IsSuccess);
-        Assert.Contains(content, liker.Likes);
+        Assert.Contains(content.Id, liker.Interactions.Likes);
         Assert.Equal(1, content.Likes.Value);
     }
 
@@ -34,7 +34,7 @@ public class LikeServiceTests {
         var content = PostFactory.InitWithDefaultValues().Build();
 
         // Simulate already liked content
-        liker.Likes.Add(content);
+        liker.Interactions.Likes.Add(content.Id as PostId);
 
         var result = content.Like(liker);
         Assert.True(result.IsFailure);
