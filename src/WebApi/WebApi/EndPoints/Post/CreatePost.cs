@@ -49,9 +49,17 @@ public class
             : BadRequest(new CreatePostResponse(null, false, result.Error));
     }
 
-    ///<summary>
-    /// Represents the request for creating a post.
-    ///</summary>
+    /// <summary>
+    ///  Represents a request to create a post.
+    /// </summary>
+    /// <param name="PostId"></param>
+    /// <param name="UserId"></param>
+    /// <param name="Content"></param>
+    /// <param name="Signature"></param>
+    /// <param name="Type"></param>
+    /// <param name="MediaUrl"></param>
+    /// <param name="MediaType"></param>
+    /// <param name="ParentPostId"></param>
     public record CreatePostRequest(
         string? PostId,
         string UserId,
@@ -62,8 +70,11 @@ public class
         string? MediaType,
         string? ParentPostId);
 
-    ///<summary>
-    /// Represents the response after attempting to create a post.
-    ///</summary>
+    /// <summary>
+    ///  Represents a response after attempting to create a post.
+    /// </summary>
+    /// <param name="Id"></param>
+    /// <param name="Success"></param>
+    /// <param name="error"></param>
     public record CreatePostResponse(string Id, bool Success, Error error);
 }

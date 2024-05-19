@@ -6,16 +6,21 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.Queries;
 
-public class GetPostById :
-    ApiEndpoint
-    .WithoutRequest
-    .WithResponse<GetPostById.GetPostByIdResponse> {
+public class GetPostById : ApiEndpoint.WithoutRequest.WithResponse<GetPostById.GetPostByIdResponse> {
     private readonly IQueryDispatcher _dispatcher;
 
+    /// <summary>
+    ///  Initializes a new instance of the <see cref="GetPostById"/> class.
+    /// </summary>
+    /// <param name="dispatcher"></param>
     public GetPostById(IQueryDispatcher dispatcher) {
         _dispatcher = dispatcher;
     }
-
+    
+    /// <summary>
+    ///  Handles the HTTP GET request to get a post by ID.
+    /// </summary>
+    /// <returns>An asynchronous task that represents the operation and contains the action result.</returns>
     [HttpGet("posts/{PostId}")]
     public override async Task<ActionResult<GetPostByIdResponse>> HandleAsync() {
         var fromRoute = RouteData.Values["PostId"];
@@ -38,5 +43,9 @@ public class GetPostById :
         }
     }
 
+    /// <summary>
+    ///  Represents a response after attempting to get a post by ID.
+    /// </summary>
+    /// <param name="Post"></param>
     public record GetPostByIdResponse(ContentDTO Post);
 }

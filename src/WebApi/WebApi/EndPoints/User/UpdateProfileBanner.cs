@@ -7,18 +7,26 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.User;
 
+/// <summary>
+///  API endpoint for updating a user's profile banner.
+/// </summary>
 [Authorize]
-public class
-    UpdateProfileBanner
-    : ApiEndpoint
-        .WithRequest<UpdateProfileBanner.UpdateProfileBannerRequest>
-        .WithResponse<UpdateProfileBanner.UpdateProfileBannerResponse> {
+public class UpdateProfileBanner : ApiEndpoint.WithRequest<UpdateProfileBanner.UpdateProfileBannerRequest>.WithResponse<UpdateProfileBanner.UpdateProfileBannerResponse> {
     private readonly ICommandDispatcher dispatcher;
-
+    
+    /// <summary>
+    ///  Initializes a new instance of the <see cref="UpdateProfileBanner"/> class.
+    /// </summary>
+    /// <param name="dispatcher"></param>
     public UpdateProfileBanner(ICommandDispatcher dispatcher) {
         this.dispatcher = dispatcher;
     }
 
+    /// <summary>
+    ///  Handles the HTTP PATCH request to update a user's profile banner.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns>An asynchronous task that represents the operation and contains the action result.</returns>
     [HttpPatch("user/update/banner")]
     public override async Task<ActionResult<UpdateProfileBannerResponse>> HandleAsync(
         UpdateProfileBannerRequest request) {
@@ -38,9 +46,19 @@ public class
             : BadRequest(new UpdateProfileBannerResponse(false, result.Error));
     }
 
+    /// <summary>
+    ///  Represents a request to update a user's profile banner.
+    /// </summary>
+    /// <param name="UserId"></param>
+    /// <param name="Banner"></param>
     public record UpdateProfileBannerRequest(
         string UserId,
         string Banner);
 
+    /// <summary>
+    ///  Represents a response after attempting to update a user's profile banner.
+    /// </summary>
+    /// <param name="Success"></param>
+    /// <param name="error"></param>
     public record UpdateProfileBannerResponse(bool Success, Error error);
 }

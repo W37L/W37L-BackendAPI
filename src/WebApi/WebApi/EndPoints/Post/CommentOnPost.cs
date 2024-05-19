@@ -50,16 +50,22 @@ public class CommentOnPost :
             : BadRequest(new CommentOnPostResponse(null, false, result.Error));
     }
 
-    ///<summary>
-    /// Represents a request to comment on a post.
-    ///</summary>
+    /// <summary>
+    ///  Represents a request to comment on a post.
+    /// </summary>
+    /// <param name="CommentId"></param>
+    /// <param name="Content"></param>
+    /// <param name="Signature"></param>
     public record CommentOnPostRequest(
         string? CommentId,
         string Content,
         string Signature);
 
-    ///<summary>
-    /// Represents a response after attempting to comment on a post.
-    ///</summary>
+    /// <summary>
+    ///  Represents a response after attempting to comment on a post.
+    /// </summary>
+    /// <param name="Id"></param>
+    /// <param name="Success"></param>
+    /// <param name="error"></param>
     public record CommentOnPostResponse(string Id, bool Success, Error error);
 }

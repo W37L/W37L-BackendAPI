@@ -6,17 +6,26 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.User;
 
+/// <summary>
+///  API endpoint for updating a user.
+/// </summary>
 // [Authorize]
-public class UpdateUser :
-    ApiEndpoint
-    .WithRequest<UpdateUser.UpdateUserRequest>
-    .WithResponse<UpdateUser.UpdateUserResponse> {
+public class UpdateUser : ApiEndpoint.WithRequest<UpdateUser.UpdateUserRequest>.WithResponse<UpdateUser.UpdateUserResponse> {
     private readonly ICommandDispatcher dispatcher;
 
+    /// <summary>
+    ///  Initializes a new instance of the <see cref="UpdateUser"/> class.
+    /// </summary>
+    /// <param name="dispatcher"></param>
     public UpdateUser(ICommandDispatcher dispatcher) {
         this.dispatcher = dispatcher;
     }
-
+    
+    /// <summary>
+    ///  Handles the HTTP PUT request to update a user.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns>An asynchronous task that represents the operation and contains the action result.</returns>
     [HttpPut("user/update")]
     public override async Task<ActionResult<UpdateUserResponse>> HandleAsync(UpdateUserRequest request) {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -40,8 +49,23 @@ public class UpdateUser :
             : BadRequest(new UpdateUserResponse(false, result.Error));
     }
 
+    /// <summary>
+    ///  Represents a request to update a user.
+    /// </summary>
+    /// <param name="Success"></param>
+    /// <param name="error"></param>
     public record UpdateUserResponse(bool Success, Error error);
 
+    /// <summary>
+    ///  Represents a response after attempting to update a user.
+    /// </summary>
+    /// <param name="UserId"></param>
+    /// <param name="UserName"></param>
+    /// <param name="FirstName"></param>
+    /// <param name="LastName"></param>
+    /// <param name="Bio"></param>
+    /// <param name="Location"></param>
+    /// <param name="Website"></param>
     public record UpdateUserRequest(
         string UserId,
         string UserName,
