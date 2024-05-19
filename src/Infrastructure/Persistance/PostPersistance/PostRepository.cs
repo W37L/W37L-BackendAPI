@@ -1,4 +1,5 @@
 using System.Text;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using ObjectMapper;
 using ObjectMapper.DTO;
@@ -11,14 +12,15 @@ using W3TL.Core.Domain.Common.Values;
 namespace Persistance.PostPersistance;
 
 public class PostRepository : IContentRepository {
-    private const string BaseUrl = "http://localhost:3000/api"; // Adjust this URL to your actual backend server URL
+    private readonly string _baseUrl;
 
     private readonly HttpClient _httpClient;
     private readonly IMapper _mapper;
 
-    public PostRepository(HttpClient httpClient, IMapper mapper) {
+    public PostRepository(HttpClient httpClient, IMapper mapper, IConfiguration configuration) {
         _httpClient = httpClient;
         _mapper = mapper;
+        _baseUrl = configuration["BackendConfig:BaseUrl"];
     }
 
     public async Task<Result> AddAsync(Content aggregate) {
@@ -29,7 +31,7 @@ public class PostRepository : IContentRepository {
         var json = JsonConvert.SerializeObject(contentDto, settings);
         var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-        var response = await _httpClient.PostAsync($"{BaseUrl}/post", stringContent);
+        var response = await _httpClient.PostAsync($"{_baseUrl}/post", stringContent);
         if (response.IsSuccessStatusCode) return Result.Success();
 
         var error = await response.Content.ReadAsStringAsync();
@@ -44,7 +46,7 @@ public class PostRepository : IContentRepository {
         var json = JsonConvert.SerializeObject(contentDto, settings);
         var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-        var reposons = await _httpClient.PutAsync($"{BaseUrl}/post", stringContent);
+        var reposons = await _httpClient.PutAsync($"{_baseUrl}/post", stringContent);
         if (reposons.IsSuccessStatusCode) return Result.Success();
 
         var error = await reposons.Content.ReadAsStringAsync();
@@ -56,7 +58,7 @@ public class PostRepository : IContentRepository {
     }
 
     public async Task<Result<Content>> GetByIdAsync(ContentIDBase id) {
-        var response = await _httpClient.GetAsync($"{BaseUrl}/getPostById/{id.Value}");
+        var response = await _httpClient.GetAsync($"{_baseUrl}/getPostById/{id.Value}");
         if (response.IsSuccessStatusCode) {
             var content = await response.Content.ReadAsStringAsync();
             var post = JsonConvert.DeserializeObject<ContentDTO>(content);
@@ -69,7 +71,7 @@ public class PostRepository : IContentRepository {
     }
 
     public async Task<Result<List<Content>>> GetAllAsync() {
-        var response = await _httpClient.GetAsync($"{BaseUrl}/getPosts");
+        var response = await _httpClient.GetAsync($"{_baseUrl}/getPosts");
         return await ProcessContentResponse(response);
     }
 
@@ -78,10 +80,10 @@ public class PostRepository : IContentRepository {
         // if conteent ID start with PID, it is a post, if start with CID, it is a comment
         var response = new HttpResponseMessage();
         if (id.Value.StartsWith("PID")) {
-            response = await _httpClient.GetAsync($"{BaseUrl}/getPostById/{id.Value}");
+            response = await _httpClient.GetAsync($"{_baseUrl}/getPostById/{id.Value}");
         }
         else {
-            response = await _httpClient.GetAsync($"{BaseUrl}/getCommentById/{id.Value}");
+            response = await _httpClient.GetAsync($"{_baseUrl}/getCommentById/{id.Value}");
         }
 
         if (response.IsSuccessStatusCode) {
@@ -101,12 +103,12 @@ public class PostRepository : IContentRepository {
     }
 
     public async Task<Result<List<Content>>> GetPostsByUserIdAsync(UserID userId) {
-        var response = await _httpClient.GetAsync($"{BaseUrl}/getPostsByUserId/{userId.Value}");
+        var response = await _httpClient.GetAsync($"{_baseUrl}/getPostsByUserId/{userId.Value}");
         return await ProcessContentResponse(response);
     }
 
     public async Task<Result<PostId>> GetParentPostIdAsync(CommentId commentId) {
-        var response = await _httpClient.GetAsync($"{BaseUrl}/getCommentById/{commentId.Value}");
+        var response = await _httpClient.GetAsync($"{_baseUrl}/getCommentById/{commentId.Value}");
         if (response.IsSuccessStatusCode) {
             var content = await response.Content.ReadAsStringAsync();
             var post = JsonConvert.DeserializeObject<ContentDTO>(content);
@@ -119,17 +121,17 @@ public class PostRepository : IContentRepository {
     }
 
     public async Task<Result<List<Content>>> GetCommentsByUserIdAsync(UserID queryUserId) {
-        var response = await _httpClient.GetAsync($"{BaseUrl}/getCommentsByUserId/{queryUserId.Value}");
+        var response = await _httpClient.GetAsync($"{_baseUrl}/getCommentsByUserId/{queryUserId.Value}");
         return await ProcessContentResponse(response);
     }
 
     public async Task<Result<List<Content>>> GetCommentsByPostIdAsync(ContentIDBase postId) {
-        var response = await _httpClient.GetAsync($"{BaseUrl}/getCommentsByPostId/{postId.Value}");
+        var response = await _httpClient.GetAsync($"{_baseUrl}/getCommentsByPostId/{postId.Value}");
         return await ProcessContentResponse(response);
     }
 
     public async Task<Result<Content>> GetCommentByIdAsync(CommentId queryCommentId) {
-        var response = await _httpClient.GetAsync($"{BaseUrl}/getCommentById/{queryCommentId.Value}");
+        var response = await _httpClient.GetAsync($"{_baseUrl}/getCommentById/{queryCommentId.Value}");
         if (response.IsSuccessStatusCode) {
             var content = await response.Content.ReadAsStringAsync();
             var post = JsonConvert.DeserializeObject<ContentDTO>(content);
@@ -147,7 +149,7 @@ public class PostRepository : IContentRepository {
     }
 
     public async Task<Result<List<Content>>> GetAllPostThatUserCommentAsync(UserID userId) {
-        var response = await _httpClient.GetAsync($"{BaseUrl}/getPostsCommentedByUser/{userId.Value}");
+        var response = await _httpClient.GetAsync($"{_baseUrl}/getPostsCommentedByUser/{userId.Value}");
         return await ProcessContentResponse(response);
     }
 
