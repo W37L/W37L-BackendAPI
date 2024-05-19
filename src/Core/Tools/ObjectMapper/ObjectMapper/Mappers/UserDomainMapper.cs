@@ -14,6 +14,7 @@ namespace ObjectMapper.Mappers;
 ///     UserDomainMapper class is responsible for mapping between UserDTO and User objects.
 /// </summary>
 public class UserDomainMapper : IMappingConfig<UserDTO, User> {
+    
     /// <summary>
     ///     Maps a UserDTO object to a User object.
     /// </summary>

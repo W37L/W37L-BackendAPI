@@ -9,7 +9,11 @@ using W3TL.Core.Domain.Common.Values;
 
 namespace ObjectMapper.Mappers;
 
+/// <summary>
+///   Class responsible for mapping a <see cref="ContentDTO" /> object to a <see cref="Post" /> object.
+/// </summary>
 public class PostDomainMapper : IMappingConfig<ContentDTO, Post> {
+    
     /// <summary>
     ///     Maps a ContentDTO object to a Post object.
     /// </summary>

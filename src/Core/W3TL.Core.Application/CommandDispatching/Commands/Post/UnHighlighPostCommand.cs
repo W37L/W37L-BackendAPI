@@ -15,8 +15,14 @@ public class UnHighlighPostCommand : Command<PostId>, ICommand<UnHighlighPostCom
         HighlighterId = highlighterId;
     }
 
+    /// <summary>
+    ///  The ID of the user who is unhighlighting the post.
+    /// </summary>
     public UserID HighlighterId { get; }
 
+    /// <summary>
+    ///  The number of parameters required to create a <see cref="UnHighlighPostCommand"/>.
+    /// </summary>
     public static int ParametersCount { get; } = 2;
 
     /// <summary>

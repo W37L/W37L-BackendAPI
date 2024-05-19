@@ -12,7 +12,16 @@ namespace QueryContracts.Queries.Users;
 /// var answer = await queryBus.DispatchAsync(query);
 /// /
 public class GetRelationsQuery {
-    public record Query(UserID UserID) : IQuery<Answer>;
+    
+    /// <summary>
+    ///  Represents a query to get the relations for a user.
+    /// </summary>
+    /// <param name="UserId"></param>
+    public record Query(UserID UserId) : IQuery<Answer>;
 
+    /// <summary>
+    ///     Represents the answer returned by the GetRelationsQuery.Query handler.
+    /// </summary>
+    /// <param name="Interactions"></param>
     public record Answer(InteractionsDTO Interactions);
 }

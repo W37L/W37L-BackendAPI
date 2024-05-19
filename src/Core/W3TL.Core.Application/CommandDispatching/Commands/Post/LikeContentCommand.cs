@@ -17,8 +17,14 @@ public class LikeContentCommand : Command<PostId>, ICommand<LikeContentCommand> 
         LikerId = likerId;
     }
 
+    /// <summary>
+    ///  The ID of the user who is liking the post.
+    /// </summary>
     public UserID LikerId { get; }
 
+    /// <summary>
+    ///  The number of parameters required to create a <see cref="LikeContentCommand"/>.
+    /// </summary>
     public static int ParametersCount { get; } = 2;
 
     /// <summary>

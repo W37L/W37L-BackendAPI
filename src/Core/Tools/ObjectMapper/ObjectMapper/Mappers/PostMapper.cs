@@ -6,6 +6,7 @@ namespace ObjectMapper.Mappers;
 ///     The PostMapper class is responsible for mapping instances of the Post class to instances of the ContentDTO class.
 /// </summary>
 public class PostMapper : IMappingConfig<Post, ContentDTO> {
+    
     /// <summary>
     ///     Maps a Post object to a ContentDTO object.
     /// </summary>

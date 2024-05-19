@@ -5,7 +5,21 @@ using W3TL.Core.Domain.Common.Values;
 
 namespace W3TL.Core.Application.CommandDispatching.Commands.User;
 
+/// <summary>
+///     Represents a command to update a user.
+/// </summary>
 public class UpdateUserCommand : Command<UserID>, ICommand<UpdateUserCommand> {
+    
+    /// <summary>
+    ///   Initializes a new instance of the <see cref="UpdateUserCommand"/> class.
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="userName"></param>
+    /// <param name="firstName"></param>
+    /// <param name="lastName"></param>
+    /// <param name="bio"></param>
+    /// <param name="location"></param>
+    /// <param name="website"></param>
     private UpdateUserCommand(UserID userId, UserNameType userName, NameType firstName, LastNameType lastName,
         BioType? bio, LocationType? location, WebsiteType? website) : base(userId) {
         UserName = userName;
@@ -23,8 +37,16 @@ public class UpdateUserCommand : Command<UserID>, ICommand<UpdateUserCommand> {
     public LocationType? Location { get; }
     public WebsiteType? Website { get; }
 
+    /// <summary>
+    ///  The number of parameters required to create a <see cref="UpdateUserCommand"/>.
+    /// </summary>
     public static int ParametersCount { get; } = 7;
 
+    /// <summary>
+    ///  Creates a new <see cref="UpdateUserCommand"/> instance if the provided arguments are valid.
+    /// </summary>
+    /// <param name="args"></param>
+    /// <returns></returns>
     public static Result<UpdateUserCommand> Create(params object[] args) {
         if (args.Length != ParametersCount)
             return Error.WrongNumberOfParameters;

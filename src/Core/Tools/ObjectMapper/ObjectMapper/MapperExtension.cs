@@ -8,8 +8,11 @@ using W3TL.Core.Domain.Agregates.User.Entity;
 
 namespace ObjectMapper;
 
-// Extension methods for IServiceCollection to register mappers
+/// <summary>
+///      Extension class for registering mappers in the dependency injection container.
+/// </summary>
 public static class MapperExtension {
+    
     /// <summary>
     ///     Registers mapper implementations in the dependency injection container.
     /// </summary>

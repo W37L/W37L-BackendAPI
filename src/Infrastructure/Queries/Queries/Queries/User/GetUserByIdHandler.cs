@@ -30,7 +30,7 @@ public class GetUserByIdHandler : IQueryHandler<GetUserByIdQuery.Query, GetUserB
     ///<param name="query">The query containing the user ID to retrieve.</param>
     ///<returns>An asynchronous task that yields the answer containing the retrieved user DTO.</returns>
     public async Task<GetUserByIdQuery.Answer> HandleAsync(GetUserByIdQuery.Query query) {
-        var user = await _userRepository.GetByIdAsync(query.UserID);
+        var user = await _userRepository.GetByIdAsync(query.UserId);
         var dto = _mapper.Map<UserDTO>(user.Payload);
         return new GetUserByIdQuery.Answer(dto);
     }

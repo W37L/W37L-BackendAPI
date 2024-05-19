@@ -4,10 +4,16 @@ using W3TL.Core.Domain.Agregates.Post.Enum;
 
 namespace ObjectMapper.Mappers;
 
+/// <summary>
+///   Class responsible for mapping a <see cref="ContentDTO" /> object to a <see cref="Content" /> object.
+/// </summary>
 public class ContentDomainMapper : IMappingConfig<ContentDTO, Content> {
     CommentDomainMapper _commentDomainMapper;
     PostDomainMapper _postDomainMapper;
 
+    /// <summary>
+    ///   Maps a ContentDTO object to a Content object.
+    /// </summary>
     public ContentDomainMapper() {
         _commentDomainMapper = new CommentDomainMapper();
         _postDomainMapper = new PostDomainMapper();
@@ -22,7 +28,6 @@ public class ContentDomainMapper : IMappingConfig<ContentDTO, Content> {
         if (input.Type == PostType.Comment.ToString()) {
             return _commentDomainMapper.Map(input);
         }
-
         return _postDomainMapper.Map(input);
     }
 }

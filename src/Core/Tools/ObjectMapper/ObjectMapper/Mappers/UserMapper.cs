@@ -2,7 +2,11 @@ using Persistence.UserPersistence;
 
 namespace ObjectMapper.Mappers;
 
+/// <summary>
+///   The UserMapper class is responsible for mapping instances of the User class to instances of the UserDTO class.
+/// </summary>
 public class UserMapper : IMappingConfig<User, UserDTO> {
+    
     /// <summary>
     ///     Maps a User object to a UserDTO object.
     /// </summary>

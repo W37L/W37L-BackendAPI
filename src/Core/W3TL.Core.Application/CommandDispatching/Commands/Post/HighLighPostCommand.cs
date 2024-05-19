@@ -16,8 +16,14 @@ public class HighLighPostCommand : Command<PostId>, ICommand<HighLighPostCommand
         HighlighterId = highlighterId;
     }
 
+    /// <summary>
+    ///  The ID of the user who is highlighting the post.
+    /// </summary>
     public UserID HighlighterId { get; }
 
+    /// <summary>
+    ///  The number of parameters required to create a <see cref="HighLighPostCommand"/>.
+    /// </summary>
     public static int ParametersCount { get; } = 2;
 
     /// <summary>

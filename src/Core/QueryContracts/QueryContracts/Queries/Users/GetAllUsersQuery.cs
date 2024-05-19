@@ -11,13 +11,15 @@ namespace QueryContracts.Queries.Users;
 /// var answer = await queryBus.DispatchAsync(query);
 /// /
 public class GetAllUsersQuery {
+    
     /// <summary>
-    ///     Represents a query for getting all users.
+    ///  Represents a query to get all users.
     /// </summary>
     public record Query : IQuery<Answer>;
 
     /// <summary>
-    ///     Represents the answer returned by the GetAllUsersQuery.
+    ///  Represents the answer returned by the GetAllUsersQuery.Query handler.
     /// </summary>
+    /// <param name="Users"></param>
     public record Answer(List<UserDTO> Users);
 }

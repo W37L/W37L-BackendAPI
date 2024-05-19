@@ -24,11 +24,29 @@ public class CommentPostCommand : Command<CommentId>, ICommand<CommentPostComman
         ParentPostId = parentPostId;
     }
 
+    /// <summary>
+    ///   The content of the comment.
+    /// </summary>
     public TheString Content { get; }
+    
+    /// <summary>
+    ///  The ID of the user creating the comment.
+    /// </summary>
     public UserID CreatorId { get; }
+    
+    /// <summary>
+    ///  The signature associated with the comment.
+    /// </summary>
     public Signature Signature { get; }
+    
+    /// <summary>
+    ///  The ID of the parent post (optional for nested comments).
+    /// </summary>
     public PostId ParentPostId { get; }
 
+    /// <summary>
+    ///   The number of parameters required to create a new CommentPostCommand instance.
+    /// </summary>
     public static int ParametersCount { get; } = 5;
 
     /// <summary>

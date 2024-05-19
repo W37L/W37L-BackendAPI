@@ -11,7 +11,16 @@ namespace QueryContracts.Queries.Users;
 /// var query = new SearchPostsQuery.Query("search term");
 /// var answer = await queryBus.DispatchAsync(query); 
 public class GetUserByUsernameQuery {
-    public record Query(UserNameType username) : IQuery<Answer>;
+    
+    /// <summary>
+    ///   Represents a query to get a user by their username.
+    /// </summary>
+    /// <param name="UserName"></param>
+    public record Query(UserNameType UserName) : IQuery<Answer>;
 
+    /// <summary>
+    ///  Represents the answer returned by the GetUserByUsernameQuery.Query handler.
+    /// </summary>
+    /// <param name="User"></param>
     public record Answer(UserDTO User);
 }

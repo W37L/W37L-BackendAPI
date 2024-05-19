@@ -35,7 +35,9 @@ public class CreatePostCommand : Command<PostId>, ICommand<CreatePostCommand> {
     public MediaType MediaType { get; } = MediaType.Text;
     public PostId? ParentPostId { get; }
 
-    // Define the minimum number of required parameters, excluding the optional ones
+    /// <summary>
+    ///   The number of parameters required to create a new CreatePostCommand instance.
+    /// </summary>
     public static int ParametersCount { get; } = 5;
 
     /// <summary>

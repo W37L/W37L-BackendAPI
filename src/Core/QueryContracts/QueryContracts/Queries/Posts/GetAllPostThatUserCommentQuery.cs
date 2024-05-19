@@ -12,7 +12,16 @@ namespace QueryContracts.Queries;
 /// var answer = await queryBus.DispatchAsync(query);
 /// /
 public class GetAllPostThatUserCommentQuery {
+    
+    /// <summary>
+    ///  Represents a query to get all posts that a user has commented on.
+    /// </summary>
+    /// <param name="UserId"></param>
     public record Query(UserID UserId) : IQuery<Answer>;
 
+    /// <summary>
+    ///  Represents the answer returned by the GetAllPostThatUserCommentQuery.Query handler.
+    /// </summary>
+    /// <param name="Posts"></param>
     public record Answer(List<ContentDTO> Posts);
 }

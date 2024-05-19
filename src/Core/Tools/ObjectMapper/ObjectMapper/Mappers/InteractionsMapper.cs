@@ -7,6 +7,7 @@ namespace ObjectMapper.Mappers;
 ///     The InteractionsMapper class is responsible for mapping Interactions objects to InteractionsDTO objects.
 /// </summary>
 public class InteractionsMapper : IMappingConfig<Interactions, InteractionsDTO> {
+    
     /// <summary>
     ///     Maps an instance of Interactions to an instance of InteractionsDTO.
     /// </summary>

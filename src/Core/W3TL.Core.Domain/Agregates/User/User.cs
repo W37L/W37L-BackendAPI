@@ -10,10 +10,16 @@ using W3TL.Core.Domain.Services;
 /// Represents a user entity within the system, extending the AggregateRoot class with a UserID.
 /// </summary>
 public class User : AggregateRoot<UserID> {
-    // Required for Reflection
+    
+    /// <summary>
+    ///  Initializes a new instance of the User class.
+    /// </summary>
     private User() : base(default!) { }
 
-    // Required for Factory
+    /// <summary>
+    /// Initializes a new instance of the User class with the specified user ID.
+    /// </summary>
+    /// <param name="userId"></param>
     internal User(UserID userId) : base(userId) {
         Profile = Profile.Create(userId).Payload;
         Interactions = Interactions.Create(userId).Payload;
@@ -86,8 +92,15 @@ public class User : AggregateRoot<UserID> {
     public Interactions Interactions { get; set; }
 
     /// <summary>
-    /// Creates a new user with the provided details.
+    ///  Creates a new user with the specified user ID, username, first name, last name, email address, and public key.
     /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="userName"></param>
+    /// <param name="firstName"></param>
+    /// <param name="lastName"></param>
+    /// <param name="email"></param>
+    /// <param name="pub"></param>
+    /// <returns></returns>
     public static Result<User> Create(UserID userId, UserNameType userName, NameType firstName, LastNameType lastName,
         EmailType email, PubType pub) {
         ArgumentNullException.ThrowIfNull(userId);
@@ -109,8 +122,11 @@ public class User : AggregateRoot<UserID> {
     }
 
     /// <summary>
-    /// Updates the username of the user.
+    ///  Updates the username of the user.
     /// </summary>
+    /// <param name="userName"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public Result UpdateUserName(UserNameType userName) {
         if (userName is null) throw new ArgumentNullException(nameof(userName));
         try {
@@ -123,8 +139,11 @@ public class User : AggregateRoot<UserID> {
     }
 
     /// <summary>
-    /// Updates the first name of the user.
+    ///  Updates the first name of the user.
     /// </summary>
+    /// <param name="firstName"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public Result UpdateFirstName(NameType firstName) {
         if (firstName is null) throw new ArgumentNullException(nameof(firstName));
         try {
@@ -137,8 +156,10 @@ public class User : AggregateRoot<UserID> {
     }
 
     /// <summary>
-    /// Updates the last name of the user.
+    ///  Updates the last name of the user.
     /// </summary>
+    /// <param name="lastName"></param>
+    /// <returns></returns>
     public Result UpdateLastName(LastNameType lastName) {
         if (lastName is null) return Error.InvalidName;
         try {
@@ -151,8 +172,10 @@ public class User : AggregateRoot<UserID> {
     }
 
     /// <summary>
-    /// Updates the email address of the user.
+    ///  Updates the email address of the user.
     /// </summary>
+    /// <param name="email"></param>
+    /// <returns></returns>
     public Result UpdateEmail(EmailType email) {
         if (email is null) return Error.InvalidEmail;
         try {
@@ -165,22 +188,28 @@ public class User : AggregateRoot<UserID> {
     }
 
     /// <summary>
-    /// Follows another user.
+    ///  Updates the profile information of the user.
     /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public Result Follow(User user) {
         return FollowService.Handle(this, user);
     }
 
     /// <summary>
-    /// Unfollows another user.
+    ///  Unfollows a user.
     /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public Result Unfollow(User user) {
         return UnFollowService.Handle(this, user);
     }
 
     /// <summary>
-    /// Blocks another user.
+    ///  Blocks a user to prevent them from interacting with the user.
     /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public Result Block(User user) {
         try {
             if (user == null) return Error.NullUser;
@@ -194,8 +223,10 @@ public class User : AggregateRoot<UserID> {
     }
 
     /// <summary>
-    /// Unblocks a previously blocked user.
+    ///  Unblocks a previously blocked user.
     /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public Result Unblock(User user) {
         try {
             if (user == null) return Error.NullUser;
@@ -209,8 +240,10 @@ public class User : AggregateRoot<UserID> {
     }
 
     /// <summary>
-    /// Mutes another user.
+    ///  Mutes a user to prevent their posts from appearing in the user's feed.
     /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public Result Mute(User user) {
         try {
             Interactions.Muted.Add(user.Id);
@@ -222,8 +255,10 @@ public class User : AggregateRoot<UserID> {
     }
 
     /// <summary>
-    /// Unmutes a previously muted user.
+    ///  Unmutes a previously muted user.
     /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public Result Unmute(User user) {
         try {
             Interactions.Muted.Remove(user.Id);
@@ -235,8 +270,10 @@ public class User : AggregateRoot<UserID> {
     }
 
     /// <summary>
-    /// Reports another user.
+    ///  Reports a user for inappropriate behavior.
     /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public Result Report(User user) {
         try {
             Interactions.ReportedUsers.Add(user.Id);
@@ -248,8 +285,10 @@ public class User : AggregateRoot<UserID> {
     }
 
     /// <summary>
-    /// Unreports a previously reported user.
+    ///  Unreports a previously reported user.
     /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public Result Unreport(User user) {
         try {
             Interactions.ReportedUsers.Remove(user.Id);

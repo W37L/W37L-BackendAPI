@@ -8,6 +8,10 @@ namespace QueryContracts.QueryDispatching;
 public class QueryDispatcher : IQueryDispatcher {
     private readonly IServiceProvider _serviceProvider;
 
+    /// <summary>
+    ///   Constructor for initializing the query dispatcher with required dependencies.
+    /// </summary>
+    /// <param name="serviceProvider"></param>
     public QueryDispatcher(IServiceProvider serviceProvider) {
         _serviceProvider = serviceProvider;
     }

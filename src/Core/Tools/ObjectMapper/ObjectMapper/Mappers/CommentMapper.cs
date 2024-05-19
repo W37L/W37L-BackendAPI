@@ -7,6 +7,7 @@ namespace ObjectMapper.Mappers;
 ///     data transfer object.
 /// </summary>
 public class CommentMapper : IMappingConfig<Comment, ContentDTO> {
+    
     /// <summary>
     ///     Maps a <see cref="Comment" /> object to a <see cref="ContentDTO" /> object.
     /// </summary>
@@ -32,7 +33,6 @@ public class CommentMapper : IMappingConfig<Comment, ContentDTO> {
             c.Retweets = 0;
             c.Comments = 0; //TODO: Implement this
         }
-
         return c;
     }
 }

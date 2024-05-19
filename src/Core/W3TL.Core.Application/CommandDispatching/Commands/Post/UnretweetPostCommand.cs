@@ -6,6 +6,7 @@ namespace W3TL.Core.Application.CommandDispatching.Commands.Post;
 /// Represents a command to unretweet content (e.g., a post).
 /// </summary>
 public class UnretweetPostCommand : Command<PostId>, ICommand<UnretweetPostCommand> {
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="UnretweetPostCommand"/> class.
     /// </summary>
@@ -15,8 +16,14 @@ public class UnretweetPostCommand : Command<PostId>, ICommand<UnretweetPostComma
         UnretweeterId = unretweeterId;
     }
 
+    /// <summary>
+    ///  The ID of the user who is unretweeting the post.
+    /// </summary>
     public UserID UnretweeterId { get; }
 
+    /// <summary>
+    ///   The number of parameters required to create a <see cref="UnretweetPostCommand"/>.
+    /// </summary>
     public static int ParametersCount { get; } = 2;
 
     /// <summary>

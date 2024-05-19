@@ -30,7 +30,7 @@ public class GetRelationsHandler : IQueryHandler<GetRelationsQuery.Query, GetRel
     ///<param name="query">The query containing the user ID for which relations are to be retrieved.</param>
     ///<returns>An asynchronous task that yields the answer containing the user's interactions DTO.</returns>
     public async Task<GetRelationsQuery.Answer> HandleAsync(GetRelationsQuery.Query query) {
-        var user = await _userRepository.GetByIdAsync(query.UserID);
+        var user = await _userRepository.GetByIdAsync(query.UserId);
         var interactions = user.Payload.Interactions;
 
         var interactionsDTO = _mapper.Map<InteractionsDTO>(interactions);

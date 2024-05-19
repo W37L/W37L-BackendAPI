@@ -5,8 +5,9 @@ using System.Text;
  * This class allows for creating a linked list of errors, enabling the aggregation of multiple error messages.
  */
 public class Error {
-    /// Represents an error message.
-    /// /
+    /// <summary>
+    ///   The message associated with the error.
+    /// </summary>
     private readonly string message;
 
     /// Represents an error message.

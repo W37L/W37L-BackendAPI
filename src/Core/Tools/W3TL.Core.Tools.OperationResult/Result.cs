@@ -1,6 +1,6 @@
-/// Represents the outcome of an operation, indicating success or failure.
-/// It contains a utility method for chaining further actions based on the result.
-/// /
+/// <summary>
+///   Represents the outcome of an operation, indicating success or failure.
+/// </summary>
 public class Result {
     /// Represents the outcome of an operation, indicating success or failure.
     /// It contains a utility method for chaining further actions based on the result.

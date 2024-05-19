@@ -18,9 +18,19 @@ public class UpdateContentCommand : Command<PostId>, ICommand<UpdateContentComma
         Signature = signature;
     }
 
+    /// <summary>
+    ///  The new content of the post to be updated.
+    /// </summary>
     public TheString ContentTweet { get; }
+    
+    /// <summary>
+    ///  The signature for verification.
+    /// </summary>
     public Signature Signature { get; }
 
+    /// <summary>
+    ///  The number of parameters required to create the command.
+    /// </summary>
     public static int ParametersCount { get; } = 3;
 
     /// <summary>

@@ -15,6 +15,13 @@ public class HighLightPostHandler : ICommandHandler<HighLighPostCommand> {
     private readonly IUnitOfWork unitOfWork;
     private readonly IUserRepository userRepository;
 
+    /// <summary>
+    ///  Constructor for initializing the handler with required dependencies.
+    /// </summary>
+    /// <param name="contentRepository"></param>
+    /// <param name="unitOfWork"></param>
+    /// <param name="userRepository"></param>
+    /// <param name="interactionRepository"></param>
     public HighLightPostHandler(
         IContentRepository contentRepository,
         IUnitOfWork unitOfWork,

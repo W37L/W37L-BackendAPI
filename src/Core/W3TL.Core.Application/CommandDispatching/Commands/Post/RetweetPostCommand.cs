@@ -16,8 +16,14 @@ public class RetweetPostCommand : Command<PostId>, ICommand<RetweetPostCommand> 
         RetweeterId = retweeterId;
     }
 
+    /// <summary>
+    ///  The ID of the user who is retweeting the post.
+    /// </summary>
     public UserID RetweeterId { get; }
 
+    /// <summary>
+    ///  The number of parameters required to create a <see cref="RetweetPostCommand"/>.
+    /// </summary>
     public static int ParametersCount { get; } = 2;
 
     /// <summary>

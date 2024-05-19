@@ -1,9 +1,12 @@
 namespace ObjectMapper;
 
-// Interface defining configuration for mapping between specific types
-public interface IMappingConfig<TInput, TOutput>
-    where TOutput : class
-    where TInput : class {
+/// <summary>
+///   The IMapper interface is responsible for mapping objects of type TInput to objects of type TOutput.
+/// </summary>
+/// <typeparam name="TInput"></typeparam>
+/// <typeparam name="TOutput"></typeparam>
+public interface IMappingConfig<TInput, TOutput> where TOutput : class where TInput : class {
+    
     /// <summary>
     ///     Maps an object of type TInput to an object of type TOutput.
     /// </summary>

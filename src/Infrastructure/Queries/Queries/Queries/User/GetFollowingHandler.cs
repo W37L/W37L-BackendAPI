@@ -31,7 +31,7 @@ public class GetFollowingHandler : IQueryHandler<GetFollowingQuery.Query, GetFol
     ///<param name="query">The query containing the user ID for which following users are to be retrieved.</param>
     ///<returns>An asynchronous task that yields the answer containing the list of following user IDs.</returns>
     public async Task<GetFollowingQuery.Answer> HandleAsync(GetFollowingQuery.Query query) {
-        var user = await _userRepository.GetByIdAsync(query.UserID);
+        var user = await _userRepository.GetByIdAsync(query.UserId);
         var interactions = user.Payload.Interactions;
 
         var interactionsDTO = _mapper.Map<InteractionsDTO>(interactions);

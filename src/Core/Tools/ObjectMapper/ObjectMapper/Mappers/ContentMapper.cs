@@ -3,7 +3,11 @@ using W3TL.Core.Domain.Agregates.Post;
 
 namespace ObjectMapper.Mappers;
 
+/// <summary>
+///   The ContentMapper class is responsible for mapping Content objects to ContentDTO objects.
+/// </summary>
 public class ContentMapper : IMappingConfig<Content, ContentDTO> {
+    
     /// <summary>
     ///     Maps a <see cref="Content" /> object to a <see cref="ContentDTO" /> object.
     /// </summary>

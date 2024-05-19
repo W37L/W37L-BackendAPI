@@ -1,10 +1,16 @@
 using System.Text.Json;
 using ObjectMapper;
 
-// Concrete implementation of IMapper
+/// <summary>
+///  Concrete implementation of the IMapper interface.
+/// </summary>
 public class ConcreteObjectMapper : IMapper {
     private readonly IServiceProvider _serviceProvider;
 
+    /// <summary>
+    ///  Constructor for initializing the mapper with required dependencies.
+    /// </summary>
+    /// <param name="serviceProvider"></param>
     public ConcreteObjectMapper(IServiceProvider serviceProvider) {
         _serviceProvider = serviceProvider;
     }

@@ -11,10 +11,15 @@ namespace QueryContracts.Queries;
 /// var answer = await queryBus.DispatchAsync(query);
 /// /
 public class GetAllPostQuery {
+    
+    /// <summary>
+    ///   Represents a query to get all posts.
+    /// </summary>
     public record Query : IQuery<Answer>;
 
     /// <summary>
-    ///     Represents the result of a GetAllPostQuery.
+    ///  Represents the answer returned by the GetAllPostQuery.Query handler.
     /// </summary>
+    /// <param name="Posts"></param>
     public record Answer(List<ContentDTO> Posts);
 }

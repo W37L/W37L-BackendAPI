@@ -6,6 +6,7 @@ namespace W3TL.Core.Application.CommandDispatching.Commands.Post;
 /// Represents a command to update the content type of a post.
 /// </summary>
 public class UpdateContentTypeCommand : Command<PostId>, ICommand<UpdateContentTypeCommand> {
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="UpdateContentTypeCommand"/> class.
     /// </summary>

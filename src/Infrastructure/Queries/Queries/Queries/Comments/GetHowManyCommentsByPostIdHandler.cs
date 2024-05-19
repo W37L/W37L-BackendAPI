@@ -24,7 +24,7 @@ public class GetHowManyCommentsByPostIdHandler : IQueryHandler<GetHowManyComment
     /// <param name="query">The query containing the post ID.</param>
     /// <returns>Returns the number of comments as the query answer.</returns>
     public async Task<GetHowManyCommentsByPostIdQuery.Answer> HandleAsync(GetHowManyCommentsByPostIdQuery.Query query) {
-        var comments = await _contentRepository.GetCommentsByPostIdAsync(query.postId);
+        var comments = await _contentRepository.GetCommentsByPostIdAsync(query.PostId);
         if (comments.IsFailure)
             return new GetHowManyCommentsByPostIdQuery.Answer(0);
         return new GetHowManyCommentsByPostIdQuery.Answer(comments.Payload.Count);

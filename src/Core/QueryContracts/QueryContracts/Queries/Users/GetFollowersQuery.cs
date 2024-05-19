@@ -11,7 +11,16 @@ namespace QueryContracts.Queries.Users;
 /// var answer = await queryBus.DispatchAsync(query);
 /// /
 public class GetFollowersQuery {
-    public record Query(UserID UserID) : IQuery<Answer>;
+    
+    /// <summary>
+    ///  Represents a query to get followers of a user.
+    /// </summary>
+    /// <param name="UserId"></param>
+    public record Query(UserID UserId) : IQuery<Answer>;
 
+    /// <summary>
+    ///  Represents the answer returned by the GetFollowersQuery.Query handler.
+    /// </summary>
+    /// <param name="Users"></param>
     public record Answer(List<UserID> Users);
 }

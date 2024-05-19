@@ -16,8 +16,14 @@ public class UpdateMediaUrlCommand : Command<PostId>, ICommand<UpdateMediaUrlCom
         MediaUrl = mediaUrl;
     }
 
+    /// <summary>
+    ///  The media URL of the post to be updated.
+    /// </summary>
     public MediaUrl MediaUrl { get; }
 
+    /// <summary>
+    ///  The number of parameters required to create the command.
+    /// </summary>
     public static int ParametersCount { get; } = 2;
 
     /// <summary>

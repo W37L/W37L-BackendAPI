@@ -13,6 +13,7 @@ namespace ObjectMapper.Mappers;
 ///     Class responsible for mapping a <see cref="ContentDTO" /> object to a <see cref="Comment" /> object.
 /// </summary>
 public class CommentDomainMapper : IMappingConfig<ContentDTO, Comment> {
+    
     /// <summary>
     ///     Maps a ContentDTO object to a Comment object.
     /// </summary>

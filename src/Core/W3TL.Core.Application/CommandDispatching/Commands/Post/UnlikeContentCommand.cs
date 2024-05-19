@@ -17,8 +17,14 @@ public class UnlikeContentCommand : Command<PostId>, ICommand<UnlikeContentComma
         UnlikerId = unlikerId;
     }
 
+    /// <summary>
+    /// The ID of the user who is unliking the post.
+    /// </summary>
     public UserID UnlikerId { get; }
 
+    /// <summary>
+    ///  The number of parameters required to create a <see cref="UnlikeContentCommand"/>.
+    /// </summary>
     public static int ParametersCount { get; } = 2;
 
     /// <summary>

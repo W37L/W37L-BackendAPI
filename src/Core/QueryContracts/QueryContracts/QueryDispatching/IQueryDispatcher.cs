@@ -6,6 +6,7 @@ namespace QueryContracts.QueryDispatching;
 ///     The interface for query dispatching.
 /// </summary>
 public interface IQueryDispatcher {
+    
     /// <summary>
     ///     Asynchronously dispatches a query object and returns the result.
     /// </summary>

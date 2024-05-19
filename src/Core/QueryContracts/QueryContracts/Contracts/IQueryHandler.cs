@@ -6,6 +6,7 @@ namespace QueryContracts.Contracts;
 /// <typeparam name="TQuery">The type of query to be handled.</typeparam>
 /// <typeparam name="TAnswer">The type of the answer returned by the query handler.</typeparam>
 public interface IQueryHandler<TQuery, TAnswer> {
+    
     /// <summary>
     /// Asynchronously handles a query of type `TQuery`.
     /// </summary>
