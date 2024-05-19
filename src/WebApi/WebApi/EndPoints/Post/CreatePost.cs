@@ -6,6 +6,9 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.Post;
 
+/// <summary>
+///   API endpoint for creating a post.
+/// </summary>
 [Authorize]
 public class
     CreatePost : ApiEndpoint.WithRequest<CreatePost.CreatePostRequest>.WithResponse<CreatePost.CreatePostResponse> {
@@ -15,6 +18,11 @@ public class
         _dispatcher = dispatcher;
     }
 
+    /// <summary>
+    ///  Handles the HTTP POST request to create a post.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns>An asynchronous task that represents the operation and contains the action result.</returns>
     [HttpPost("post/create")]
     public override async Task<ActionResult<CreatePostResponse>> HandleAsync(CreatePostRequest request) {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -41,6 +49,9 @@ public class
             : BadRequest(new CreatePostResponse(null, false, result.Error));
     }
 
+    ///<summary>
+    /// Represents the request for creating a post.
+    ///</summary>
     public record CreatePostRequest(
         string? PostId,
         string UserId,
@@ -51,5 +62,8 @@ public class
         string? MediaType,
         string? ParentPostId);
 
+    ///<summary>
+    /// Represents the response after attempting to create a post.
+    ///</summary>
     public record CreatePostResponse(string Id, bool Success, Error error);
 }

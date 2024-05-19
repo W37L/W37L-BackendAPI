@@ -6,6 +6,9 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.Interaction;
 
+/// <summary>
+///  API endpoint for unreporting a user.
+/// </summary>
 public class Unreport :
     ApiEndpoint.WithoutRequest.WithoutResponse {
     private readonly ICommandDispatcher dispatcher;
@@ -14,6 +17,11 @@ public class Unreport :
         this.dispatcher = dispatcher;
     }
 
+    /// <summary>
+    ///   Handles the HTTP POST request to unreport a user.
+    /// </summary>
+    /// <param name="userId">The user ID of the user to unreport.</param>
+    /// <returns> An asynchronous task that represents the operation and contains the action result.</returns>
     [HttpPost("interaction/unreport/{userId}")]
     public override async Task<ActionResult> HandleAsync() {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

@@ -7,6 +7,9 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.Interaction;
 
+///<summary>
+/// API endpoint for retweeting a post.
+///</summary>
 [Authorize]
 public class Retweet :
     ApiEndpoint.WithoutRequest.WithoutResponse {
@@ -15,6 +18,12 @@ public class Retweet :
     public Retweet(ICommandDispatcher dispatcher) {
         this.dispatcher = dispatcher;
     }
+
+    ///<summary>
+    /// Handles the HTTP POST request to retweet a post.
+    ///</summary>
+    /// <param name="postId">The post ID of the post to retweet.</param>
+    ///<returns>An asynchronous task that represents the operation and contains the action result.</returns>
 
     [HttpPost("interaction/retweet/{postId}")]
     public override async Task<ActionResult> HandleAsync() {

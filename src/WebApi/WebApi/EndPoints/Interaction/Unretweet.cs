@@ -6,6 +6,9 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.Interaction;
 
+/// <summary>
+///  API endpoint for unretweeting a post.
+/// </summary>
 public class Unretweet :
     ApiEndpoint.WithoutRequest.WithoutResponse {
     private readonly ICommandDispatcher dispatcher;
@@ -14,6 +17,11 @@ public class Unretweet :
         this.dispatcher = dispatcher;
     }
 
+    /// <summary>
+    ///  Handles the HTTP POST request to unretweet a post.
+    /// </summary>
+    /// <param name="postId">The post ID of the post to unretweet.</param>
+    /// <returns>An asynchronous task that represents the operation and contains the action result.</returns>
     [HttpPost("interaction/unretweet/{postId}")]
     public override async Task<ActionResult> HandleAsync() {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

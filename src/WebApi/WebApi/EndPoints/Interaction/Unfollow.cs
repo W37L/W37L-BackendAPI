@@ -7,6 +7,9 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.Interaction;
 
+///<summary>
+/// API endpoint for unfollowing a user.
+/// </summary>
 [Authorize]
 public class Unfollow :
     ApiEndpoint.WithoutRequest.WithoutResponse {
@@ -16,6 +19,11 @@ public class Unfollow :
         this.dispatcher = dispatcher;
     }
 
+    /// <summary>
+    ///  Handles the HTTP POST request to unfollow a user.
+    /// </summary>
+    /// <param name="userToUnfollowId">The user ID of the user to unfollow.</param>
+    /// <returns>An asynchronous task that represents the operation and contains the action result.</returns>
     [HttpPost("interaction/unfollow/{userToUnfollowId}")]
     public override async Task<ActionResult> HandleAsync() {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

@@ -7,6 +7,9 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.Interaction;
 
+/// <summary>
+///  API endpoint for unliking content.
+/// </summary>
 [Authorize]
 public class UnLikeContent :
     ApiEndpoint.WithoutRequest.WithoutResponse {
@@ -16,6 +19,11 @@ public class UnLikeContent :
         this.dispatcher = dispatcher;
     }
 
+    /// <summary>
+    ///  Handles the HTTP POST request to unlike content.
+    /// </summary>
+    /// <param name="contentId">The content ID of the content to unlike.</param>
+    /// <returns>An asynchronous task that represents the operation and contains the action result.</returns>
     [HttpPost("interaction/unlike/{contentId}")]
     public override async Task<ActionResult> HandleAsync() {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

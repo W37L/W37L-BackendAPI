@@ -7,6 +7,9 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.Post;
 
+/// <summary>
+///   API endpoint for commenting on a post.
+/// </summary>
 [Authorize]
 public class CommentOnPost :
     ApiEndpoint
@@ -18,6 +21,11 @@ public class CommentOnPost :
         _dispatcher = dispatcher;
     }
 
+    /// <summary>
+    ///   Handles the HTTP POST request to comment on a post.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns>An asynchronous task that represents the operation and contains the action result.</returns>
     [HttpPost("post/{ParentPostId}/comment")]
     public override async Task<ActionResult<CommentOnPostResponse>> HandleAsync(CommentOnPostRequest request) {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -42,10 +50,16 @@ public class CommentOnPost :
             : BadRequest(new CommentOnPostResponse(null, false, result.Error));
     }
 
+    ///<summary>
+    /// Represents a request to comment on a post.
+    ///</summary>
     public record CommentOnPostRequest(
         string? CommentId,
         string Content,
         string Signature);
 
+    ///<summary>
+    /// Represents a response after attempting to comment on a post.
+    ///</summary>
     public record CommentOnPostResponse(string Id, bool Success, Error error);
 }

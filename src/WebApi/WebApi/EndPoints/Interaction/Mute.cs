@@ -7,6 +7,9 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.Interaction;
 
+///<summary>
+/// API endpoint for muting another user.
+///</summary>
 [Authorize]
 public class Mute :
     ApiEndpoint.WithoutRequest.WithoutResponse {
@@ -16,6 +19,11 @@ public class Mute :
         this.dispatcher = dispatcher;
     }
 
+    ///<summary>
+    /// Handles the HTTP POST request to mute another user.
+    ///</summary>
+    /// <param name="userToMuteId">The user ID of the user to mute.</param>
+    ///<returns>An asynchronous task that represents the operation and contains the action result.</returns>
     [HttpPost("interaction/mute/{userToMuteId}")]
     public override async Task<ActionResult> HandleAsync() {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

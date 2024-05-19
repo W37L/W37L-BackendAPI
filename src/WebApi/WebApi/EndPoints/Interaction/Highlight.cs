@@ -7,6 +7,9 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.Interaction;
 
+///<summary>
+/// API endpoint for highlighting a post.
+///</summary>
 [Authorize]
 public class Highlight :
     ApiEndpoint.WithoutRequest.WithoutResponse {
@@ -16,6 +19,11 @@ public class Highlight :
         this.dispatcher = dispatcher;
     }
 
+    ///<summary>
+    /// Handles the HTTP POST request to highlight a post.
+    ///</summary>
+    /// <param name="postId">The post ID of the post to highlight.</param>
+    ///<returns>An asynchronous task that represents the operation and contains the action result.</returns>
     [HttpPost("interaction/highlight/{postId}")]
     public override async Task<ActionResult> HandleAsync() {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -25,8 +33,7 @@ public class Highlight :
         var postId = RouteData.Values["postId"]?.ToString();
 
         if (string.IsNullOrEmpty(postId)) return BadRequest(Error.PostNotFound);
-
-
+        
         var cmdResult = HighLighPostCommand.Create(
             postId,
             userId).OnFailure(error => BadRequest(error));

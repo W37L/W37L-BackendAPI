@@ -32,7 +32,11 @@ public class PostRepository : IContentRepository {
         _baseUrl = configuration["BackendConfig:BaseUrl"];
     }
 
-    /// <inheritdoc />
+    ///<summary>
+    /// Adds content asynchronously to the backend API.
+    ///</summary>
+    ///<param name="aggregate">The content to add.</param>
+    ///<returns>A task representing the asynchronous operation. The task result indicates success or failure.</returns>
     public async Task<Result> AddAsync(Content aggregate) {
         var contentDto = _mapper.Map<ContentDTO>(aggregate);
         var settings = new JsonSerializerSettings {
@@ -48,7 +52,11 @@ public class PostRepository : IContentRepository {
         return Result.Fail(Error.FromString(error));
     }
     
-    /// <inheritdoc />
+    ///<summary>
+    /// Updates content asynchronously in the backend API.
+    ///</summary>
+    ///<param name="aggregate">The content to update.</param>
+    ///<returns>A task representing the asynchronous operation. The task result indicates success or failure.</returns>
     public async Task<Result> UpdateAsync(Content aggregate) {
         var contentDto = _mapper.Map<ContentDTO>(aggregate);
         var settings = new JsonSerializerSettings {
@@ -64,12 +72,20 @@ public class PostRepository : IContentRepository {
         return Result.Fail(Error.FromString(error));
     }
 
-    /// <inheritdoc />
+    ///<summary>
+    /// Deletes content asynchronously from the backend API.
+    ///</summary>
+    ///<param name="id">The ID of the content to delete.</param>
+    ///<returns>A task representing the asynchronous operation. The task result indicates success or failure.</returns>
     public Task<Result> DeleteAsync(ContentIDBase id) {
         throw new NotImplementedException();
     }
 
-    /// <inheritdoc />
+    ///<summary>
+    /// Retrieves content by its ID asynchronously from the backend API.
+    ///</summary>
+    ///<param name="id">The ID of the content to retrieve.</param>
+    ///<returns>A task representing the asynchronous operation. The task result contains the retrieved content or an error.</returns>
     public async Task<Result<Content>> GetByIdAsync(ContentIDBase id) {
         var response = await _httpClient.GetAsync($"{_baseUrl}/getPostById/{id.Value}");
         if (response.IsSuccessStatusCode) {
@@ -83,13 +99,20 @@ public class PostRepository : IContentRepository {
         return Result<Content>.Fail(Error.FromString(error));
     }
 
-    /// <inheritdoc />
+    ///<summary>
+    /// Retrieves all content asynchronously from the backend API.
+    ///</summary>
+    ///<returns>A task representing the asynchronous operation. The task result contains a list of all retrieved content or an error.</returns>
     public async Task<Result<List<Content>>> GetAllAsync() {
         var response = await _httpClient.GetAsync($"{_baseUrl}/getPosts");
         return await ProcessContentResponse(response);
     }
 
-    /// <inheritdoc />
+    ///<summary>
+    /// Retrieves the author ID of a content item asynchronously from the backend API.
+    ///</summary>
+    ///<param name="id">The ID of the content item to retrieve the author ID for.</param>
+    ///<returns>A task representing the asynchronous operation. The task result contains the author ID or an error.</returns>
     public async Task<Result<UserID>> GetAuthorIdAsync(ContentIDBase id) {
         // if conteent ID start with PID, it is a post, if start with CID, it is a comment
         var response = new HttpResponseMessage();
@@ -111,19 +134,32 @@ public class PostRepository : IContentRepository {
         return Result<UserID>.Fail(Error.UserNotFound);
     }
 
-    /// <inheritdoc />
+    ///<summary>
+    /// Retrieves content by its full ID, including user information, asynchronously from the backend API.
+    ///</summary>
+    ///<param name="id">The ID of the content to retrieve.</param>
+    ///<param name="user">The user requesting the content.</param>
+    ///<returns>A task representing the asynchronous operation. The task result contains the retrieved content or an error.</returns>
     public async Task<Result<Content>> GetByFullIdAsync(ContentIDBase id, User user) {
         var content = await GetByIdAsync(id);
         return content.IsFailure ? content : Concatenate.Append(user, content.Payload);
     }
 
-    /// <inheritdoc />
+    ///<summary>
+    /// Retrieves all posts by a user asynchronously from the backend API.
+    ///</summary>
+    ///<param name="userId">The ID of the user whose posts are to be retrieved.</param>
+    ///<returns>A task representing the asynchronous operation. The task result contains a list of posts or an error.</returns>
     public async Task<Result<List<Content>>> GetPostsByUserIdAsync(UserID userId) {
         var response = await _httpClient.GetAsync($"{_baseUrl}/getPostsByUserId/{userId.Value}");
         return await ProcessContentResponse(response);
     }
 
-    /// <inheritdoc />
+    ///<summary>
+    /// Retrieves the parent post ID of a comment asynchronously from the backend API.
+    ///</summary>
+    ///<param name="commentId">The ID of the comment to retrieve the parent post ID for.</param>
+    ///<returns>A task representing the asynchronous operation. The task result contains the parent post ID or an error.</returns>
     public async Task<Result<PostId>> GetParentPostIdAsync(CommentId commentId) {
         var response = await _httpClient.GetAsync($"{_baseUrl}/getCommentById/{commentId.Value}");
         if (response.IsSuccessStatusCode) {
@@ -137,13 +173,21 @@ public class PostRepository : IContentRepository {
         return Error.PostNotFound;
     }
 
-    /// <inheritdoc />
+    ///<summary>
+    /// Retrieves comments by a user asynchronously from the backend API.
+    ///</summary>
+    ///<param name="queryUserId">The ID of the user whose comments are to be retrieved.</param>
+    ///<returns>A task representing the asynchronous operation. The task result contains a list of comments or an error.</returns>
     public async Task<Result<List<Content>>> GetCommentsByUserIdAsync(UserID queryUserId) {
         var response = await _httpClient.GetAsync($"{_baseUrl}/getCommentsByUserId/{queryUserId.Value}");
         return await ProcessContentResponse(response);
     }
 
-    /// <inheritdoc />
+    ///<summary>
+    /// Retrieves comments by a post asynchronously from the backend API.
+    ///</summary>
+    ///<param name="postId">The ID of the post whose comments are to be retrieved.</param>
+    ///<returns>A task representing the asynchronous operation. The task result contains a list of comments or an error.</returns>
     public async Task<Result<List<Content>>> GetCommentsByPostIdAsync(ContentIDBase postId) {
         var response = await _httpClient.GetAsync($"{_baseUrl}/getCommentsByPostId/{postId.Value}");
         return await ProcessContentResponse(response);
@@ -163,13 +207,21 @@ public class PostRepository : IContentRepository {
         return Result<Content>.Fail(Error.FromString(error));
     }
 
-    /// <inheritdoc />
+    ///<summary>
+    /// Retrieves a comment by its ID asynchronously from the backend API.
+    ///</summary>
+    ///<param name="queryCommentId">The ID of the comment to retrieve.</param>
+    ///<returns>A task representing the asynchronous operation. The task result contains the retrieved comment or an error.</returns>
     public async Task<Result<Content>> GetCommentByIdWithAuthorAsync(CommentId queryCommentId, User user) {
         var content = await GetCommentByIdAsync(queryCommentId);
         return content.IsFailure ? content : Concatenate.Append(user, content.Payload);
     }
 
-    /// <inheritdoc />
+    ///<summary>
+    /// Retrieves all posts commented by a user asynchronously from the backend API.
+    ///</summary>
+    ///<param name="userId">The ID of the user whose commented posts are to be retrieved.</param>
+    ///<returns>A task representing the asynchronous operation. The task result contains a list of posts or an error.</returns>
     public async Task<Result<List<Content>>> GetAllPostThatUserCommentAsync(UserID userId) {
         var response = await _httpClient.GetAsync($"{_baseUrl}/getPostsCommentedByUser/{userId.Value}");
         return await ProcessContentResponse(response);

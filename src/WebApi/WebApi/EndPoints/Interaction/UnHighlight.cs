@@ -7,6 +7,9 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.Interaction;
 
+///<summary>
+///  API endpoint for unhighlighting a post.
+/// </summary>
 [Authorize]
 public class UnHighlight :
     ApiEndpoint.WithoutRequest.WithoutResponse {
@@ -16,6 +19,11 @@ public class UnHighlight :
         this.dispatcher = dispatcher;
     }
 
+    ///<summary>
+    ///  Handles the HTTP POST request to unhighlight a post.
+    /// </summary>
+    /// <param name="postId">The post ID of the post to unhighlight.</param>
+    /// <returns>An asynchronous task that represents the operation and contains the action result.</returns>
     [HttpPost("interaction/unhighlight/{postId}")]
     public override async Task<ActionResult> HandleAsync() {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

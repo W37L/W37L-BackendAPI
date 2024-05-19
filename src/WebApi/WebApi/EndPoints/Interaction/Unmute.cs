@@ -7,6 +7,9 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.Interaction;
 
+/// <summary>
+///  API endpoint for unmuting a user.
+/// </summary>
 [Authorize]
 public class Unmute :
     ApiEndpoint.WithoutRequest.WithoutResponse {
@@ -16,6 +19,11 @@ public class Unmute :
         this.dispatcher = dispatcher;
     }
 
+    /// <summary>
+    ///     Handles the HTTP POST request to unmute a user.
+    /// </summary>
+    /// <param name="userToUnmuteId">The user ID of the user to unmute.</param>
+    /// <returns></returns>
     [HttpPost("interaction/unmute/{userToUnmuteId}")]
     public override async Task<ActionResult> HandleAsync() {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

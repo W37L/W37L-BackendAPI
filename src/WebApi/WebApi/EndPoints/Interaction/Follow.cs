@@ -7,6 +7,9 @@ using WebApi.EndPoints.Common;
 
 namespace WebApi.EndPoints.Interaction;
 
+///<summary>
+/// API endpoint for following another user.
+///</summary>
 [Authorize] // Ensure the endpoint is secured and accessible only by authenticated users
 public class Follow :
     ApiEndpoint.WithoutRequest.WithoutResponse {
@@ -16,7 +19,11 @@ public class Follow :
         this.dispatcher = dispatcher;
     }
 
-    // Endpoint to follow another user, only requires the ID of the user to follow
+    ///<summary>
+    /// Handles the HTTP POST request to follow another user.
+    ///</summary>
+    /// <param name="userToFollowId">The user ID of the user to follow.</param>
+    ///<returns>An asynchronous task that represents the operation and contains the action result.</returns>
     [HttpPost("interaction/follow/{userToFollowId}")]
     public override async Task<ActionResult> HandleAsync() {
         // Extract the user ID from the JWT token claims
@@ -35,8 +42,7 @@ public class Follow :
         var cmdResult = FollowAUserCommand.Create(
             userId,
             userToFollowId).OnFailure(error => BadRequest(error));
-
-
+        
         var result = await dispatcher.DispatchAsync(cmdResult.Payload);
 
         if (result.IsSuccess)

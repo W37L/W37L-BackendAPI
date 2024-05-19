@@ -6,7 +6,17 @@ using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 
+///<summary>
+/// Extension methods for adding Firebase authentication to the ASP.NET Core application.
+///</summary>
 public static class FirebaseAuthenticationExtensions {
+    
+    ///<summary>
+    /// Adds Firebase authentication to the ASP.NET Core application.
+    ///</summary>
+    ///<param name="services">The collection of services to add the authentication to.</param>
+    ///<param name="firebaseProjectId">The Firebase project ID.</param>
+    ///<returns>The AuthenticationBuilder to continue configuring authentication.</returns>
     public static AuthenticationBuilder AddFirebaseAuthentication(this IServiceCollection services,
         string firebaseProjectId) {
         FirebaseApp.Create(new AppOptions {
@@ -22,11 +32,26 @@ public static class FirebaseAuthenticationExtensions {
     }
 }
 
+///<summary>
+/// Authentication handler for Firebase authentication.
+///</summary>
 public class FirebaseAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions> {
+    
+    ///<summary>
+    /// Initializes a new instance of the FirebaseAuthenticationHandler class.
+    ///</summary>
+    ///<param name="options">The monitor for the options.</param>
+    ///<param name="logger">The logger factory.</param>
+    ///<param name="encoder">The URL encoder.</param>
+    ///<param name="clock">The system clock.</param>
     public FirebaseAuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger,
         UrlEncoder encoder, ISystemClock clock)
         : base(options, logger, encoder, clock) { }
 
+    ///<summary>
+    /// Handles authentication asynchronously.
+    ///</summary>
+    ///<returns>An AuthenticateResult indicating the outcome of the authentication process.</returns>
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync() {
         if (!Request.Headers.ContainsKey("Authorization"))
             return AuthenticateResult.Fail("No Authorization Header");
