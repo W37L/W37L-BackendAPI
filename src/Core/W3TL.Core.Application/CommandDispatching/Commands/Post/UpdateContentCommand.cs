@@ -2,7 +2,17 @@ using W3TL.Core.Domain.Agregates.Post.Values;
 
 namespace W3TL.Core.Application.CommandDispatching.Commands.Post;
 
+/// <summary>
+/// Represents a command to update the content of a post.
+/// </summary>
 public class UpdateContentCommand : Command<PostId>, ICommand<UpdateContentCommand> {
+    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UpdateContentCommand"/> class.
+    /// </summary>
+    /// <param name="postId">The ID of the post to be updated.</param>
+    /// <param name="contentTweet">The new content of the post.</param>
+    /// <param name="signature">The signature for verification.</param>
     private UpdateContentCommand(PostId postId, TheString contentTweet, Signature signature) : base(postId) {
         ContentTweet = contentTweet;
         Signature = signature;
@@ -13,6 +23,11 @@ public class UpdateContentCommand : Command<PostId>, ICommand<UpdateContentComma
 
     public static int ParametersCount { get; } = 3;
 
+    /// <summary>
+    /// Creates a new <see cref="UpdateContentCommand"/> instance if the provided arguments are valid.
+    /// </summary>
+    /// <param name="args">The parameters required to create the command, typically a post ID, new content, and a signature.</param>
+    /// <returns>A result containing either the created command or an error.</returns>
     public static Result<UpdateContentCommand> Create(params object[] args) {
         if (args.Length != ParametersCount) return Error.WrongNumberOfParameters;
 

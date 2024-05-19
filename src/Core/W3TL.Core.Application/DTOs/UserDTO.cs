@@ -3,6 +3,9 @@ using Persistence.UserPersistence.Firebase;
 
 namespace Persistence.UserPersistence;
 
+/// <summary>
+/// Represents user-related data for a user in Firebase Firestore.
+/// </summary>
 [FirestoreData]
 public class UserDTO {
     [FirestoreProperty("userId")] public string userId { get; set; }

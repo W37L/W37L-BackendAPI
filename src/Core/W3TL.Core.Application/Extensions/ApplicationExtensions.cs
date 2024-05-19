@@ -7,7 +7,15 @@ using W3TL.Core.Application.Features.User;
 
 namespace W3TL.Core.Application.Extensions;
 
+/// <summary>
+/// Provides extension methods for registering command handlers with the service collection.
+/// </summary>
 public static class ApplicationExtensions {
+    
+    /// <summary>
+    /// Registers command handlers with the specified service collection.
+    /// </summary>
+    /// <param name="services">The service collection to register command handlers with.</param>
     public static void RegisterHandlers(this IServiceCollection services) {
         //Post
         services.AddScoped<ICommandHandler<CreatePostCommand>, CreatePostHandler>();

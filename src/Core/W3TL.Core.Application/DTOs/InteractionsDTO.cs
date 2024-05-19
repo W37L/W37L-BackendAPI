@@ -2,6 +2,9 @@ using Google.Cloud.Firestore;
 
 namespace Persistence.UserPersistence.Firebase;
 
+/// <summary>
+/// Represents interaction-related data for a user in Firebase Firestore.
+/// </summary>
 [FirestoreData]
 public class InteractionsDTO {
     [FirestoreProperty("blockedUsers")] public List<string> blockedUsers { get; set; }

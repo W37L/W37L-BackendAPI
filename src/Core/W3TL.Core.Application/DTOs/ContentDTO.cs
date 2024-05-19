@@ -1,5 +1,8 @@
 namespace ObjectMapper.DTO;
 
+/// <summary>
+/// Represents content-related data for a post in GunDB.
+/// </summary>
 public class ContentDTO {
     public string PostId { get; set; }
     public string UserId { get; set; }

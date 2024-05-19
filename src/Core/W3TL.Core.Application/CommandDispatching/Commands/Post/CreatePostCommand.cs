@@ -4,6 +4,18 @@ using W3TL.Core.Domain.Agregates.Post.Values;
 using W3TL.Core.Domain.Common.Values;
 
 public class CreatePostCommand : Command<PostId>, ICommand<CreatePostCommand> {
+    
+    /// <summary>
+    ///     Initializes a new instance of the CreatePostCommand class with the specified properties.
+    /// </summary>
+    /// <param name="postId">The unique identifier for the post (might be generated or provided).</param>
+    /// <param name="contentTweet">The content of the post (tweet-like).</param>
+    /// <param name="creatorId">The ID of the user creating the post.</param>
+    /// <param name="signature">The signature associated with the post.</param>
+    /// <param name="postType">The type of the post (e.g., Text, Image, Video).</param>
+    /// <param name="mediaUrl">The optional URL of any media attached to the post.</param>
+    /// <param name="mediaType">The type of media attached to the post (defaults to Text if not provided).</param>
+    /// <param name="parentPostId">The optional ID of the parent post (for replies or nested comments).</param>
     private CreatePostCommand(PostId postId, TheString contentTweet, UserID creatorId, Signature signature,
         PostType postType, MediaUrl? mediaUrl, MediaType mediaType, PostId? parentPostId) : base(postId) {
         ContentTweet = contentTweet;
@@ -26,6 +38,11 @@ public class CreatePostCommand : Command<PostId>, ICommand<CreatePostCommand> {
     // Define the minimum number of required parameters, excluding the optional ones
     public static int ParametersCount { get; } = 5;
 
+    /// <summary>
+    ///     Attempts to create a new CreatePostCommand instance from the provided arguments.
+    /// </summary>
+    /// <param name="args">An array of objects representing the command parameters.</param>
+    /// <returns>A Result object containing either a new CreatePostCommand instance or an error message if creation fails.</returns>
     public static Result<CreatePostCommand> Create(params object[] args) {
         if (args.Length < ParametersCount) {
             return Error.WrongNumberOfParameters; // Not enough parameters
