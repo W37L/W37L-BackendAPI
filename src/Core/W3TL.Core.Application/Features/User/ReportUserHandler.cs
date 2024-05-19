@@ -5,11 +5,19 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.User;
 
+/// <summary>
+/// Handles the command for reporting a user.
+/// </summary>
 public class ReportUserHandler(
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
-    IInteractionRepository interactionRepository)
-    : ICommandHandler<ReportUserCommand> {
+    IInteractionRepository interactionRepository) : ICommandHandler<ReportUserCommand> {
+    
+    /// <summary>
+    /// Handles the command to report a user asynchronously.
+    /// </summary>
+    /// <param name="command">The command to report a user.</param>
+    /// <returns>A result indicating the success or failure of the operation.</returns>
     public async Task<Result> HandleAsync(ReportUserCommand command) {
         // Search for user by id
         var result = await userRepository.GetByIdAsync(command.Id);

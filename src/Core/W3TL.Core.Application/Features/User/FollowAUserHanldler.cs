@@ -5,10 +5,19 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.User;
 
+/// <summary>
+/// Handles the command for following a user.
+/// </summary>
 public class FollowAUserHanldler(
     IInteractionRepository interactionRepository,
     IUserRepository userRepository,
     IUnitOfWork unitOfWork) : ICommandHandler<FollowAUserCommand> {
+    
+    /// <summary>
+    /// Handles the command to follow a user asynchronously.
+    /// </summary>
+    /// <param name="command">The command to follow a user.</param>
+    /// <returns>A result indicating the success or failure of the operation.</returns>
     public async Task<Result> HandleAsync(FollowAUserCommand command) {
         // Search for user by id
         var result = await userRepository.GetByIdAsync(command.UserId);

@@ -5,11 +5,19 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.User;
 
+/// <summary>
+/// Handles the command for muting a user.
+/// </summary>
 public class MuteUserHandler(
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
-    IInteractionRepository interactionRepository)
-    : ICommandHandler<MuteUserCommand> {
+    IInteractionRepository interactionRepository) : ICommandHandler<MuteUserCommand> {
+    
+    /// <summary>
+    /// Handles the command to mute a user asynchronously.
+    /// </summary>
+    /// <param name="command">The command to mute a user.</param>
+    /// <returns>A result indicating the success or failure of the operation.</returns>
     public async Task<Result> HandleAsync(MuteUserCommand command) {
         // Search for user by id
         var result = await userRepository.GetByIdAsync(command.Id);

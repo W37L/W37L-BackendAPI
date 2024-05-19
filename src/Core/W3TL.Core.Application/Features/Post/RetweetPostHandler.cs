@@ -6,12 +6,22 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.Post;
 
+/// <summary>
+/// Handles the command for retweeting a post.
+/// </summary>
 public class RetweetPostHandler : ICommandHandler<RetweetPostCommand> {
     private readonly IContentRepository contentRepository;
     private readonly IUnitOfWork unitOfWork;
     private readonly IUserRepository userRepository;
     private IInteractionRepository interactionRepository;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RetweetPostHandler"/> class.
+    /// </summary>
+    /// <param name="contentRepository">The repository for accessing content.</param>
+    /// <param name="unitOfWork">The unit of work for managing transactions.</param>
+    /// <param name="userRepository">The repository for accessing user data.</param>
+    /// <param name="interactionRepository">The repository for handling interactions.</param>
     public RetweetPostHandler(
         IContentRepository contentRepository,
         IUnitOfWork unitOfWork,
@@ -23,6 +33,11 @@ public class RetweetPostHandler : ICommandHandler<RetweetPostCommand> {
         this.interactionRepository = interactionRepository;
     }
 
+    /// <summary>
+    /// Handles the command to retweet a post asynchronously.
+    /// </summary>
+    /// <param name="command">The command to retweet a post.</param>
+    /// <returns>A result indicating the success or failure of the operation.</returns>
     public async Task<Result> HandleAsync(RetweetPostCommand command) {
         // Search for post by id
         var userResult = await userRepository.GetByIdAsync(command.RetweeterId);

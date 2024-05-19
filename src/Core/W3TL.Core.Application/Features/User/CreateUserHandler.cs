@@ -5,8 +5,19 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.User;
 
-public class CreateUserHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
-    : ICommandHandler<CreateUserCommand> {
+
+/// <summary>
+/// Handles the command for creating a user.
+/// </summary>
+public class CreateUserHandler(
+    IUserRepository userRepository, 
+    IUnitOfWork unitOfWork) : ICommandHandler<CreateUserCommand> {
+    
+    /// <summary>
+    /// Handles the command to create a user asynchronously.
+    /// </summary>
+    /// <param name="command">The command to create a user.</param>
+    /// <returns>A result indicating the success or failure of the operation.</returns>
     public async Task<Result> HandleAsync(CreateUserCommand command) {
         // Search for user by id
         var result = await userRepository.GetByIdAsync(command.Id);

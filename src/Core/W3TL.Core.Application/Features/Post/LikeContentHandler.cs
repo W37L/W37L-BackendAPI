@@ -6,11 +6,20 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.Post;
 
+/// <summary>
+/// Handles the command for liking a post.
+/// </summary>
 public class LikeContentHandler(
     IContentRepository contentRepository,
     IUnitOfWork unitOfWork,
     IUserRepository userRepository,
     IInteractionRepository interactionRepository) : ICommandHandler<LikeContentCommand> {
+    
+    /// <summary>
+    /// Handles the command to like a post asynchronously.
+    /// </summary>
+    /// <param name="command">The command to like a post.</param>
+    /// <returns>A result indicating the success or failure of the operation.</returns>
     public async Task<Result> HandleAsync(LikeContentCommand command) {
         // Search for post by id
         var userResult = await userRepository.GetByIdAsync(command.LikerId);

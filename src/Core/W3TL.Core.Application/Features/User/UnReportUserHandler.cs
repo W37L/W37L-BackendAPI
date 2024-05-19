@@ -5,11 +5,19 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.User;
 
+/// <summary>
+/// Handles the command for unreporting a user.
+/// </summary>
 public class UnReportUserHandler(
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
-    IInteractionRepository interactionRepository)
-    : ICommandHandler<UnReportUserCommand> {
+    IInteractionRepository interactionRepository) : ICommandHandler<UnReportUserCommand> {
+    
+    /// <summary>
+    /// Handles the command to unreport a user asynchronously.
+    /// </summary>
+    /// <param name="command">The command to unreport a user.</param>
+    /// <returns>A result indicating the success or failure of the operation.</returns>
     public async Task<Result> HandleAsync(UnReportUserCommand command) {
         // Search for user by id
         var result = await userRepository.GetByIdAsync(command.Id);

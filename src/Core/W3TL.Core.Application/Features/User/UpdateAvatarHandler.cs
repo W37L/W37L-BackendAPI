@@ -5,8 +5,18 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.User;
 
-public class UpdateAvatarHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
-    : ICommandHandler<UpdateAvatarUserCommand> {
+/// <summary>
+/// Handles the command for updating a user's avatar.
+/// </summary>
+public class UpdateAvatarHandler(
+    IUserRepository userRepository, 
+    IUnitOfWork unitOfWork) : ICommandHandler<UpdateAvatarUserCommand> {
+    
+    /// <summary>
+    /// Handles the command to update a user's avatar asynchronously.
+    /// </summary>
+    /// <param name="command">The command to update a user's avatar.</param>
+    /// <returns>A result indicating the success or failure of the operation.</returns>
     public async Task<Result> HandleAsync(UpdateAvatarUserCommand command) {
         // Search for user by id
         var result = await userRepository.ExistsAsync(command.Id);

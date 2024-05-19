@@ -5,7 +5,18 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.Post;
 
-public class UpdateContentTypeHandler(IContentRepository contentRepository, IUnitOfWork unitOfWork) : ICommandHandler<UpdateContentTypeCommand> {
+/// <summary>
+/// Handles the command for updating the content type of a post.
+/// </summary>
+public class UpdateContentTypeHandler(
+    IContentRepository contentRepository, 
+    IUnitOfWork unitOfWork) : ICommandHandler<UpdateContentTypeCommand> {
+    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UpdateContentTypeHandler"/> class.
+    /// </summary>
+    /// <param name="contentRepository">The repository for accessing content.</param>
+    /// <param name="unitOfWork">The unit of work for managing transactions.</param>
     public async Task<Result> HandleAsync(UpdateContentTypeCommand command) {
         // Search for post by id
         var result = await contentRepository.GetByIdAsync(command.Id);

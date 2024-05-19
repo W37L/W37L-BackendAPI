@@ -5,7 +5,18 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.Post;
 
-public class UpdateMediaUrlHandler(IContentRepository contentRepository, IUnitOfWork unitOfWork) : ICommandHandler<UpdateMediaUrlCommand> {
+/// <summary>
+/// Handles the command for updating the media URL of a post.
+/// </summary>
+public class UpdateMediaUrlHandler(
+    IContentRepository contentRepository, 
+    IUnitOfWork unitOfWork) : ICommandHandler<UpdateMediaUrlCommand> {
+    
+    /// <summary>
+    /// Handles the command to update the media URL of a post asynchronously.
+    /// </summary>
+    /// <param name="command">The command to update the media URL of a post.</param>
+    /// <returns>A result indicating the success or failure of the operation.</returns>
     public async Task<Result> HandleAsync(UpdateMediaUrlCommand command) {
         // Search for post by id
         var result = await contentRepository.GetByIdAsync(command.Id);

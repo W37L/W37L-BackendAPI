@@ -6,11 +6,20 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.Post;
 
+/// <summary>
+/// Handles the command for unliking a post.
+/// </summary>
 public class UnlikeContentHandler(
     IContentRepository contentRepository,
     IUnitOfWork unitOfWork,
     IUserRepository userRepository,
     IInteractionRepository interactionRepository) : ICommandHandler<UnlikeContentCommand> {
+    
+    /// <summary>
+    /// Handles the command to unlike a post asynchronously.
+    /// </summary>
+    /// <param name="command">The command to unlike a post.</param>
+    /// <returns>A result indicating the success or failure of the operation.</returns>
     public async Task<Result> HandleAsync(UnlikeContentCommand command) {
         // Search for post by id
         var unliker = await userRepository.GetByIdAsync(command.UnlikerId);

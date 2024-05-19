@@ -5,11 +5,20 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.User;
 
+/// <summary>
+/// Handles the command for unmuting a user.
+/// </summary>
 public class UnMuteUserHandler(
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
-    IInteractionRepository interactionRepository)
-    : ICommandHandler<UnMuteUserCommand> {
+    IInteractionRepository interactionRepository) : ICommandHandler<UnMuteUserCommand> {
+    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UnMuteUserHandler"/> class.
+    /// </summary>
+    /// <param name="userRepository">The repository for accessing user data.</param>
+    /// <param name="unitOfWork">The unit of work for managing transactions.</param>
+    /// <param name="interactionRepository">The repository for interactions (e.g., muting).</param>
     public async Task<Result> HandleAsync(UnMuteUserCommand command) {
         // Search for user by id
         var result = await userRepository.GetByIdAsync(command.Id);

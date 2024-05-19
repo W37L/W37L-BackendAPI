@@ -6,10 +6,19 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.Post;
 
+/// <summary>
+/// Handles the command for creating a new post.
+/// </summary>
 public class CreatePostHandler(
     IContentRepository contentRepository,
     IUnitOfWork unitOfWork,
     IUserRepository userRepository) : ICommandHandler<CreatePostCommand> {
+    
+    /// <summary>
+    /// Handles the command to create a new post asynchronously.
+    /// </summary>
+    /// <param name="command">The command to create a new post.</param>
+    /// <returns>A result indicating the success or failure of the operation.</returns>
     public async Task<Result> HandleAsync(CreatePostCommand command) {
         // Search for post by id
         var result = await contentRepository.GetByIdAsync(command.Id);

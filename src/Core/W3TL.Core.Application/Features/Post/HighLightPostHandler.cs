@@ -6,6 +6,9 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.Post;
 
+/// <summary>
+/// Handles the command for highlighting a post.
+/// </summary>
 public class HighLightPostHandler : ICommandHandler<HighLighPostCommand> {
     private readonly IContentRepository contentRepository;
     private readonly IInteractionRepository interactionRepository;
@@ -23,6 +26,11 @@ public class HighLightPostHandler : ICommandHandler<HighLighPostCommand> {
         this.interactionRepository = interactionRepository;
     }
 
+    /// <summary>
+    /// Handles the command to highlight a post asynchronously.
+    /// </summary>
+    /// <param name="command">The command to highlight a post.</param>
+    /// <returns>A result indicating the success or failure of the operation.</returns>
     public async Task<Result> HandleAsync(HighLighPostCommand command) {
         // Search for post by id
         var userResult = await userRepository.GetByIdAsync(command.HighlighterId);

@@ -6,10 +6,19 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.User;
 
+/// <summary>
+/// Handles the command for commenting on a post.
+/// </summary>
 public class CommentPostHandler(
     IContentRepository contentRepository,
     IUnitOfWork unitOfWork,
     IUserRepository userRepository) : ICommandHandler<CommentPostCommand> {
+    
+    /// <summary>
+    /// Handles the command to comment on a post asynchronously.
+    /// </summary>
+    /// <param name="command">The command to comment on a post.</param>
+    /// <returns>A result indicating the success or failure of the operation.</returns>
     public async Task<Result> HandleAsync(CommentPostCommand command) {
         // Search for post by id
         var result = await contentRepository.GetByIdAsync(command.ParentPostId);

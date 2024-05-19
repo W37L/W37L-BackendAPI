@@ -5,7 +5,18 @@ using W3TL.Core.Domain.Common.UnitOfWork;
 
 namespace W3TL.Core.Application.Features.User;
 
-public class UpdateUserHandler(IUserRepository userRepository, IUnitOfWork unitOfWork) : ICommandHandler<UpdateUserCommand> {
+/// <summary>
+/// Handles the command for updating user information.
+/// </summary>
+public class UpdateUserHandler(
+    IUserRepository userRepository, 
+    IUnitOfWork unitOfWork) : ICommandHandler<UpdateUserCommand> {
+    
+    /// <summary>
+    /// Handles the command to update user information asynchronously.
+    /// </summary>
+    /// <param name="command">The command to update user information.</param>
+    /// <returns>A result indicating the success or failure of the operation.</returns>
     public async Task<Result> HandleAsync(UpdateUserCommand command) {
         // Search for user by id
         var result = await userRepository.GetByIdAsync(command.Id);
