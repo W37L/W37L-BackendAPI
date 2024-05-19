@@ -2,6 +2,9 @@ using ViaEventAssociation.Core.Domain.Common.Bases;
 
 namespace W3TL.Core.Domain.Agregates.User.Entity.Values;
 
+/// <summary>
+/// Represents the biography of a user.
+/// </summary>
 public class BioType : ValueObject {
     public static readonly int MAX_LENGTH = 500;
 
@@ -9,8 +12,16 @@ public class BioType : ValueObject {
         Value = value;
     }
 
+    /// <summary>
+    /// Gets the value of the biography.
+    /// </summary>
     public string? Value { get; }
 
+    /// <summary>
+    /// Creates an instance of BioType with the specified biography value.
+    /// </summary>
+    /// <param name="value">The biography value.</param>
+    /// <returns>A result indicating success or failure.</returns>
     public static Result<BioType> Create(string? value) {
         try {
             var validation = Validate(value);

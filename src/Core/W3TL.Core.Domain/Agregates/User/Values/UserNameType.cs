@@ -3,31 +3,29 @@ using ViaEventAssociation.Core.Domain.Common.Bases;
 
 namespace W3TL.Core.Domain.Agregates.User.Values;
 
-/**
-* Represents a username in the system, encapsulating logic for validation
-* and instantiation to ensure usernames adhere to a specific format
-* inspired by social media platforms like Twitter or Instagram.
-*/
+/// <summary>
+/// Represents a username in the system, encapsulating logic for validation
+/// and instantiation to ensure usernames adhere to a specific format
+/// inspired by social media platforms like Twitter or Instagram.
+/// </summary>
 public class UserNameType : ValueObject {
-    /**
- * Private constructor to ensure instantiation through the Create method
- * after ensuring the username meets the required validation criteria.
- *
- * @param value The validated username as a string.
- */
+    /// <summary>
+    /// Private constructor to ensure instantiation through the Create method
+    /// after ensuring the username meets the required validation criteria.
+    /// </summary>
+    /// <param name="value">The validated username as a string.</param>
     private UserNameType(string? value) {
         this.Value = value;
     }
 
     public string? Value { get; }
 
-    /**
- * Attempts to create a UserNameType instance from a string representing the username,
- * validating it against specific format criteria inspired by social media platforms.
- *
- * @param username The username string to validate and use for instantiation.
- * @returns A Result containing either a UserNameType instance or an error, based on validation outcome.
- */
+    /// <summary>
+    /// Attempts to create a UserNameType instance from a string representing the username,
+    /// validating it against specific format criteria inspired by social media platforms.
+    /// </summary>
+    /// <param name="username">The username string to validate and use for instantiation.</param>
+    /// <returns>A Result containing either a UserNameType instance or an error, based on validation outcome.</returns>
     public static Result<UserNameType> Create(string? username) {
         var validation = Validate(username);
         if (validation.IsSuccess)
@@ -35,14 +33,13 @@ public class UserNameType : ValueObject {
         return validation.Error;
     }
 
-    /**
- * Validates a username string against specific criteria, including length
- * and allowed characters, to ensure compliance with a simplified version
- * of social media platform username standards.
- *
- * @param username The username string to validate.
- * @returns A Result indicating the validation outcome.
- */
+    /// <summary>
+    /// Validates a username string against specific criteria, including length
+    /// and allowed characters, to ensure compliance with a simplified version
+    /// of social media platform username standards.
+    /// </summary>
+    /// <param name="username">The username string to validate.</param>
+    /// <returns>A Result indicating the validation outcome.</returns>
     private static Result Validate(string? username) {
         if (string.IsNullOrWhiteSpace(username))
             return Error.BlankUserName;
@@ -56,12 +53,11 @@ public class UserNameType : ValueObject {
         return Result.Success();
     }
 
-    /**
- * Provides components for equality comparison between instances of UserNameType,
- * primarily based on the username value.
- *
- * @returns An enumerable of objects used in equality comparison.
- */
+    /// <summary>
+    /// Provides components for equality comparison between instances of UserNameType,
+    /// primarily based on the username value.
+    /// </summary>
+    /// <returns>An enumerable of objects used in equality comparison.</returns>
     protected override IEnumerable<object?> GetEqualityComponents() {
         yield return Value;
     }

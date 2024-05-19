@@ -1,10 +1,10 @@
 namespace ViaEventAssociation.Core.Domain.Common.Bases;
 
-/**
- * Represents the base class for value objects in the domain.
- * A value object is an object that contains attributes but has no conceptual identity.
- * They should be treated as immutable.
- */
+/// <summary>
+/// Represents the base class for value objects in the domain.
+/// A value object is an object that contains attributes but has no conceptual identity.
+/// They should be treated as immutable.
+/// </summary>
 public abstract class ValueObject {
     public override bool Equals(object? obj) {
         if (obj == null || obj.GetType() != GetType())
@@ -14,6 +14,10 @@ public abstract class ValueObject {
         return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
     }
 
+    /// <summary>
+    /// Gets the components used for equality comparison.
+    /// </summary>
+    /// <returns>An enumerable of objects used in equality comparison.</returns>
     protected abstract IEnumerable<object?> GetEqualityComponents();
 
     public override int GetHashCode() {

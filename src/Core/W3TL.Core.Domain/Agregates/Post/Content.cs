@@ -7,6 +7,9 @@ using W3TL.Core.Domain.Services;
 
 namespace W3TL.Core.Domain.Agregates.Post;
 
+/// <summary>
+///  Represents the content of a post.
+/// </summary>
 public abstract class Content : AggregateRoot<ContentIDBase> {
     //Constructor for the Test Factory
     internal Content(ContentIDBase contentId) : base(contentId) { }
@@ -31,6 +34,12 @@ public abstract class Content : AggregateRoot<ContentIDBase> {
     public PostType PostType { get; internal set; }
     public Content? ParentPost { get; internal set; }
 
+    /// <summary>
+    /// Edits the content of the post.
+    /// </summary>
+    /// <param name="contentTweet">The new content of the post.</param>
+    /// <param name="signature">The new signature of the post.</param>
+    /// <returns>A result indicating success or failure.</returns>
     public Result EditContent(TheString contentTweet, Signature signature) {
         if (contentTweet is null) return Error.NullContentTweet;
         if (signature is null) return Error.NullSignature;

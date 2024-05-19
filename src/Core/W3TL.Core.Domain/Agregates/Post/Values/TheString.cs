@@ -2,6 +2,9 @@ using ViaEventAssociation.Core.Domain.Common.Bases;
 
 namespace W3TL.Core.Domain.Agregates.Post.Values;
 
+/// <summary>
+///  Represents a string.
+/// </summary>
 public class TheString : ValueObject {
     public static readonly int MAX_LENGTH = 140;
 
@@ -11,6 +14,11 @@ public class TheString : ValueObject {
 
     public string? Value { get; }
 
+    /// <summary>
+    /// Creates a new instance of the <see cref="TheString"/> class with the specified value.
+    /// </summary>
+    /// <param name="value">The value of the string.</param>
+    /// <returns>A result indicating success or failure with the created string.</returns>
     public static Result<TheString> Create(string? value) {
         try {
             var validation = Validate(value);
@@ -41,6 +49,10 @@ public class TheString : ValueObject {
         return Result.Ok;
     }
 
+    /// <summary>
+    /// Returns the components used for equality comparison.
+    /// </summary>
+    /// <returns>The components used for equality comparison.</returns>
     protected override IEnumerable<object?> GetEqualityComponents() {
         yield return Value;
     }

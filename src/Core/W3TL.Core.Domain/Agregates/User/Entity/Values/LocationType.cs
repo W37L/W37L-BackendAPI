@@ -2,6 +2,9 @@ using ViaEventAssociation.Core.Domain.Common.Bases;
 
 namespace W3TL.Core.Domain.Agregates.User.Entity.Values;
 
+/// <summary>
+/// Represents the location of a user.
+/// </summary>
 public class LocationType : ValueObject {
     public static readonly int MAX_LENGTH = 100;
 
@@ -9,8 +12,16 @@ public class LocationType : ValueObject {
         Value = value;
     }
 
+    /// <summary>
+    /// Gets the value of the location.
+    /// </summary>
     public string? Value { get; }
 
+    /// <summary>
+    /// Creates an instance of LocationType with the specified location value.
+    /// </summary>
+    /// <param name="value">The location value.</param>
+    /// <returns>A result indicating success or failure.</returns>
     public static Result<LocationType> Create(string? value) {
         try {
             var validation = Validate(value);

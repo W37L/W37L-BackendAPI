@@ -1,21 +1,22 @@
 namespace W3TL.Core.Domain.Common.Bases;
 
-/**
- * Represents the base class for all entities in the domain.
- * An entity is an object that is not defined solely by its attributes, but rather by a thread of continuity and its identity.
- *
- * @param TId The type of the identifier for the entity.
- */
+/// <summary>
+/// Represents the base class for all entities in the domain.
+/// An entity is an object that is not defined solely by its attributes, but rather by a thread of continuity and its identity.
+/// </summary>
+/// <typeparam name="TId">The type of the identifier for the entity.</typeparam>
 public abstract class Entity<TId> where TId : IdentityBase {
-    /**
-     * Initializes a new instance of the Entity class with the specified identifier.
-     *
-     * @param id The identifier of the entity.
-     */
+    
+    /// <summary>
+    /// Gets or sets the identifier of the entity.
+    /// </summary>
     protected Entity(TId id) {
         Id = id;
     }
 
+    /// <summary>
+    /// Gets or sets the identifier of the entity.
+    /// </summary>
     public TId Id { get; internal set; }
 
     public override bool Equals(object? obj) {

@@ -3,16 +3,19 @@ using ViaEventAssociation.Core.Domain.Common.Bases;
 
 namespace W3TL.Core.Domain.Common.Values;
 
-/**
-* Represents an abstract base class for URL value objects, providing foundational
-* validation and normalization of URLs for derived types.
-*/
+///<summary>
+/// Represents an abstract base class for URL value objects, providing foundational
+/// validation and normalization of URLs for derived types.
+///</summary>
 public abstract class WebLinkType : ValueObject {
     protected WebLinkType(string? url) {
         Validate(url).OnFailure(error => throw new Exception(error.Message));
         Url = url;
     }
 
+    /// <summary>
+    /// Gets the URL associated with the web link.
+    /// </summary>
     public string? Url { get; }
 
     protected static Result Validate(string? url) {
@@ -29,12 +32,10 @@ public abstract class WebLinkType : ValueObject {
         return Result.Ok;
     }
 
-
-    /**
-    * Provides the basis for equality comparisons between instances of derived types.
-    *
-    * @return An enumerable of objects used in equality comparison, based on URL.
-    */
+    ///<summary>
+    /// Provides the basis for equality comparisons between instances of derived types.
+    ///</summary>
+    /// <returns>An enumerable of objects used in equality comparison, based on URL.</returns>
     protected override IEnumerable<object?> GetEqualityComponents() {
         yield return Url;
     }

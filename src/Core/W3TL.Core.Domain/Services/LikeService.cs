@@ -3,7 +3,17 @@ using W3TL.Core.Domain.Agregates.User.Entity;
 
 namespace W3TL.Core.Domain.Services;
 
+/// <summary>
+/// Provides methods for handling like actions on content by users.
+/// </summary>
 public class LikeService {
+    
+    /// <summary>
+    /// Handles the like action on content by a user.
+    /// </summary>
+    /// <param name="liker">The user who wants to like the content.</param>
+    /// <param name="content">The content to be liked.</param>
+    /// <returns>A result indicating the success or failure of the like action.</returns>
     public static Result Handle(User? liker, Content? content) {
         var errors = new HashSet<Error>();
 

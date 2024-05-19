@@ -4,6 +4,9 @@ using W3TL.Core.Domain.Agregates.Post.Enum;
 using W3TL.Core.Domain.Agregates.Post.Values;
 using W3TL.Core.Domain.Agregates.User.Entity.Values;
 
+///<summary>
+///  Represents the content of a post.
+/// </summary>
 public class Post : Content {
     private Post() : base(default) { } //EF Core
 
@@ -19,12 +22,38 @@ public class Post : Content {
         PostType = postType;
         Comments = new List<Comment>();
     }
-
+    
+    /// <summary>
+    /// Gets or sets the media URL of the post.
+    /// </summary>
     public MediaUrl MediaUrl { get; internal set; }
+
+    /// <summary>
+    /// Gets or sets the media type of the post.
+    /// </summary>
     public MediaType MediaType { get; internal set; }
+
+    /// <summary>
+    /// Gets or sets the type of the post.
+    /// </summary>
     public PostType PostType { get; internal set; }
+
+    /// <summary>
+    /// Gets or sets the comments associated with the post.
+    /// </summary>
     public List<Comment>? Comments { get; set; }
 
+    /// <summary>
+    /// Creates a new post.
+    /// </summary>
+    /// <param name="contentTweet">The content of the post.</param>
+    /// <param name="creator">The creator of the post.</param>
+    /// <param name="signature">The signature of the post.</param>
+    /// <param name="postType">The type of the post.</param>
+    /// <param name="mediaUrl">The media URL of the post.</param>
+    /// <param name="mediaType">The media type of the post.</param>
+    /// <param name="parentPost">The parent post, if any.</param>
+    /// <returns>A result indicating success or failure.</returns>
     public static Result<Post> Create(
         TheString contentTweet,
         User creator,
@@ -37,6 +66,18 @@ public class Post : Content {
         return Create(null, contentTweet, creator, signature, postType, mediaUrl, mediaType, parentPost);
     }
 
+    /// <summary>
+    /// Creates a new post with the specified ID.
+    /// </summary>
+    /// <param name="pId">The ID of the post.</param>
+    /// <param name="contentTweet">The content of the post.</param>
+    /// <param name="creator">The creator of the post.</param>
+    /// <param name="signature">The signature of the post.</param>
+    /// <param name="postType">The type of the post.</param>
+    /// <param name="mediaUrl">The media URL of the post.</param>
+    /// <param name="mediaType">The media type of the post.</param>
+    /// <param name="parentPost">The parent post, if any.</param>
+    /// <returns>A result indicating success or failure.</returns>
     public static Result<Post> Create(
         PostId pId,
         TheString contentTweet,
@@ -68,6 +109,11 @@ public class Post : Content {
     }
 
 
+    /// <summary>
+    /// Updates the media URL of the post.
+    /// </summary>
+    /// <param name="mediaUrl">The new media URL.</param>
+    /// <returns>A result indicating success or failure.</returns>
     public Result UpdateMediaUrl(MediaUrl mediaUrl) {
         if (mediaUrl is null) return Error.NullMediaUrl;
         try {
@@ -79,6 +125,12 @@ public class Post : Content {
         }
     }
 
+    /// <summary>
+    /// Updates the content type of the post.
+    /// </summary>
+    /// <param name="mediaType">The new media type.</param>
+    /// <param name="mediaType">The new media type.</param>
+    /// <returns>A result indicating success or failure.</returns>
     public Result UpdateContentType(MediaType mediaType) {
         try {
             MediaType = mediaType;
@@ -89,6 +141,11 @@ public class Post : Content {
         }
     }
 
+    /// <summary>
+    /// Adds a comment to the post.
+    /// </summary>
+    /// <param name="comment">The comment to add.</param>
+    /// <returns>A result indicating success or failure.</returns>
     public Result AddComment(Comment comment) {
         if (comment is null) return Error.NullComment;
         try {
@@ -101,6 +158,11 @@ public class Post : Content {
         }
     }
 
+    /// <summary>
+    /// Removes a comment from the post.
+    /// </summary>
+    /// <param name="comment">The comment to remove.</param>
+    /// <returns>A result indicating success or failure.</returns>
     public Result RemoveComment(Comment comment) {
         if (comment is null) return Error.NullComment;
         try {
@@ -112,6 +174,11 @@ public class Post : Content {
         }
     }
 
+    /// <summary>
+    /// Highlights the post for a user.
+    /// </summary>
+    /// <param name="user">The user who wants to highlight the post.</param>
+    /// <returns>A result indicating success or failure.</returns>
     public Result Highlight(User user) {
         if (user is null) return Error.NullUser;
         try {
@@ -123,6 +190,11 @@ public class Post : Content {
         }
     }
 
+    /// <summary>
+    /// Removes the highlight from the post for a user.
+    /// </summary>
+    /// <param name="user">The user who wants to remove the highlight from the post.</param>
+    /// <returns>A result indicating success or failure.</returns>
     public Result Unhighlight(User user) {
         if (user is null) return Error.NullUser;
         try {
@@ -134,6 +206,11 @@ public class Post : Content {
         }
     }
 
+    /// <summary>
+    /// Retweets the post for a user.
+    /// </summary>
+    /// <param name="user">The user who wants to retweet the post.</param>
+    /// <returns>A result indicating success or failure.</returns>
     public Result Retweet(User user) {
         if (user is null) return Error.NullUser;
         try {
@@ -145,6 +222,11 @@ public class Post : Content {
         }
     }
 
+    /// <summary>
+    /// Removes the retweet from the post for a user.
+    /// </summary>
+    /// <param name="user">The user who wants to remove the retweet from the post.</param>
+    /// <returns>A result indicating success or failure.</returns>
     public Result Unretweet(User user) {
         if (user is null) return Error.NullUser;
         try {

@@ -3,33 +3,32 @@ using ViaEventAssociation.Core.Domain.Common.Bases;
 
 namespace W3TL.Core.Domain.Agregates.User.Values;
 
-/**
-* Represents an email value object that encapsulates a valid email address within the domain.
-* This class provides a mechanism to ensure that the email address is valid according to a general
-* email format.
-*/
+/// <summary>
+/// Represents an email value object that encapsulates a valid email address within the domain.
+/// This class provides a mechanism to ensure that the email address is valid according to a general
+/// email format.
+/// </summary>
 public class EmailType : ValueObject {
-    /**
- * Initializes a new instance of the EmailType class with a given email address.
- * This constructor is private to ensure that the email address is validated before instantiation.
- *
- * @param value The validated email address.
- */
+
+    /// <summary>
+    /// Initializes a new instance of the EmailType class with a given email address.
+    /// This constructor is private to ensure that the email address is validated before instantiation.
+    /// </summary>
+    /// <param name="value">The validated email address.</param>
     private EmailType(string? value) {
         Value = value;
     }
 
-    /**
- * The email value encapsulated by this EmailType instance.
- */
+    /// <summary>
+    /// The email value encapsulated by this EmailType instance.
+    /// </summary>
     public string? Value { get; }
 
-    /**
- * Attempts to create an EmailType instance from a given email address string, validating the input.
- *
- * @param email The email address string to validate and use for creating an EmailType instance.
- * @returns A Result containing either an EmailType instance or an error.
- */
+    /// <summary>
+    /// Attempts to create an EmailType instance from a given email address string, validating the input.
+    /// </summary>
+    /// <param name="email">The email address string to validate and use for creating an EmailType instance.</param>
+    /// <returns>A Result containing either an EmailType instance or an error.</returns>
     public static Result<EmailType> Create(string? email) {
         var validation = Validate(email);
         if (validation.IsSuccess)
@@ -38,12 +37,11 @@ public class EmailType : ValueObject {
             return validation.Error;
     }
 
-    /**
- * Validates a given email address string against a general email format.
- *
- * @param email The email address string to validate.
- * @returns A Result indicating whether the validation succeeded or failed.
- */
+    /// <summary>
+    /// Validates a given email address string against a general email format.
+    /// </summary>
+    /// <param name="email">The email address string to validate.</param>
+    /// <returns>A Result indicating whether the validation succeeded or failed.</returns>
     private static Result Validate(string? email) {
         var errors = new HashSet<Error>();
 
@@ -62,12 +60,11 @@ public class EmailType : ValueObject {
         return Result.Success();
     }
 
-    /**
- * Provides the components for determining equality between EmailType instances.
- * Utilizes the email address for equality comparison.
- *
- * @returns An enumerable of objects used in equality comparison.
- */
+    /// <summary>
+    /// Provides the components for determining equality between EmailType instances.
+    /// Utilizes the email address for equality comparison.
+    /// </summary>
+    /// <returns>An enumerable of objects used in equality comparison.</returns>
     protected override IEnumerable<object?> GetEqualityComponents() {
         yield return Value;
     }
