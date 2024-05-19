@@ -7,6 +7,10 @@ namespace QueryContracts.Queries.Users;
 /// <summary>
 ///     Represents a query to retrieve a user by their ID.
 /// </summary>
+/// Usage:
+/// var query = new GetUserByIdQuery.Query(userId);
+/// var answer = await queryBus.DispatchAsync(query);
+/// /
 public class GetUserByIdQuery {
     public record Query(UserID UserID) : IQuery<Answer>;
 

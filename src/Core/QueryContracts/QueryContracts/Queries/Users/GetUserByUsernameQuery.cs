@@ -7,6 +7,9 @@ namespace QueryContracts.Queries.Users;
 /// <summary>
 ///     Represents a query to get a user by their username.
 /// </summary>
+/// Usage example:
+/// var query = new SearchPostsQuery.Query("search term");
+/// var answer = await queryBus.DispatchAsync(query); 
 public class GetUserByUsernameQuery {
     public record Query(UserNameType username) : IQuery<Answer>;
 
