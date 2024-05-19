@@ -7,12 +7,19 @@ using W3TL.Core.Domain.Common.Values;
 
 namespace Persistence.UserPersistence;
 
+/// <summary>
+///  Implementation of the user repository interface for interacting with user data in Firestore.
+/// </summary>
+/// <param name="mapper"></param>
 public class UserRepository(IMapper mapper) : IUserRepository {
     private readonly IMapper _mapper = mapper;
-
-
     private readonly FirestoreDb db = FirebaseInitializer.FirestoreDb;
 
+    ///<summary>
+    /// Add a new user asynchronously.
+    ///</summary>
+    ///<param name="aggregate">User object to be added.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public async Task<Result> AddAsync(User aggregate) {
         UserDTO firebaseUser;
 
@@ -58,7 +65,11 @@ public class UserRepository(IMapper mapper) : IUserRepository {
         }
     }
 
-
+    ///<summary>
+    /// Update an existing user asynchronously.
+    ///</summary>
+    ///<param name="user">Updated user object.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public async Task<Result> UpdateAsync(User user) {
         UserDTO firebaseUser;
         try {
@@ -83,6 +94,13 @@ public class UserRepository(IMapper mapper) : IUserRepository {
         }
     }
 
+    ///<summary>
+    /// Update a specific field of a user asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user whose field is to be updated.</param>
+    ///<param name="fieldName">Name of the field to be updated.</param>
+    ///<param name="fieldValue">New value for the field.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public async Task<Result> UpdateFieldAsync(string userId, string fieldName, string fieldValue) {
         var docRef = db.Collection("users").Document(userId);
 
@@ -101,6 +119,11 @@ public class UserRepository(IMapper mapper) : IUserRepository {
         }
     }
 
+    ///<summary>
+    /// Increment the followers count of a user asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user whose followers count is to be incremented.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public Task<Result> IncrementFollowersAsync(string userId) {
         var docRef = db.Collection("users").Document(userId);
         var updates = new Dictionary<string, object> {
@@ -112,6 +135,11 @@ public class UserRepository(IMapper mapper) : IUserRepository {
         });
     }
 
+    ///<summary>
+    /// Decrement the followers count of a user asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user whose followers count is to be decremented.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public Task<Result> DecrementFollowersAsync(string userId) {
         var docRef = db.Collection("users").Document(userId);
         var updates = new Dictionary<string, object> {
@@ -123,6 +151,11 @@ public class UserRepository(IMapper mapper) : IUserRepository {
         });
     }
 
+    ///<summary>
+    /// Increment the following count of a user asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user whose following count is to be incremented.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public Task<Result> IncrementFollowingAsync(string userId) {
         var docRef = db.Collection("users").Document(userId);
         var updates = new Dictionary<string, object> {
@@ -134,6 +167,11 @@ public class UserRepository(IMapper mapper) : IUserRepository {
         });
     }
 
+    ///<summary>
+    /// Decrement the following count of a user asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user whose following count is to be decremented.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public Task<Result> DecrementFollowingAsync(string userId) {
         var docRef = db.Collection("users").Document(userId);
         var updates = new Dictionary<string, object> {
@@ -145,17 +183,31 @@ public class UserRepository(IMapper mapper) : IUserRepository {
         });
     }
 
-
+    ///<summary>
+    /// Delete a user asynchronously (Not Implemented).
+    ///</summary>
+    ///<param name="id">ID of the user to be deleted.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public Task<Result> DeleteAsync(UserID id) {
         throw new NotImplementedException();
     }
 
+    ///<summary>
+    /// Check if a user exists asynchronously.
+    ///</summary>
+    ///<param name="id">ID of the user to check.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public async Task<Result> ExistsAsync(UserID id) {
         var docRef = db.Collection("users").Document(id.Value);
         var snapshot = await docRef.GetSnapshotAsync();
         return snapshot.Exists ? Result.Success() : Error.UserNotFound;
     }
 
+    ///<summary>
+    /// Get user ID by username asynchronously.
+    ///</summary>
+    ///<param name="username">Username of the user.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public async Task<Result<User>> GetIdByUsernameAsync(string username) {
         var query = db.Collection("users").WhereEqualTo("username", username);
         var querySnapshot = await query.GetSnapshotAsync();
@@ -169,6 +221,11 @@ public class UserRepository(IMapper mapper) : IUserRepository {
         return user;
     }
 
+    ///<summary>
+    /// Get user by email asynchronously.
+    ///</summary>
+    ///<param name="email">Email of the user.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public async Task<Result<User>> GetByEmailAsync(string email) {
         var query = db.Collection("users").WhereEqualTo("email", email);
         var querySnapshot = await query.GetSnapshotAsync();
@@ -190,7 +247,11 @@ public class UserRepository(IMapper mapper) : IUserRepository {
         return user;
     }
 
-
+    ///<summary>
+    /// Get user by username asynchronously.
+    ///</summary>
+    ///<param name="userName">Username of the user.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public async Task<Result<User>> GetByUserNameAsync(string userName) {
         var query = db.Collection("users").WhereEqualTo("username", userName);
         var querySnapshot = await query.GetSnapshotAsync();
@@ -212,7 +273,11 @@ public class UserRepository(IMapper mapper) : IUserRepository {
         return user;
     }
 
-
+    ///<summary>
+    /// Get user by ID asynchronously.
+    ///</summary>
+    ///<param name="id">ID of the user.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public async Task<Result<User>> GetByIdAsync(UserID id) {
         var userDocRef = db.Collection("users").Document(id.Value);
         var userSnapshot = await userDocRef.GetSnapshotAsync();
@@ -230,14 +295,21 @@ public class UserRepository(IMapper mapper) : IUserRepository {
         return _mapper.Map<User>(firebaseUser);
     }
 
-
+    ///<summary>
+    /// Get all users asynchronously.
+    ///</summary>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public async Task<Result<List<User>>> GetAllAsync() {
         var querySnapshot = await db.Collection("users").GetSnapshotAsync();
         var users = querySnapshot.Documents.Select(doc => _mapper.Map<User>(doc.ConvertTo<UserDTO>())).ToList();
         return users;
     }
 
-// Helper method to convert an object to a dictionary using reflection and Firestore attributes
+    ///<summary>
+    /// Helper method to convert a UserDTO object into a dictionary format suitable for Firestore storage.
+    ///</summary>
+    ///<param name="firebaseUser">The UserDTO object to convert.</param>
+    ///<returns>A dictionary containing the converted properties.</returns>
     private static IDictionary<string, object> ConvertToDictionary(UserDTO firebaseUser) {
         var dict = new Dictionary<string, object>();
         foreach (var prop in typeof(UserDTO).GetProperties()) {

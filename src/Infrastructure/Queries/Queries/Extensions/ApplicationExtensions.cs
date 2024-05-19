@@ -10,6 +10,11 @@ using QueryContracts.Queries.Users;
 namespace Queries.Extensions;
 
 public static class ApplicationExtensions {
+    
+    ///<summary>
+    /// Extension method to register query handlers in the dependency injection container.
+    ///</summary>
+    ///<param name="services">The collection of services to which the query handlers will be added.</param>
     public static void RegisterQueries(this IServiceCollection services) {
         // Posts
         services.AddScoped<IQueryHandler<GetAllPostQuery.Query, GetAllPostQuery.Answer>, GetAllPostHandler>();

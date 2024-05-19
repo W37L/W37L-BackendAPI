@@ -9,12 +9,20 @@ using W3TL.Core.Domain.Agregates.User.Repository;
 
 namespace Queries.Queries.Comments;
 
-public class GetAllCommentsByPostIdHandler :
-    IQueryHandler<GetAllCommentsByPostIdQuery.Query, GetAllCommentsByPostIdQuery.Answer> {
+///<summary>
+/// Handler for retrieving all comments by a specific post ID.
+///</summary>
+public class GetAllCommentsByPostIdHandler : IQueryHandler<GetAllCommentsByPostIdQuery.Query, GetAllCommentsByPostIdQuery.Answer> {
     private readonly IContentRepository _contentRepository;
     private readonly IMapper _mapper;
     private readonly IUserRepository _userRepository;
 
+    ///<summary>
+    /// Constructor for initializing the handler with required dependencies.
+    ///</summary>
+    ///<param name="contentRepository">The content repository for accessing comment data.</param>
+    ///<param name="mapper">The mapper for mapping entities to DTOs.</param>
+    ///<param name="userRepository">The user repository for accessing user data.</param>
     public GetAllCommentsByPostIdHandler(IContentRepository contentRepository, IMapper mapper,
         IUserRepository userRepository) {
         _contentRepository = contentRepository;

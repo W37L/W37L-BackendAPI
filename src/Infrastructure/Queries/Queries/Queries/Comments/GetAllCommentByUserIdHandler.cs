@@ -9,13 +9,20 @@ using W3TL.Core.Domain.Agregates.User.Repository;
 
 namespace Queries.Queries.Comments;
 
-public class
-    GetAllCommentByUserIdHandler : IQueryHandler<GetAllCommentsByUserIdQuery.Query,
-    GetAllCommentsByUserIdQuery.Answer> {
+///<summary>
+/// Handler for retrieving all comments by a specific user ID.
+///</summary>
+public class GetAllCommentByUserIdHandler : IQueryHandler<GetAllCommentsByUserIdQuery.Query, GetAllCommentsByUserIdQuery.Answer> {
     private readonly IContentRepository _contentRepository;
     private readonly IMapper _mapper;
     private readonly IUserRepository _userRepository;
 
+    ///<summary>
+    /// Constructor for initializing the handler with required dependencies.
+    ///</summary>
+    ///<param name="contentRepository">The content repository for accessing comment data.</param>
+    ///<param name="mapper">The mapper for mapping entities to DTOs.</param>
+    ///<param name="userRepository">The user repository for accessing user data.</param>
     public GetAllCommentByUserIdHandler(IContentRepository contentRepository, IMapper mapper,
         IUserRepository userRepository) {
         _contentRepository = contentRepository;
@@ -23,6 +30,11 @@ public class
         _userRepository = userRepository;
     }
 
+    ///<summary>
+    /// Handles the query to retrieve all comments by a specific user ID asynchronously.
+    ///</summary>
+    ///<param name="query">The query containing the user ID.</param>
+    ///<returns>Returns the answer containing the list of comments.</returns>
     public async Task<GetAllCommentsByUserIdQuery.Answer> HandleAsync(GetAllCommentsByUserIdQuery.Query query) {
         var user = await _userRepository.GetByIdAsync(query.UserId);
         if (user.IsFailure)

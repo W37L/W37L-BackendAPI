@@ -6,6 +6,9 @@ using W3TL.Core.Domain.Agregates.User.Repository;
 
 namespace Persistance.UserPersistance;
 
+/// <summary>
+///  Implements the interaction repository for managing user interactions.
+/// </summary>
 public class InteractionRepository : IInteractionRepository {
     private readonly IMapper _mapper;
     private readonly FirestoreDb db;
@@ -17,7 +20,12 @@ public class InteractionRepository : IInteractionRepository {
         this.logger = logger;
     }
 
-
+    ///<summary>
+    /// Block a user asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user performing the block action.</param>
+    ///<param name="blockedUserId">ID of the user being blocked.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public Task<Result> BlockUserAsync(string userId, string blockedUserId) {
         var interactionRef = db.Collection("users").Document(userId).Collection("interactions").Document("data");
 
@@ -49,6 +57,12 @@ public class InteractionRepository : IInteractionRepository {
         });
     }
 
+    ///<summary>
+    /// Unblock a user asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user performing the unblock action.</param>
+    ///<param name="blockedUserId">ID of the user being unblocked.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public Task<Result> UnblockUserAsync(string userId, string blockedUserId) {
         var interactionRef = db.Collection("users").Document(userId).Collection("interactions").Document("data");
 
@@ -70,6 +84,12 @@ public class InteractionRepository : IInteractionRepository {
         });
     }
 
+    ///<summary>
+    /// Follow a user asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user performing the follow action.</param>
+    ///<param name="followedUserId">ID of the user being followed.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public async Task<Result> FollowUserAsync(string userId, string followedUserId) {
         logger.LogDebug("Starting to process following user: User {UserId} follows {FollowedUserId}", userId,
             followedUserId);
@@ -128,8 +148,13 @@ public class InteractionRepository : IInteractionRepository {
             throw;
         }
     }
-
-
+    
+    ///<summary>
+    /// Unfollow a user asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user performing the unfollow action.</param>
+    ///<param name="followedUserId">ID of the user being unfollowed.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public async Task<Result> UnfollowUserAsync(string userId, string followedUserId) {
         logger.LogDebug("Starting to process unfollowing: User {UserId} unfollows {FollowedUserId}", userId,
             followedUserId);
@@ -190,7 +215,12 @@ public class InteractionRepository : IInteractionRepository {
         }
     }
 
-
+    ///<summary>
+    /// Mute a user asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user performing the mute action.</param>
+    ///<param name="mutedUserId">ID of the user being muted.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public Task<Result> MuteUserAsync(string userId, string mutedUserId) {
         var interactionRef = db.Collection("users").Document(userId).Collection("interactions").Document("data");
 
@@ -222,6 +252,12 @@ public class InteractionRepository : IInteractionRepository {
         });
     }
 
+    ///<summary>
+    /// Unmute a user asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user performing the unmute action.</param>
+    ///<param name="mutedUserId">ID of the user being unmuted.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public Task<Result> UnmuteUserAsync(string userId, string mutedUserId) {
         var interactionRef = db.Collection("users").Document(userId).Collection("interactions").Document("data");
 
@@ -243,6 +279,12 @@ public class InteractionRepository : IInteractionRepository {
         });
     }
 
+    ///<summary>
+    /// Report a user asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user performing the report action.</param>
+    ///<param name="reportedUserId">ID of the user being reported.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public Task<Result> ReportUserAsync(string userId, string reportedUserId) {
         var interactionRef = db.Collection("users").Document(userId).Collection("interactions").Document("data");
 
@@ -274,6 +316,12 @@ public class InteractionRepository : IInteractionRepository {
         });
     }
 
+    ///<summary>
+    /// Unreport a user asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user performing the unreport action.</param>
+    ///<param name="reportedUserId">ID of the user being unreported.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public Task<Result> UnreportUserAsync(string userId, string reportedUserId) {
         var interactionRef = db.Collection("users").Document(userId).Collection("interactions").Document("data");
 
@@ -295,6 +343,12 @@ public class InteractionRepository : IInteractionRepository {
         });
     }
 
+    ///<summary>
+    /// Like a tweet asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user performing the like action.</param>
+    ///<param name="tweetId">ID of the tweet being liked.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public async Task<Result> LikeTweetAsync(string userId, string tweetId) {
         var interactionRef = db.Collection("users").Document(userId).Collection("interactions").Document("data");
 
@@ -326,7 +380,12 @@ public class InteractionRepository : IInteractionRepository {
         });
     }
 
-
+    ///<summary>
+    /// Unlike a tweet asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user performing the unlike action.</param>
+    ///<param name="tweetId">ID of the tweet being unliked.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public async Task<Result> UnlikeTweetAsync(string userId, string tweetId) {
         var interactionRef = db.Collection("users").Document(userId).Collection("interactions").Document("data");
 
@@ -348,7 +407,12 @@ public class InteractionRepository : IInteractionRepository {
         });
     }
 
-
+    ///<summary>
+    /// Retweet a tweet asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user performing the retweet action.</param>
+    ///<param name="tweetId">ID of the tweet being retweeted.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public Task<Result> RetweetAsync(string userId, string tweetId) {
         var interactionRef = db.Collection("users").Document(userId).Collection("interactions").Document("data");
 
@@ -380,6 +444,12 @@ public class InteractionRepository : IInteractionRepository {
         });
     }
 
+    ///<summary>
+    /// Unretweet a tweet asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user performing the unretweet action.</param>
+    ///<param name="tweetId">ID of the tweet being unretweeted.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public Task<Result> UnretweetAsync(string userId, string tweetId) {
         var interactionRef = db.Collection("users").Document(userId).Collection("interactions").Document("data");
 
@@ -401,6 +471,12 @@ public class InteractionRepository : IInteractionRepository {
         });
     }
 
+    ///<summary>
+    /// Highlight a tweet asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user performing the highlight action.</param>
+    ///<param name="tweetId">ID of the tweet being highlighted.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public Task<Result> HighlightTweetAsync(string userId, string tweetId) {
         var interactionRef = db.Collection("users").Document(userId).Collection("interactions").Document("data");
 
@@ -432,6 +508,12 @@ public class InteractionRepository : IInteractionRepository {
         });
     }
 
+    ///<summary>
+    /// Unhighlight a tweet asynchronously.
+    ///</summary>
+    ///<param name="userId">ID of the user performing the unhighlight action.</param>
+    ///<param name="tweetId">ID of the tweet being unhighlighted.</param>
+    ///<returns>A task representing the asynchronous operation with the result of the action.</returns>
     public Task<Result> UnhighlightTweetAsync(string userId, string tweetId) {
         var interactionRef = db.Collection("users").Document(userId).Collection("interactions").Document("data");
 
