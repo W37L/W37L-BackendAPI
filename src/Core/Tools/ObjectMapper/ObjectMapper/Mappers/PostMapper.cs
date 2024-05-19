@@ -2,7 +2,15 @@ using ObjectMapper.DTO;
 
 namespace ObjectMapper.Mappers;
 
+/// <summary>
+///     The PostMapper class is responsible for mapping instances of the Post class to instances of the ContentDTO class.
+/// </summary>
 public class PostMapper : IMappingConfig<Post, ContentDTO> {
+    /// <summary>
+    ///     Maps a Post object to a ContentDTO object.
+    /// </summary>
+    /// <param name="content">The Post object to be mapped.</param>
+    /// <returns>The mapped ContentDTO object.</returns>
     public ContentDTO Map(Post content) {
         if (content == null) return null;
         ContentDTO c = new();

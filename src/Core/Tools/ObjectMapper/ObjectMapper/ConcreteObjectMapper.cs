@@ -1,6 +1,7 @@
 using System.Text.Json;
 using ObjectMapper;
 
+// Concrete implementation of IMapper
 public class ConcreteObjectMapper : IMapper {
     private readonly IServiceProvider _serviceProvider;
 
@@ -16,6 +17,8 @@ public class ConcreteObjectMapper : IMapper {
             return mappingConfig.Map((dynamic)input);
 
         string toJson = JsonSerializer.Serialize(input);
+
+        // Fallback to serializing and deserializing if no specific mapper is registered
         return JsonSerializer.Deserialize<TOutput>(toJson);
     }
 }

@@ -10,7 +10,15 @@ using W3TL.Core.Domain.Common.Values;
 
 namespace ObjectMapper.Mappers;
 
+/// <summary>
+///     UserDomainMapper class is responsible for mapping between UserDTO and User objects.
+/// </summary>
 public class UserDomainMapper : IMappingConfig<UserDTO, User> {
+    /// <summary>
+    ///     Maps a UserDTO object to a User object.
+    /// </summary>
+    /// <param name="input">The UserDTO object to be mapped.</param>
+    /// <returns>A User object.</returns>
     public User Map(UserDTO input) {
         // Use reflection to access the private constructor
         var privateConstructor = typeof(User).GetConstructor(

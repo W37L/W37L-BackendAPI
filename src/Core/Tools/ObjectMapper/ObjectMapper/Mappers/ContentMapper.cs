@@ -4,6 +4,11 @@ using W3TL.Core.Domain.Agregates.Post;
 namespace ObjectMapper.Mappers;
 
 public class ContentMapper : IMappingConfig<Content, ContentDTO> {
+    /// <summary>
+    ///     Maps a <see cref="Content" /> object to a <see cref="ContentDTO" /> object.
+    /// </summary>
+    /// <param name="content">The <see cref="Content" /> object to be mapped.</param>
+    /// <returns>The resulting <see cref="ContentDTO" /> object.</returns>
     public ContentDTO Map(Content content) {
         if (content == null) return null;
         ContentDTO c = new();

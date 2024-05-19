@@ -2,6 +2,9 @@ using QueryContracts.Contracts;
 
 namespace QueryContracts.QueryDispatching;
 
+/// <summary>
+///     Represents a class for dispatching queries.
+/// </summary>
 public class QueryDispatcher : IQueryDispatcher {
     private readonly IServiceProvider _serviceProvider;
 

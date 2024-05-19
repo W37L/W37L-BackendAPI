@@ -13,6 +13,11 @@ public class ContentDomainMapper : IMappingConfig<ContentDTO, Content> {
         _postDomainMapper = new PostDomainMapper();
     }
 
+    /// <summary>
+    ///     Maps a ContentDTO object to a Content object.
+    /// </summary>
+    /// <param name="input">The ContentDTO object to map.</param>
+    /// <returns>The mapped Content object.</returns>
     public Content Map(ContentDTO input) {
         if (input.Type == PostType.Comment.ToString()) {
             return _commentDomainMapper.Map(input);

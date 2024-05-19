@@ -3,6 +3,11 @@ using Persistence.UserPersistence;
 namespace ObjectMapper.Mappers;
 
 public class UserMapper : IMappingConfig<User, UserDTO> {
+    /// <summary>
+    ///     Maps a User object to a UserDTO object.
+    /// </summary>
+    /// <param name="user">The User object to be mapped.</param>
+    /// <returns>The mapped UserDTO object.</returns>
     public UserDTO Map(User user) {
         return new UserDTO {
             userId = user.Id.Value,

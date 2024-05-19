@@ -9,7 +9,15 @@ using W3TL.Core.Domain.Common.Values;
 
 namespace ObjectMapper.Mappers;
 
+/// <summary>
+///     Class responsible for mapping a <see cref="ContentDTO" /> object to a <see cref="Comment" /> object.
+/// </summary>
 public class CommentDomainMapper : IMappingConfig<ContentDTO, Comment> {
+    /// <summary>
+    ///     Maps a ContentDTO object to a Comment object.
+    /// </summary>
+    /// <param name="contentDto">The ContentDTO object to be mapped.</param>
+    /// <returns>The mapped Comment object.</returns>
     public Comment Map(ContentDTO contentDto) {
         var privateConstructor = typeof(Comment).GetConstructor(
             BindingFlags.Instance | BindingFlags.NonPublic,

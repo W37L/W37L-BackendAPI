@@ -1,0 +1,66 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=2ea157ef_002D49d6_002D4adc_002Dac49_002Dbd3739e2da2a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="UpdateLastName_InvalidLastName_ContainsInvalidCharacter_ReturnFailure" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Project Location="/Users/alfonsoridao/Library/CloudStorage/SynologyDrive-SyncTask/Projects/RiderProjects/W3TL/Tests/UnitTests" Presentation="&amp;lt;Tests&amp;gt;\&amp;lt;UnitTests&amp;gt;" /&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=47bd11fb_002D3b10_002D40a1_002D9b27_002D8559e2ae1477/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Solution /&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6899a85f_002Dee67_002D48f7_002D8619_002Dda41551ca005/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CreateNameType_InvalidCharacterInFirstName_ReturnInvalidNameError" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Project Location="/Users/alfonsoridao/Library/CloudStorage/SynologyDrive-SyncTask/Projects/RiderProjects/W3TL/Tests/UnitTests" Presentation="&amp;lt;Tests&amp;gt;\&amp;lt;UnitTests&amp;gt;" /&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6c7a6ba7_002Ded2a_002D4643_002Da05b_002Df0dbc9e54272/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="HandleAsync_WhenUsersExist_UnfollowsSuccessfully" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Project Location="/Users/alfonsoridao/Library/CloudStorage/SynologyDrive-SyncTask/Projects/RiderProjects/W3TL" Presentation="&amp;lt;Tests&amp;gt;" /&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c8c36717_002Dfde3_002D4f5e_002D8709_002D43d3da3574b4/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CommentPostHandlerTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Project Location="/Users/alfonsoridao/Library/CloudStorage/SynologyDrive-SyncTask/Projects/RiderProjects/W3TL" Presentation="&amp;lt;Tests&amp;gt;" /&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=d232f032_002D4cb8_002D401b_002Da126_002Dfec4ee8ccbab/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CreateUser_IncorrectPrefixUserID_ReturnInvalidPrefixError" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Project Location="/Users/alfonsoridao/Library/CloudStorage/SynologyDrive-SyncTask/Projects/RiderProjects/W3TL/Tests/UnitTests" Presentation="&amp;lt;Tests&amp;gt;\&amp;lt;UnitTests&amp;gt;" /&gt;
+&lt;/SessionState&gt;</s:String>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<s:Boolean x:Key="/Default/Monitoring/IsToolWindowHidden/@EntryValue">True</s:Boolean></wpf:ResourceDictionary>

@@ -8,7 +8,12 @@ using W3TL.Core.Domain.Agregates.User.Entity;
 
 namespace ObjectMapper;
 
+// Extension methods for IServiceCollection to register mappers
 public static class MapperExtension {
+    /// <summary>
+    ///     Registers mapper implementations in the dependency injection container.
+    /// </summary>
+    /// <param name="services">The IServiceCollection to add services to.</param>
     public static void RegisterMappers(this IServiceCollection services) {
         services.AddScoped<IMapper, ConcreteObjectMapper>();
 

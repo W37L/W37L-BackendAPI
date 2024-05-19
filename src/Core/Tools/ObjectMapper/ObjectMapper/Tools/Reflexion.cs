@@ -2,7 +2,14 @@ using System.Reflection;
 
 namespace ObjectMapper.Tools;
 
-public class Reflexion {
+// Utility class for reflection operations
+public static class Reflexion {
+    /// <summary>
+    ///     Sets a property on an object using reflection.
+    /// </summary>
+    /// <param name="obj">The object whose property to set.</param>
+    /// <param name="propertyName">The name of the property to set.</param>
+    /// <param name="value">The value to set the property to.</param>
     public static void SetProperty(object obj, string propertyName, object value) {
         var propertyInfo = obj.GetType().GetProperty(
             propertyName,

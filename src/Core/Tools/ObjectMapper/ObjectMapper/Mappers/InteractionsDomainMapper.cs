@@ -6,7 +6,15 @@ using W3TL.Core.Domain.Common.Values;
 
 namespace ObjectMapper.Mappers;
 
+/// <summary>
+///     Class responsible for mapping InteractionsDTO objects to Interactions objects.
+/// </summary>
 public class InteractionsDomainMapper : IMappingConfig<InteractionsDTO, Interactions> {
+    /// <summary>
+    ///     Maps an instance of InteractionsDTO to an instance of Interactions.
+    /// </summary>
+    /// <param name="input">The InteractionsDTO instance to be mapped.</param>
+    /// <returns>The mapped Interactions instance.</returns>
     public Interactions Map(InteractionsDTO input) {
         var privateConstructor = typeof(Interactions).GetConstructor(
             BindingFlags.Instance | BindingFlags.NonPublic,

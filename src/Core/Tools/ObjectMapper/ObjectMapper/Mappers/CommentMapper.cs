@@ -2,7 +2,16 @@ using ObjectMapper.DTO;
 
 namespace ObjectMapper.Mappers;
 
+/// <summary>
+///     The <c>CommentMapper</c> class is responsible for mapping the <c>Comment</c> domain model to the <c>ContentDTO</c>
+///     data transfer object.
+/// </summary>
 public class CommentMapper : IMappingConfig<Comment, ContentDTO> {
+    /// <summary>
+    ///     Maps a <see cref="Comment" /> object to a <see cref="ContentDTO" /> object.
+    /// </summary>
+    /// <param name="content">The <see cref="Comment" /> object to be mapped.</param>
+    /// <returns>The mapped <see cref="ContentDTO" /> object.</returns>
     public ContentDTO Map(Comment content) {
         if (content == null) return null;
         ContentDTO c = new();

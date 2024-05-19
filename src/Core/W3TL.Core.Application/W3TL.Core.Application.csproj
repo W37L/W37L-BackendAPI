@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\W3TL.Core.Domain\W3TL.Core.Domain.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Google.Cloud.Firestore" Version="3.6.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0-preview.2.24128.5"/>
+    </ItemGroup>
+
+</Project>
